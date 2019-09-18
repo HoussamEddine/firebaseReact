@@ -1,44 +1,33 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { Badge, Card, CardBody, CardHeader, Col, Row, Table } from "reactstrap";
+//import { Link } from 'react-router-dom';
+import { Card, CardBody, CardHeader, Col, Row, Table } from "reactstrap";
 
-import firebase from "../../config/config";
-
-import { tsConstructorType } from "@babel/types";
-//import sujetsData from './UsersData'
-
-/*function SujetRow(props) {
-  const sujet = props.sujet
-  const sujetLink = `/users/${sujet.id}`
-
-
-  return (
-    <tr key={sujet.id.toString()}>
-      <th scope="row">{sujet.id}</th>
-      <td><Link to={sujetLink}>{sujet.nsujet}</Link></td>
-      <td>{sujet.presentateur}</td>
-      <td>{sujet.date}</td>
-   </tr>
-  )
-}*/
+import firebase from "../../config";
 
 class Sujets extends Component {
-  constructor() {
-    super();
-  }
+  constructor(props) {
+    super(props);
 
+    this.state = {
+      sujet_pr: []
+    };
+  }
   componentWillMount() {
-    const ref = firebase.database().ref();
+    const ref = firebase.database().ref("sujet_pr");
     ref.on("value", snapshot => {
       this.setState({
-        data: snapshot.val()
+        sujet_pr: snapshot.val()
       });
     });
   }
 
   render() {
-    // const sujetList = sujetsData.filter((sujet) => sujet.id < 10)
-    // const sujetpr = this.state.data.map(suj => <h1>{suj.titre_sujet}</h1>);
+    console.log("this.state", this.state.sujet_pr);
+
+    const sujetpro = this.state.sujet_pr.map((sujetpr, i) => (
+      <tr key={i}>{sujetpr.titre_sujet}</tr>
+    ));
+
     return (
       <div className="animated fadeIn">
         <Row>
@@ -57,8 +46,9 @@ class Sujets extends Component {
                       <th scope="col">Date</th>
                     </tr>
                   </thead>
-                  {/* {sujetpr} */}
+
                   <tbody>
+                    {sujetpro}
                     {/*sujetList.map((sujet, index) =>
                       <SujetRow key={index} sujet={sujet}/>
                     )*/}
@@ -72,5 +62,4 @@ class Sujets extends Component {
     );
   }
 }
-
 export default Sujets;

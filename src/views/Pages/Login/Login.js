@@ -1,9 +1,44 @@
+
+
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import fire from '../../../config';
+import 'firebase/auth';
 import { Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 
 class Login extends Component {
+
+  constructor(props){
+
+    super(props);
+     
+//this.login=this.login.bind(this);
+this.handleChange =this.handleChange.bind(this);
+     this.state = {
+
+       email:'' ,
+       password:''
+
+     }
+  }
+
+
+  Login(e){
+    e.preventDefault();
+    fire.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then((u)=>{
+
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
+  handleChange(e){
+      this.setState({[e.target.name] : e.target.value });
+  }
+
   render() {
+    
+const Login = ({ onSubmit }) => {
     return (
       <div className="app flex-row align-items-center">
         <Container>
@@ -21,7 +56,7 @@ class Login extends Component {
                             <i className="icon-user"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="text" placeholder="Nom d'utilisateur" autoComplete="username" />
+                        <Input value={this.state.email} onChange={this.handleChange} type="text" placeholder="E-mail" autoComplete="username" />
                       </InputGroup>
                       <InputGroup className="mb-4">
                         <InputGroupAddon addonType="prepend">
@@ -29,11 +64,11 @@ class Login extends Component {
                             <i className="icon-lock"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="password" placeholder="Mot de passe" autoComplete="current-password" />
+                        <Input  value={this.state.password} onChange={this.handleChange} type="password" placeholder="Mot de passe" autoComplete="current-password" />
                       </InputGroup>
                       <Row>
                         <Col xs="6">
-                          <Button color="primary" className="px-4">Connecter</Button>
+                          <Button type="submit" onClick={this.login} color="primary" className="px-4">Connecter</Button>
                         </Col>
                         <Col xs="6" className="text-right">
                           <Button color="link" className="px-0">Mot de passe oublié?</Button>
@@ -45,7 +80,7 @@ class Login extends Component {
                 <Card className="text-white bg-primary py-5 d-md-down-none" style={{ width: '44%' }}>
                   <CardBody className="text-center">
                     <div>
-                      <h2>Inscrire maintenant!</h2>
+                      <h2>Inscrivez-vous!</h2>
                       
                       <Link to="/register">
                         <Button color="primary" className="mt-3" active tabIndex={-1}>S'inscrire</Button>
@@ -58,7 +93,7 @@ class Login extends Component {
           </Row>
         </Container>
       </div>
-    );
+    );};
   }
 }
 

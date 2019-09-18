@@ -1,36 +1,34 @@
+
 import React, { Component } from 'react';
+import * as firebase from 'firebase';
 import { Link } from 'react-router-dom';
-import { Badge, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
+import app from'../../config';
 
-import sujetspropdat from './sujetspropdata'
-
-function SujetRow(props) {
-  const sujet = props.sujet
-  const sujetLink = `/propose/${sujet.id}`
-
-  const getBadge = (status) => {
-    return status === 'Active' ? 'success' :
-      status === 'Inactive' ? 'secondary' :
-        status === 'Pending' ? 'warning' :
-          status === 'Banned' ? 'danger' :
-            'primary'
-  }
-
-  return (
-    <tr key={sujet.id.toString()}>
-      <th scope="row">{sujet.id}</th>
-      <td><Link to={sujetLink}>{sujet.nsujet}</Link></td>
-      {/**<td>{sujet.presentateur}</td>
-      <td>{sujet.date}</td> */}
-   </tr>
-  )
-}
 
 class Sujetspropo extends Component {
+  
+constructor(props){
+  super(props);
+  firebase.initializeApp(app);
+  this.state = {
+    sujet_propose : []
+  }
+  
+}
+componentWillMount() {
+  const ref = firebase.database().ref('sujet_propose');
+  ref.on('value',snapshot =>{
+    this.setState({
+      sujet_propose :snapshot.val() 
+    })
+  })
+}
 
   render() {
+    const sujetpro =this.state.sujet_propose.map((sujetpr , i) => <tr key={i}>{sujetpr.titre_sujet}</tr>)
 
-    const sujetList = sujetspropdat.filter((sujet) => sujet.id < 10)
+
 
     return (
       <div className="animated fadeIn">
@@ -44,18 +42,12 @@ class Sujetspropo extends Component {
                 <Table responsive hover>
                   <thead>
                     <tr>
-                      <th scope="col">id</th>
-                      <th scope="col">Sujets</th>
-
-                     {/**<th scope="col">Présentateur</th>
-                      <th scope="col">Date</th> */} 
-                      
+                        <th scope="col">Sujets</th>
+                
                     </tr>
                   </thead>
                   <tbody>
-                    {sujetList.map((sujet, index) =>
-                      <SujetRow key={index} sujet={sujet}/>
-                    )}
+                        {sujetpro }
                   </tbody>
                 </Table>
               </CardBody>
