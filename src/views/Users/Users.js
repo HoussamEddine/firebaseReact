@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { Badge, Card, CardBody, CardHeader, Col, Row, Table } from "reactstrap";
 
-import firebase from "./../../Config/config";
+import firebase from "../../config/config";
 
 import { tsConstructorType } from "@babel/types";
 //import sujetsData from './UsersData'
