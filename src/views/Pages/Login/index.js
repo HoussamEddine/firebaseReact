@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router";
-import app from'../../config';
+import app from "../../config";
 
 import Login from "./Login";
 
@@ -19,7 +19,8 @@ class LoginContainer extends Component {
   };
 
   render() {
-    return <Login onSubmit={this.Login} />;
+    // return <Login onSubmit={this.login} />;
+    return <h1>from login index</h1>;
   }
 }
 

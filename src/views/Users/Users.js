@@ -2,7 +2,7 @@ import React, { Component } from "react";
 //import { Link } from 'react-router-dom';
 import { Card, CardBody, CardHeader, Col, Row, Table } from "reactstrap";
 
-import firebase from "../../config";
+import firebase from "../../config/config";
 
 class Sujets extends Component {
   constructor(props) {
@@ -13,7 +13,7 @@ class Sujets extends Component {
     };
   }
   componentWillMount() {
-    const ref = firebase.database().ref("sujet_pr");
+    const ref = firebase.database().ref();
     ref.on("value", snapshot => {
       this.setState({
         sujet_pr: snapshot.val()
@@ -22,12 +22,9 @@ class Sujets extends Component {
   }
 
   render() {
-    console.log("this.state", this.state.sujet_pr);
-
     const sujetpro = this.state.sujet_pr.map((sujetpr, i) => (
-      <tr key={i}>{sujetpr.titre_sujet}</tr>
+      <tr key={i}>{sujetpr.sujet_ps}</tr>
     ));
-
     return (
       <div className="animated fadeIn">
         <Row>
@@ -46,13 +43,7 @@ class Sujets extends Component {
                       <th scope="col">Date</th>
                     </tr>
                   </thead>
-
-                  <tbody>
-                    {sujetpro}
-                    {/*sujetList.map((sujet, index) =>
-                      <SujetRow key={index} sujet={sujet}/>
-                    )*/}
-                  </tbody>
+                  <tbody>{sujetpro}</tbody>
                 </Table>
               </CardBody>
             </Card>
