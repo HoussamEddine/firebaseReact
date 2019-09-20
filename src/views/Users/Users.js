@@ -1,6 +1,15 @@
 import React, { Component } from "react";
 //import { Link } from 'react-router-dom';
-import { Card, CardBody, CardHeader, Col, Row, Table } from "reactstrap";
+import { Redirect } from "react-router-dom";
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Col,
+  Row,
+  Table,
+  Button
+} from "reactstrap";
 
 import firebase from "../../config/config";
 
@@ -9,8 +18,10 @@ class Sujets extends Component {
     super(props);
 
     this.state = {
-      sujet_pr: []
+      sujet_pr: [],
+      buttonClicked: false
     };
+    this.clickHandler = this.clickHandler.bind(this);
   }
   componentWillMount() {
     const ref = firebase.database().ref();
@@ -20,11 +31,16 @@ class Sujets extends Component {
       });
     });
   }
-
+  clickHandler() {
+    this.setState({
+      buttonClicked: true
+    });
+  }
   render() {
     const sujetpro = this.state.sujet_pr.map((sujetpr, i) => (
       <tr key={i}>{sujetpr.sujet_ps}</tr>
     ));
+    const isButtonClicked = this.state.buttonClicked;
     return (
       <div className="animated fadeIn">
         <Row>
@@ -49,6 +65,9 @@ class Sujets extends Component {
             </Card>
           </Col>
         </Row>
+        {/*mal9itch kindir n7atha f lmenu dartha hna*/}
+        <Button onClick={this.clickHandler}> Login</Button>
+        {isButtonClicked ? <Redirect from="/" to="login" /> : null}
       </div>
     );
   }

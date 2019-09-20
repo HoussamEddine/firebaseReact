@@ -5,7 +5,7 @@ import app from "../../config";
 import Login from "./Login";
 
 class LoginContainer extends Component {
-  handlelogin = async event => {
+  handleLogin = async event => {
     event.preventDefault();
     const { email, password } = event.target.elements;
     try {
@@ -19,8 +19,8 @@ class LoginContainer extends Component {
   };
 
   render() {
-    // return <Login onSubmit={this.login} />;
-    return <h1>from login index</h1>;
+    return <Login onSubmit={this.handleLogin} />;
+    
   }
 }
 
