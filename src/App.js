@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { HashRouter, Route, Switch } from "react-router-dom";
-import { renderRoutes } from "react-router-config";
 import "./App.scss";
-import firebase from "./config/config";
-import PrivateRoute from "./PrivateRoute";
-import Users from "./views/Users/Users";
+//import firebase from "./config/config";
 import Admin from "./views/Admin/Admin";
 
+/*import PrivateRoute from "./PrivateRoute";
+import { renderRoutes } from "react-router-config";
 import { any } from "prop-types";
+*/
 
 const loading = () => (
   <div className="animated fadeIn pt-3 text-center">Loading...</div>
@@ -27,44 +27,26 @@ class App extends Component {
     super(props);
 
     this.state = {
-      isMounted: false
-      // user: {}
+     // isMounted: false,
+      user: {}
     };
   }
-  componentDidMount() {
-    this.setState({
-      isMounted: true
-    });
-    // this.authentification();
-  }
-  // authentification() {
-  //   firebase.auth().onAuthStateChanged(user => {
-  //     if (this.state.isMounted) {
-  //       if (user) {
-  //         this.setState({ user });
-  //       } else {
-  //         this.setState({ user: null });
-  //       }
-  //     }
-  //   });
-  // }
-  // componentWillUnmount() {
-  //   this.setState({ isMounted: false });
-  // }
+ 
+ /* componentWillUnmount() {
+    this.setState({ isMounted: false });
+  }*/
 
   render() {
-    const isUser = this.state.user;
+    console.log("user",this.state.user);
+    
     return (
       <div className="App">
-        <HashRouter>
+        <HashRouter> 
           <React.Suspense fallback={loading()}>
+            {/* {this.state.user ? <Admin /> : <Login />} */}
             <Switch>
-              <Route
-                exact
-                path="/login"
-                name="Login Page"
-                render={props => <Login {...props} />}
-              />
+              <Route exact path="/Login" name="Login Page" render={props => <Login {...props}/>}/>
+              <Route exact path="/Admin" name="Admin Page" render={props => <Admin {...props}/>}/>
               <Route
                 exact
                 path="/register"
@@ -84,18 +66,11 @@ class App extends Component {
                 render={props => <Page500 {...props} />}
               />
               <Route
-                exact
-                path="/admin"
-                name="admin"
-                render={props => <Admin {...props} />}
-              />
-              <Route
                 path="/"
                 name="Home"
                 render={props => <DefaultLayout {...props} />}
               />
             </Switch>
-            }
           </React.Suspense>
         </HashRouter>
       </div>

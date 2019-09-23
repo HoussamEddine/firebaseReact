@@ -1,46 +1,36 @@
 import React, { Component } from "react";
 //import { Link } from 'react-router-dom';
-import { Redirect } from "react-router-dom";
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  Col,
-  Row,
-  Table,
-  Button
-} from "reactstrap";
+import { Card, CardBody, CardHeader, Col, Row, Table } from "reactstrap";
+
+// import * as firebase from "firebase";
 
 import firebase from "../../config/config";
 
 class Sujets extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      sujet_pr: [],
-      buttonClicked: false
+      sujet_pr: []
     };
-    this.clickHandler = this.clickHandler.bind(this);
   }
   componentWillMount() {
-    const ref = firebase.database().ref();
+    const ref = firebase.database().ref("Sujets");
     ref.on("value", snapshot => {
       this.setState({
         sujet_pr: snapshot.val()
       });
     });
   }
-  clickHandler() {
-    this.setState({
-      buttonClicked: true
-    });
-  }
+
   render() {
-    const sujetpro = this.state.sujet_pr.map((sujetpr, i) => (
-      <tr key={i}>{sujetpr.sujet_ps}</tr>
-    ));
-    const isButtonClicked = this.state.buttonClicked;
+    const sujetpro = Object.keys(this.state.sujet_pr).map((sujet_pro, i) => {
+      return (
+        <tr key={i}>
+          <td>{sujet_pro}</td>
+        </tr>
+      );
+    });
+
     return (
       <div className="animated fadeIn">
         <Row>
@@ -59,15 +49,18 @@ class Sujets extends Component {
                       <th scope="col">Date</th>
                     </tr>
                   </thead>
-                  <tbody>{sujetpro}</tbody>
+
+                  <tbody>
+                    {sujetpro}
+                    {/*sujetList.map((sujet, index) =>
+                      <SujetRow key={index} sujet={sujet}/>
+                    )*/}
+                  </tbody>
                 </Table>
               </CardBody>
             </Card>
           </Col>
         </Row>
-        {/*mal9itch kindir n7atha f lmenu dartha hna*/}
-        <Button onClick={this.clickHandler}> Login</Button>
-        {isButtonClicked ? <Redirect from="/" to="login" /> : null}
       </div>
     );
   }

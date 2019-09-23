@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router";
-import app from "../../config";
+import app from'../../config';
 
 import Login from "./Login";
 
 class LoginContainer extends Component {
-  handleLogin = async event => {
+  handlelogin = async event => {
     event.preventDefault();
     const { email, password } = event.target.elements;
     try {
@@ -19,8 +19,7 @@ class LoginContainer extends Component {
   };
 
   render() {
-    return <Login onSubmit={this.handleLogin} />;
-    
+    return <Login onSubmit={this.Login} />;
   }
 }
 

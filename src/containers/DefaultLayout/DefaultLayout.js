@@ -1,7 +1,7 @@
-import React, { Component, Suspense } from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
-import * as router from "react-router-dom";
-import { Container } from "reactstrap";
+import React, { Component, Suspense } from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
+import * as router from 'react-router-dom';
+import { Container } from 'reactstrap';
 
 import {
   AppAside,
@@ -13,33 +13,32 @@ import {
   AppSidebarHeader,
   AppSidebarMinimizer,
   AppBreadcrumb2 as AppBreadcrumb,
-  AppSidebarNav2 as AppSidebarNav
-} from "@coreui/react";
+  AppSidebarNav2 as AppSidebarNav,
+} from '@coreui/react';
 // sidebar nav config
-import navigation from "../../_nav";
+import navigation from '../../_nav';
 // routes config
-import routes from "../../routes";
+import routes from '../../routes';
 
-const DefaultAside = React.lazy(() => import("./DefaultAside"));
-const DefaultFooter = React.lazy(() => import("./DefaultFooter"));
-const DefaultHeader = React.lazy(() => import("./DefaultHeader"));
+const DefaultAside = React.lazy(() => import('./DefaultAside'));
+const DefaultFooter = React.lazy(() => import('./DefaultFooter'));
+const DefaultHeader = React.lazy(() => import('./DefaultHeader'));
 
 class DefaultLayout extends Component {
-  loading = () => (
-    <div className="animated fadeIn pt-1 text-center">Loading...</div>
-  );
+
+  loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
 
   singin(e) {
-    e.preventDefault();
-    this.props.history.push("/login");
+    e.preventDefault()
+    this.props.history.push('/Login')
   }
 
   render() {
     return (
       <div className="app">
         <AppHeader fixed>
-          <Suspense fallback={this.loading()}>
-            <DefaultHeader onLogin={e => this.singin(e)} />
+          <Suspense  fallback={this.loading()}>
+            <DefaultHeader onLogin={e=>this.singin(e)}/>
           </Suspense>
         </AppHeader>
         <div className="app-body">
@@ -47,17 +46,13 @@ class DefaultLayout extends Component {
             <AppSidebarHeader />
             <AppSidebarForm />
             <Suspense>
-              <AppSidebarNav
-                navConfig={navigation}
-                {...this.props}
-                router={router}
-              />
+            <AppSidebarNav navConfig={navigation} {...this.props} router={router}/>
             </Suspense>
             <AppSidebarFooter />
             <AppSidebarMinimizer />
           </AppSidebar>
           <main className="main">
-            <AppBreadcrumb appRoutes={routes} router={router} />
+            <AppBreadcrumb appRoutes={routes} router={router}/>
             <Container fluid>
               <Suspense fallback={this.loading()}>
                 <Switch>
@@ -68,9 +63,10 @@ class DefaultLayout extends Component {
                         path={route.path}
                         exact={route.exact}
                         name={route.name}
-                        render={props => <route.component {...props} />}
-                      />
-                    ) : null;
+                        render={props => (
+                          <route.component {...props} />
+                        )} />
+                    ) : (null);
                   })}
                   <Redirect from="/" to="/users" />
                 </Switch>

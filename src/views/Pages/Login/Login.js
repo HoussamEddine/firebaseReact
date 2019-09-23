@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Redirect, HashRouter, Route, Switch, Link } from "react-router-dom";
-import firebase from "../../../config/config";
+import { Link } from "react-router-dom";
+import fire from "../../../config/config";
 import "firebase/auth";
 import {
   Button,
@@ -16,53 +16,51 @@ import {
   InputGroupText,
   Row
 } from "reactstrap";
-
-import props from "prop-types";
 import Admin from "../../Admin/Admin";
-const DefaultLayout = React.lazy(() =>
-  import("../../../containers/DefaultLayout")
-);
 
 class Login extends Component {
   constructor(props) {
     super(props);
+
     this.handleChange = this.handleChange.bind(this);
-    this.authentification = this.authentification.bind(this);
     this.login = this.login.bind(this);
     this.state = {
+      user: {},
       email: "",
       password: "",
-      user: {},
-      signedIn: false
+      auth: false,
+      error: {}
     };
+  }
+  componentDidMount() {
+    this.authentification();
+  }
+
+  authentification() {
+    fire.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.setState({ user });
+        this.props.history.push("/Admin");
+      } else {
+        this.setState({ user: null });
+      }
+    });
   }
 
   login(e) {
+    this.setState({
+      auth: true
+    });
     e.preventDefault();
-    firebase
+    fire
       .auth()
       .signInWithEmailAndPassword(this.state.email, this.state.password)
-      .then(u => {
-        this.setState({ signedIn: true });
-      })
+      .then(u => {})
       .catch(error => {
-        this.setState({ signedIn: false });
-        console.log(error);
+        this.setState({
+          error
+        });
       });
-  }
-
-  componentWillUnmount() {
-    // firebase
-    //   .auth()
-    //   .signOut()
-    //   .then(() => {
-    //     console.log("Signed Out");
-    //   })
-    //   .catch(e => console.log("error", e));
-  }
-  componentWillUnmount() {
-    console.log("unmounted");
-    this.setState({ signedIn: false });
   }
 
   handleChange(e) {
@@ -71,12 +69,10 @@ class Login extends Component {
 
   render() {
     // const Login = ({ onSubmit }) => {
-
-    return (
-      <div className="app flex-row align-items-center">
-        {this.state.signedIn ? (
-          <Redirect to="admin" />
-        ) : (
+    if (this.state.user) return <Admin />;
+    else
+      return (
+        <div className="app flex-row align-items-center">
           <Container>
             <Row className="justify-content-center">
               <Col md="8">
@@ -156,6 +152,15 @@ class Login extends Component {
                             S'inscrire
                           </Button>
                         </Link>
+                        <br />
+                        <br />
+                        <p className="text-muted">
+                          {this.state.auth
+                            ? this.state.error
+                              ? this.state.error.message
+                              : null
+                            : null}
+                        </p>
                       </div>
                     </CardBody>
                   </Card>
@@ -163,11 +168,9 @@ class Login extends Component {
               </Col>
             </Row>
           </Container>
-        )}
-      </div>
-    );
+        </div>
+      );
   }
   // }
 }
-
 export default Login;

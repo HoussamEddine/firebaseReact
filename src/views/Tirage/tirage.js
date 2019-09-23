@@ -1,17 +1,51 @@
-import React from 'react';
+import React from "react";
+import { Button } from "reactstrap";
+import firebase from "../../config/config";
 //import { Link } from 'react-router-dom';
 
+class tirage extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      presentateurs: {},
+      presentateur: ""
+    };
 
-class tirage extends React.Component{
+    this.randomPerson = this.randomPerson.bind(this);
+  }
+  componentWillMount() {
+    const ref = firebase.database().ref("Prensentateurs"); // wrong name :)
+    ref.on("value", snapshot => {
+      this.setState({
+        presentateurs: snapshot.val()
+      });
+    });
+  }
 
-    render(){
+  randomPerson() {
+    let presentateurs = this.state.presentateurs,
+      keys = Object.keys(presentateurs),
+      length = keys.length,
+      randomNum = Math.floor(Math.random() * length),
+      presentateur = Object.keys(presentateurs)[randomNum];
 
-        return(
+    this.setState({
+      presentateur: presentateur
+    });
+  }
 
-            <div> <h1>Ici le tirage </h1></div>
+  render() {
+    const presentateur = this.state.presentateur;
 
-        )
-    }
+    return (
+      <div>
+        <h1>Le prochain Presentateur est : </h1>
+        <br />
+        <h1>{presentateur}</h1> <br />
+        <Button onClick={this.randomPerson}> Tirage au sort </Button>
+      </div>
+    );
+  }
 }
 
 export default tirage;

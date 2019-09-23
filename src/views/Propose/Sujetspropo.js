@@ -1,19 +1,20 @@
 import React, { Component } from "react";
 import * as firebase from "firebase";
-import { Link } from "react-router-dom";
+//import { Link } from 'react-router-dom';
 import { Card, CardBody, CardHeader, Col, Row, Table } from "reactstrap";
-import app from "../../config/config";
+//import app from'../../config';
+//import fire from '../../config/config';
 
 class Sujetspropo extends Component {
   constructor(props) {
     super(props);
-
+    //firebase.initializeApp(fire);
     this.state = {
       sujet_propose: []
     };
   }
   componentWillMount() {
-    const ref = firebase.database().ref();
+    const ref = firebase.database().ref("Sujets");
     ref.on("value", snapshot => {
       this.setState({
         sujet_propose: snapshot.val()
@@ -22,9 +23,15 @@ class Sujetspropo extends Component {
   }
 
   render() {
-    const sujetpro = this.state.sujet_propose.map((sujetpr, i) => (
-      <tr key={i}>{sujetpr.sujet_ps}</tr>
-    ));
+    const sujetpro = Object.keys(this.state.sujet_propose).map(
+      (sujet_pro, i) => {
+        return (
+          <tr key={i}>
+            <td>{sujet_pro}</td>
+          </tr>
+        );
+      }
+    );
 
     return (
       <div className="animated fadeIn">
@@ -32,15 +39,16 @@ class Sujetspropo extends Component {
           <Col xl={6}>
             <Card>
               <CardHeader>
-                <i className="fa fa-align-justify"></i> Sujet
+                <i className="fa fa-align-justify"></i> Sujets proosés
               </CardHeader>
               <CardBody>
                 <Table responsive hover>
-                  <thead>
+                  {/** <thead>
                     <tr>
-                      <th scope="col">Sujets</th>
+                        <th scope="col">Sujets</th>
+
                     </tr>
-                  </thead>
+                  </thead>*/}
                   <tbody>{sujetpro}</tbody>
                 </Table>
               </CardBody>
