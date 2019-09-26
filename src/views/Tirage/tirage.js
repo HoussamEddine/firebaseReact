@@ -42,7 +42,6 @@ class tirage extends React.Component {
 
   render() {
     const presentateur = this.state.presentateur;
-    console.log(presentateur);
 
     return (
       <div>

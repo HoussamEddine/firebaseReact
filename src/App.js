@@ -3,8 +3,8 @@ import { HashRouter, Route, Switch } from "react-router-dom";
 import "./App.scss";
 //import firebase from "./config/config";
 import Admin from "./views/Admin/Admin";
-import AjoutSujet from './views/Admin/Sujet/AjoutSujet';
-import AjoutPresentateur from"./views/Admin/Presentateur/AjoutPresentateur";
+import AjoutSujet from "./views/Admin/Sujet";
+import AjoutPresentateur from "./views/Admin/Presentateurs";
 
 /*import PrivateRoute from "./PrivateRoute";
 import { renderRoutes } from "react-router-config";
@@ -29,30 +29,50 @@ class App extends Component {
     super(props);
 
     this.state = {
-     // isMounted: false,
+      // isMounted: false,
       user: {}
     };
   }
- 
- /* componentWillUnmount() {
+
+  /* componentWillUnmount() {
     this.setState({ isMounted: false });
   }*/
 
   render() {
-    console.log("user",this.state.user);
-    
+    console.log("user", this.state.user);
+
     return (
       <div className="App">
         <HashRouter>
           <React.Suspense fallback={loading()}>
             {/* {this.state.user ? <Admin /> : <Login />} */}
             <Switch>
-              <Route exact path="/Login" name="Login Page" render={props => <Login {...props}/>}/>
-              <Route exact path="/Admin" name="Admin Page" render={props => <Admin {...props}/>}/>
-              
-              <Route exact path="/AjoutSujet" name="Ajout Page" render={props => <AjoutSujet {...props}/>}/>
-              <Route exact path="/AjoutPresentateur" name="Ajout Page" render={props => <AjoutPresentateur {...props}/>}/>
-            
+              <Route
+                exact
+                path="/Login"
+                name="Login Page"
+                render={props => <Login {...props} />}
+              />
+              <Route
+                exact
+                path="/Admin"
+                name="Admin Page"
+                render={props => <Admin {...props} />}
+              />
+
+              <Route
+                exact
+                path="/sujet"
+                name="Ajout Page"
+                render={props => <AjoutSujet {...props} />}
+              />
+              <Route
+                exact
+                path="/presentateurs"
+                name="Ajout Page"
+                render={props => <AjoutPresentateur {...props} />}
+              />
+
               <Route
                 path="/"
                 name="Home"
