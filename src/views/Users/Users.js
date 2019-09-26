@@ -2,8 +2,6 @@ import React, { Component } from "react";
 //import { Link } from 'react-router-dom';
 import { Card, CardBody, CardHeader, Col, Row, Table } from "reactstrap";
 
-// import * as firebase from "firebase";
-
 import firebase from "../../config/config";
 
 class Sujets extends Component {
@@ -23,14 +21,27 @@ class Sujets extends Component {
   }
 
   render() {
-    const sujetpro = Object.keys(this.state.sujet_pr).map((sujet_pro, i) => {
+    let sujetsObj = this.state.sujet_pr;
+    const Id = Object.keys(sujetsObj).map((id, i) => {
       return (
         <tr key={i}>
-          <td>{sujet_pro}</td>
+          <td>{id}</td>
         </tr>
       );
     });
+    let sujetsArr = [];
+    for (let suj in sujetsObj) {
+      const name = sujetsObj[suj].Name;
+      sujetsArr.push(name);
+    }
 
+    const sujets = sujetsArr.map((sujets, i) => {
+      return (
+        <tr key={i}>
+          <td>{sujets}</td>
+        </tr>
+      );
+    });
     return (
       <div className="animated fadeIn">
         <Row>
@@ -51,10 +62,9 @@ class Sujets extends Component {
                   </thead>
 
                   <tbody>
-                    {sujetpro}
-                    {/*sujetList.map((sujet, index) =>
-                      <SujetRow key={index} sujet={sujet}/>
-                    )*/}
+                    <td>{Id}</td>
+
+                    <td>{sujets}</td>
                   </tbody>
                 </Table>
               </CardBody>

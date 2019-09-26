@@ -1,129 +1,154 @@
-import React, { Component } from 'react'; 
-//import { DropdownMenu} from 'reactstrap';
-
-import { Button, ButtonDropdown, Card, CardBody, CardHeader, Col, DropdownItem, DropdownMenu, DropdownToggle, Row, FormGroup, Input } from 'reactstrap';
-
+import React, { Component, Suspense } from "react";
+import { AppNavbarBrand, AppSidebarToggler } from "@coreui/react";
+import logo from "../../assets/img/brand/logo.jpg";
+import sygnet from "../../assets/img/brand/sygnet.jpg";
 
 import {
-   // Button,
-   
-   // Container,
-   // Form,
-   // Input,
-    //InputGroup,
-   // InputGroupAddon,
-   // InputGroupText, 
-    Table
-  } from "reactstrap";
+  AppAside,
+  AppFooter,
+  AppHeader,
+  AppSidebar,
+  AppSidebarFooter,
+  AppSidebarForm,
+  AppSidebarHeader,
+  AppSidebarMinimizer,
+  AppBreadcrumb2 as AppBreadcrumb,
+  AppSidebarNav2 as AppSidebarNav
+} from "@coreui/react";
+import Navi from "./Navi";
 
-  import DefaultHeader from '../../containers/DefaultLayout/DefaultHeader';
-  
-  import '../../App.scss';
-//import fire from '../../config/config';
+import {
+  Badge,
+  Card,
+  CardBody,
+  CardHeader,
+  Col,
+  ListGroup,
+  ListGroupItem,
+  Row
+} from "reactstrap";
 
+import { Link } from "react-router-dom";
 
+import { FormGroup, Input } from "reactstrap";
+import { Table } from "reactstrap";
+import "../../App.scss";
+import * as firebase from "firebase";
+import fire from "../../config/config";
 
-class Admin extends Component{
+import * as router from "react-router-dom";
 
-   /* constructor(props){
-        
-        super(props);
-       // this.logout = this.logout.bind(this);
+//const HeaderAdmin = React.lazy(() => import('./HeaderAdmin'));
+const Sidebar = React.lazy(() => import("./Sidebar"));
+
+const DefaultAdmin = React.lazy(() => import("./DefaultAdmin"));
+
+class Admin extends Component {
+  constructor(props) {
+    super(props);
+
+    // firebase.initializeApp(fire);
+    this.state = {
+      sujet_propose: []
+    };
+    //this.toggle = this.toggle.bind(this);
+    /* this.state = {
+      dropdownOpen: new Array(19).fill(false),
+    };*/
+  }
+
+  /* constructor(props){
+    super(props);
+    //firebase.initializeApp(fire);
+    this.state = {
+      sujet_propose : []
     }*/
 
-    constructor(props) {
-      super(props);
-  
-      this.toggle = this.toggle.bind(this);
-      this.state = {
-        dropdownOpen: new Array(19).fill(false),
-      };
-    }
-  
-    toggle(i) {
+  componentWillMount() {
+    const ref = firebase.database().ref("Sujets");
+    ref.on("value", snapshot => {
+      this.setState({
+        sujet_propose: snapshot.val()
+      });
+    });
+  }
+
+  /*  toggle =(i) =>{
       const newArray = this.state.dropdownOpen.map((element, index) => { return (index === i ? !element : false); });
       this.setState({
         dropdownOpen: newArray,
       });
-    }
-
-   /* logout=()=>{
-
-        fire.auth().signOut();
-        
     }*/
 
-    render(){
-        return(
-         
-        
-          
-        
+  render() {
+    let sujetsObj = this.state.sujet_propose;
+    // const Id = Object.keys(sujetsObj).map((id, i) => {
+    //   return (
+    //     <tr key={i}>
+    //       <td>{id}</td>
+    //     </tr>
+    //   );
+    // });
+    let sujetsArr = [];
+    for (let suj in sujetsObj) {
+      const name = sujetsObj[suj].Name;
+      sujetsArr.push(name);
+    }
 
-          <div className="animated fadeIn">
-           
-          {/** <DefaultHeader/> */}
+    const sujets = sujetsArr.map((sujets, i) => {
+      return (
+        <tr key={i}>
+          <td>{sujets}</td>
+        </tr>
+      );
+    });
 
-          <Row>
-            <Col xl={40}>
-              <Card>
-                <CardHeader>
-                  <i className="fa fa-align-justify"></i> Sujet 
-                </CardHeader>
-                <CardBody>
-                  <Table responsive hover>
-                    <thead>
-                    <tr>
-                      <th scope="col">id</th>
-                      <th scope="col">Sujets</th>
-                      <th scope="col">Présentateur</th>
-                      <th scope="col">Date</th>
-                     
-                    
-                    </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                      <td>je suis la partie Admin</td>
-                     
-                      <td> <input name="combobox"></input></td>
-                      <td> 
-                      <ButtonDropdown className="mr-1" isOpen={this.state.dropdownOpen[8]} toggle={() => { this.toggle(8); }}>
-                  <Button id="caret" color="secondary">Secondary</Button>
-                  <DropdownToggle caret color="secondary" />
-                  <DropdownMenu>
-                    <DropdownItem header>Header</DropdownItem>
-                    <DropdownItem disabled>Action Disabled</DropdownItem>
-                    <DropdownItem>Action</DropdownItem>
-                    <DropdownItem divider />
-                    <DropdownItem>Another Action</DropdownItem>
-                  </DropdownMenu>
-                </ButtonDropdown>
-                  </td>
-                      <td>
-                   <FormGroup row>
-                        <Col xs="40" md="9">
-                      <Input type="date" id="date-input" name="date-input" placeholder="date" />
-                    </Col>
-                  </FormGroup>
-                    </td>
-                      </tr>
-                    </tbody>
-                  </Table>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
+    return (
+      <div className="app">
+        <DefaultAdmin />
+
+        {/******************************************* Menu **************************/}
+
+        <div className="app-body">
+          <AppSidebar fixed display="lg">
+            <AppSidebarHeader />
+            <AppSidebarForm />
+            <Suspense>
+              <AppSidebarNav navConfig={Navi} {...this.props} router={router} />
+            </Suspense>
+            <AppSidebarFooter />
+            <AppSidebarMinimizer />
+          </AppSidebar>
         </div>
 
+        {/******************************************* Content **************************/}
 
-        
-            
-            
-                
-            
-        );
-    }
+        <Row
+          style={{
+            margin: "25vh auto 25vh auto",
+            width: "50%"
+          }}
+        >
+          <Col>
+            <Card>
+              <CardHeader>
+                <i className="fa fa-align-justify"></i> Sujet
+              </CardHeader>
+              <CardBody>
+                <Table responsive hover>
+                  <tbody>
+                    {/* <td>{Id}</td> */}
+
+                    <td>{sujets}</td>
+                  </tbody>
+                </Table>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+      </div>
+    );
+  }
 }
 
-export default Admin ;
+export default Admin;

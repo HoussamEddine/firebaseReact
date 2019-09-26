@@ -23,15 +23,21 @@ class Sujetspropo extends Component {
   }
 
   render() {
-    const sujetpro = Object.keys(this.state.sujet_propose).map(
-      (sujet_pro, i) => {
-        return (
-          <tr key={i}>
-            <td>{sujet_pro}</td>
-          </tr>
-        );
-      }
-    );
+    let sujetsObj = this.state.sujet_propose;
+
+    let sujetsArr = [];
+    for (let suj in sujetsObj) {
+      const name = sujetsObj[suj].Name;
+      sujetsArr.push(name);
+    }
+
+    const sujets = sujetsArr.map((sujets, i) => {
+      return (
+        <tr key={i}>
+          <td>{sujets}</td>
+        </tr>
+      );
+    });
 
     return (
       <div className="animated fadeIn">
@@ -49,7 +55,7 @@ class Sujetspropo extends Component {
 
                     </tr>
                   </thead>*/}
-                  <tbody>{sujetpro}</tbody>
+                  <tbody>{sujets}</tbody>
                 </Table>
               </CardBody>
             </Card>

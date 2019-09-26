@@ -1,36 +1,45 @@
-import React, { Component } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import React, { Component , Suspense} from 'react'; 
+import fire from '../../config/config';
+
+import { Link, NavLink ,Route } from 'react-router-dom';
 import { Badge, UncontrolledDropdown, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem } from 'reactstrap';
-import PropTypes from 'prop-types';
 
 import {  AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
 import logo from '../../assets/img/brand/logo.jpg'
 import sygnet from '../../assets/img/brand/sygnet.jpg'
+import {
+  AppAside,
+  AppFooter,
+  AppHeader,
+  AppSidebar,
+  AppSidebarFooter,
+  AppSidebarForm,
+  AppSidebarHeader,
+  AppSidebarMinimizer,
+  AppBreadcrumb2 as AppBreadcrumb,
+  AppSidebarNav2 as AppSidebarNav,
+} from '@coreui/react';
 
-import fire from '../../config/config';
+//import users from'../Users/Users';
 
-const propTypes = {
-  children: PropTypes.node,
-};
-
-const defaultProps = {};
-
-class DefaultHeader extends Component {
-
+class HeaderAdmin extends Component {
 
   logout=()=>{
 
-    fire.auth().signOut();
-    
+    //if(
+      fire.auth().signOut()
+    //  )
+       return <Route exact path="/Login" />
+   
 }
 
-  render() {
+render(){
+    return(
 
-    // eslint-disable-next-line
-    const { children, ...attributes } = this.props;
-
-    return (
-      <React.Fragment>
+        
+        <AppHeader fixed>
+        <Suspense  >
+        <React.Fragment>
         <AppSidebarToggler className="d-lg-none" display="md" mobile />
         <AppNavbarBrand
           full={{ src: logo, width: 100, height: 40, alt: 'Novelis Logo' }}
@@ -43,16 +52,14 @@ class DefaultHeader extends Component {
             <NavLink to="/dashboard" className="nav-link" >Dashboard</NavLink>
           </NavItem> */} 
           <NavItem className="px-3">
-            <Link to="/users" className="nav-link">Sujets programmés</Link>
+            <Link to="/Admin" className="nav-link">Affecter un sujet</Link>
           </NavItem>
-        {/**<NavItem className="px-3">
+        <NavItem className="px-3">
             <NavLink to="#" className="nav-link">Settings</NavLink>
-          </NavItem> */}  
+          </NavItem> 
         </Nav>
         <Nav className="ml-auto" navbar>
-          <NavItem className="d-md-down-none">
-            <NavLink to="#" className="nav-link"><i className="icon-bell"></i><Badge pill color="danger">6</Badge></NavLink>
-          </NavItem>
+          
          {/**  <NavItem className="d-md-down-none">
             <NavLink to="#" className="nav-link"><i className="icon-list"></i></NavLink>
           </NavItem>
@@ -66,19 +73,20 @@ class DefaultHeader extends Component {
             <DropdownMenu right>
              
               
-              <DropdownItem onClick={e => this.props.onLogin(e)}><i className="fa fa-lock"></i> Login</DropdownItem>
-              <DropdownItem onClick={this.logout}><i className="fa fa-lock"></i> Logout</DropdownItem>
+            <DropdownItem onClick={this.logout}><i className="fa fa-lock"></i> <Link to="/users"> Logout </Link></DropdownItem>
+           
+             
             </DropdownMenu>
           </UncontrolledDropdown>
         </Nav>
        {/** <AppAsideToggler className="d-md-down-none" /> menu droit */} 
         {/*<AppAsideToggler className="d-lg-none" mobile />*/}
       </React.Fragment>
+      </Suspense>
+      </AppHeader>
     );
-  }
 }
 
-DefaultHeader.propTypes = propTypes;
-DefaultHeader.defaultProps = defaultProps;
+}
 
-export default DefaultHeader;
+export default HeaderAdmin;

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import fire from "../../../config/config";
 import "firebase/auth";
 import {
@@ -32,33 +32,25 @@ class Login extends Component {
       error: {}
     };
   }
-  componentDidMount() {
-    this.authentification();
-  }
-
-  authentification() {
-    fire.auth().onAuthStateChanged(user => {
-      if (user) {
-        this.setState({ user });
-        this.props.history.push("/Admin");
-      } else {
-        this.setState({ user: null });
-      }
-    });
-  }
 
   login(e) {
     this.setState({
-      auth: true
+      auth: true,
+      error: null
     });
     e.preventDefault();
     fire
       .auth()
       .signInWithEmailAndPassword(this.state.email, this.state.password)
-      .then(u => {})
+      .then(u => {
+        this.setState({
+          isLoggedIn: true
+        });
+      })
       .catch(error => {
         this.setState({
-          error
+          error,
+          isLoggedIn: false
         });
       });
   }
@@ -68,8 +60,7 @@ class Login extends Component {
   }
 
   render() {
-    // const Login = ({ onSubmit }) => {
-    if (this.state.user) return <Admin />;
+    if (this.state.isLoggedIn) return <Redirect to="/admin" />;
     else
       return (
         <div className="app flex-row align-items-center">
@@ -154,7 +145,10 @@ class Login extends Component {
                         </Link>
                         <br />
                         <br />
-                        <p className="text-muted">
+                        <p
+                          className="text-muted"
+                          style={{ backgroundColor: "red" }}
+                        >
                           {this.state.auth
                             ? this.state.error
                               ? this.state.error.message
