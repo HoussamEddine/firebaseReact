@@ -51,6 +51,7 @@ class AjoutPresentateur extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.annuler = this.annuler.bind(this);
     this.addUser = this.addUser.bind(this);
+    this.delete = this.delete.bind(this);
     this.state = {
       Nom: "",
       Prenom: "",
@@ -60,21 +61,21 @@ class AjoutPresentateur extends Component {
       presentateursId: 0,
       presentateurs: {}
     };
-    this.getIdValue();
+    // this.getIdValue();
   }
   handleChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
-  getIdValue() {
-    const ref = firebase.database().ref("UserId");
+  // getIdValue() {
+  //   const ref = firebase.database().ref("UserId");
 
-    ref.on("value", snap => {
-      let val = snap.val().value;
-      this.setState({
-        PresentateursId: val
-      });
-    });
-  }
+  //   ref.on("value", snap => {
+  //     let val = snap.val().value;
+  //     this.setState({
+  //       PresentateursId: val
+  //     });
+  //   });
+  // }
   annuler() {
     this.setState({
       Nom: "",
@@ -82,22 +83,23 @@ class AjoutPresentateur extends Component {
       Email: ""
     });
   }
-  setIdValue() {
-    const ref = firebase.database().ref("UserId");
-    ref.set({
-      value: ++this.state.PresentateursId
-    });
-  }
+  // setIdValue() {
+  //   const ref = firebase.database().ref("UserId");
+  //   ref.set({
+  //     value: ++this.state.PresentateursId
+  //   });
+  // }
   addUser(e) {
     e.preventDefault();
-    this.setIdValue();
+    // this.setIdValue();
     firebase
       .database()
-      .ref("Presentateurs/" + this.state.PresentateursId)
+      .ref("Presentateurs/" + ++this.state.presentateurId)
       .set({
         Nom: this.state.Nom,
         Prenom: this.state.Prenom,
-        Email: this.state.Email
+        Email: this.state.Email,
+        id: this.state.presentateurId
       })
       .then(u => {
         this.setState({
@@ -116,10 +118,28 @@ class AjoutPresentateur extends Component {
   componentWillMount() {
     const ref = firebase.database().ref("Presentateurs");
     ref.on("value", snapshot => {
+      let value = snapshot.val(),
+        presentateurId;
+      if (value.length) {
+        presentateurId = value.length - 1;
+      } else {
+        for (let id in value) {
+          presentateurId = id;
+        }
+      }
       this.setState({
-        presentateurs: snapshot.val()
+        presentateurs: snapshot.val(),
+        presentateurId: presentateurId
       });
     });
+  }
+  delete(e, presentateurId) {
+    if (presentateurId === 0) {
+      this.setState({ message: "cannot remove the last child" });
+      return;
+    }
+    const ref = firebase.database().ref("Presentateurs");
+    ref.child(presentateurId).remove();
   }
   render() {
     let presentateursObj = this.state.presentateurs,
@@ -128,13 +148,20 @@ class AjoutPresentateur extends Component {
       const name = presentateursObj[pre];
       presentateursArr.push(name);
     }
-    console.log(presentateursArr);
+
     let presentateur = presentateursArr.map((pres, i) => {
       return (
         <tr key={i}>
           <td>{pres.Nom}</td>
           <td>{pres.Prenom}</td>
           <td>{pres.Email}</td>
+          <Button
+            onClick={e => {
+              this.delete(e, pres.id);
+            }}
+          >
+            Delete
+          </Button>
         </tr>
       );
     });
@@ -180,17 +207,6 @@ class AjoutPresentateur extends Component {
                           onChange={this.handleChange}
                         />
                       </Col>
-                      {/**
-                    <Col xs="12" md="9">
-                      <Input type="select" name="select" id="select">
-                        <option value="0">Please select</option>
-                        <option value="1">Option #1</option>
-                        <option value="2">Option #2</option>
-                        <option value="3">Option #3</option>
-                      </Input>
-                    </Col>
-
-                    */}
                     </FormGroup>
                     <FormGroup row>
                       <Col md="3">
