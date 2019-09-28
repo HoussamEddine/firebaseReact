@@ -1,4 +1,6 @@
-import React, { Component } from "react";
+import React, { Component, Suspense } from "react";
+import Modifier from "./ModifierSujet";
+import Popup from "reactjs-popup";
 import {
   Card,
   CardBody,
@@ -25,7 +27,11 @@ import {
   InputGroupButtonDropdown,
   InputGroupText,
   Label,
-  Row
+  Row,
+  Nav,
+  NavItem,
+  NavLink,
+  Dropdown
 } from "reactstrap";
 
 import {
@@ -41,13 +47,18 @@ import {
   AppSidebarNav2 as AppSidebarNav
 } from "@coreui/react";
 import DefaultAdmin from "../DefaultAdmin";
-
+import Admin from "../Admin";
+import Navi from "../Navi";
 import firebase from "../../../config/config";
 import { blockStatement } from "@babel/types";
 
-class AjoutPresentateur extends Component {
+import * as router from "react-router-dom";
+
+class GererSujet extends Component {
   constructor(props) {
     super(props);
+
+    this.toggle = this.toggle.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.annuler = this.annuler.bind(this);
     this.addSujet = this.addSujet.bind(this);
@@ -56,39 +67,33 @@ class AjoutPresentateur extends Component {
       sujet: "",
       sujetAdded: false,
       message: null,
-
+      dropdownOpen: [false, false],
       presentateurs: {}
     };
-    // this.getIdValue();
   }
+  toggle(i) {
+    const newArray = this.state.dropdownOpen.map((element, index) => {
+      return index === i ? !element : false;
+    });
+    this.setState({
+      dropdownOpen: newArray
+    });
+  }
+
   handleChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
-  // getIdValue() {
-  //   const ref = firebase.database().ref("SujetId");
 
-  //   ref.on("value", snap => {
-  //     let val = snap.val().value;
-  //     this.setState({
-  //       sujetId: val
-  //     });
-  //   });
-  // }
   annuler() {
     this.setState({
       sujet: "",
       message: ""
     });
   }
-  // setIdValue() {
-  //   const ref = firebase.database().ref("SujetId");
-  //   ref.set({
-  //     value: ++this.state.sujetId
-  //   });
-  // }
+
   addSujet(e) {
     e.preventDefault();
-    // this.setIdValue();
+
     firebase
       .database()
       .ref("Sujets/" + ++this.state.sujetId)
@@ -99,13 +104,13 @@ class AjoutPresentateur extends Component {
       .then(u => {
         this.setState({
           sujetAdded: true,
-          message: "added succeffuly"
+          message: "Ajouté avec succès"
         });
       })
       .catch(e => {
         this.setState({
           userAdded: false,
-          message: "error adding subject"
+          message: "Erreur"
         });
       });
   }
@@ -116,6 +121,14 @@ class AjoutPresentateur extends Component {
     }
     const ref = firebase.database().ref("Sujets");
     ref.child(sujetId).remove();
+  }
+  update(e, s, sujetId) {
+    let sujetUp = {
+      Name: s.NewSujet
+    };
+
+    const ref = firebase.database().ref("Sujets");
+    ref.child(sujetId).update(sujetUp);
   }
   componentWillMount() {
     const ref = firebase.database().ref("Sujets");
@@ -154,8 +167,14 @@ class AjoutPresentateur extends Component {
               this.delete(e, sujets.id);
             }}
           >
-            Delete
+            Supprimer
           </Button>
+          <Modifier
+            update={(e, state) => {
+              this.update(e, state, sujets.id);
+            }}
+            clicked={() => sujets}
+          />
         </tr>
       );
     });
@@ -163,6 +182,21 @@ class AjoutPresentateur extends Component {
     return (
       <div>
         <DefaultAdmin />
+
+        {/******************************************* Menu *************************
+
+         <div className="app-body">
+          <AppSidebar fixed display="lg">
+            <AppSidebarHeader />
+            <AppSidebarForm />
+            <Suspense>
+              <AppSidebarNav navConfig={Navi} {...this.props} router={router} />
+            </Suspense>
+            <AppSidebarFooter />
+            <AppSidebarMinimizer />
+          </AppSidebar>
+        </div> */}
+
         <div style={{ display: "grid", gridTemplateColumns: "50% 50%" }}>
           <div>
             <Col style={{ marginTop: "20%" }}>
@@ -234,4 +268,4 @@ class AjoutPresentateur extends Component {
     );
   }
 }
-export default AjoutPresentateur;
+export default GererSujet;

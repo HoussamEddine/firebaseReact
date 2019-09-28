@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Modifier from "./ModifierPresentateur";
 import {
   Card,
   CardBody,
@@ -28,54 +29,49 @@ import {
   Row
 } from "reactstrap";
 
-import {
-  AppAside,
-  AppFooter,
-  AppHeader,
-  AppSidebar,
-  AppSidebarFooter,
-  AppSidebarForm,
-  AppSidebarHeader,
-  AppSidebarMinimizer,
-  AppBreadcrumb2 as AppBreadcrumb,
-  AppSidebarNav2 as AppSidebarNav
-} from "@coreui/react";
+// import {
+//   AppAside,
+//   AppFooter,
+//   AppHeader,
+//   AppSidebar,
+//   AppSidebarFooter,
+//   AppSidebarForm,
+//   AppSidebarHeader,
+//   AppSidebarMinimizer,
+//   AppBreadcrumb2 as AppBreadcrumb,
+//   AppSidebarNav2 as AppSidebarNav
+// } from "@coreui/react";
 import DefaultAdmin from "../DefaultAdmin";
 
 import firebase from "../../../config/config";
-import { blockStatement } from "@babel/types";
+// import { blockStatement } from "@babel/types";
 
 class AjoutPresentateur extends Component {
   constructor(props) {
     super(props);
-    this.handleChange = this.handleChange.bind(this);
+    this.handelChange = this.handelChange.bind(this);
+    // this.handelNewChange = this.handelNewChange.bind(this);
     this.annuler = this.annuler.bind(this);
     this.addUser = this.addUser.bind(this);
     this.delete = this.delete.bind(this);
+    this.update = this.update.bind(this);
     this.state = {
       Nom: "",
       Prenom: "",
       Email: "",
+      NewNom: "",
+      NewPrenom: "",
+      NewEmail: "",
       userAdded: false,
       message: null,
       presentateursId: 0,
       presentateurs: {}
     };
-    // this.getIdValue();
   }
-  handleChange(e) {
+  handelChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
-  // getIdValue() {
-  //   const ref = firebase.database().ref("UserId");
 
-  //   ref.on("value", snap => {
-  //     let val = snap.val().value;
-  //     this.setState({
-  //       PresentateursId: val
-  //     });
-  //   });
-  // }
   annuler() {
     this.setState({
       Nom: "",
@@ -83,15 +79,10 @@ class AjoutPresentateur extends Component {
       Email: ""
     });
   }
-  // setIdValue() {
-  //   const ref = firebase.database().ref("UserId");
-  //   ref.set({
-  //     value: ++this.state.PresentateursId
-  //   });
-  // }
+
   addUser(e) {
     e.preventDefault();
-    // this.setIdValue();
+
     firebase
       .database()
       .ref("Presentateurs/" + ++this.state.presentateurId)
@@ -133,13 +124,23 @@ class AjoutPresentateur extends Component {
       });
     });
   }
-  delete(e, presentateurId) {
-    if (presentateurId === 0) {
+  delete(e, presentateurId, pArr) {
+    if (pArr.length === 1) {
       this.setState({ message: "cannot remove the last child" });
       return;
     }
     const ref = firebase.database().ref("Presentateurs");
     ref.child(presentateurId).remove();
+  }
+  update(e, s, presentateurId) {
+    let presentateurUp = {
+      Nom: s.NewNom,
+      Prenom: s.NewPrenom,
+      Email: s.NewEmail
+    };
+
+    const ref = firebase.database().ref("Presentateurs");
+    ref.child(presentateurId).update(presentateurUp);
   }
   render() {
     let presentateursObj = this.state.presentateurs,
@@ -157,11 +158,17 @@ class AjoutPresentateur extends Component {
           <td>{pres.Email}</td>
           <Button
             onClick={e => {
-              this.delete(e, pres.id);
+              this.delete(e, pres.id, presentateursArr);
             }}
           >
-            Delete
+            Supprimer
           </Button>
+          <Modifier
+            update={(e, state) => {
+              this.update(e, state, pres.id);
+            }}
+            clicked={() => pres}
+          />
         </tr>
       );
     });
@@ -171,6 +178,7 @@ class AjoutPresentateur extends Component {
     return (
       <div>
         <DefaultAdmin />
+
         <div style={{ display: "grid", gridTemplateColumns: "50% 50%" }}>
           <div>
             <Col style={{ marginLeft: "auto", marginRight: "auto" }}>
@@ -191,7 +199,7 @@ class AjoutPresentateur extends Component {
                           name="Nom"
                           autoComplete="nom"
                           value={this.state.Nom}
-                          onChange={this.handleChange}
+                          onChange={this.handelChange}
                         />
                       </Col>
                     </FormGroup>
@@ -204,7 +212,7 @@ class AjoutPresentateur extends Component {
                           name="Prenom"
                           autoComplete="prenom"
                           value={this.state.Prenom}
-                          onChange={this.handleChange}
+                          onChange={this.handelChange}
                         />
                       </Col>
                     </FormGroup>
@@ -219,7 +227,7 @@ class AjoutPresentateur extends Component {
                           name="Email"
                           autoComplete="Email"
                           value={this.state.Email}
-                          onChange={this.handleChange}
+                          onChange={this.handelChange}
                         />
                       </Col>
                     </FormGroup>

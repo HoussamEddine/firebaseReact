@@ -5,6 +5,7 @@ import "./App.scss";
 import Admin from "./views/Admin/Admin";
 import AjoutSujet from "./views/Admin/Sujet";
 import AjoutPresentateur from "./views/Admin/Presentateurs";
+// import ModifierPresentateur from "./views/Admin/Presentateurs/ModifierPresentateur";
 
 /*import PrivateRoute from "./PrivateRoute";
 import { renderRoutes } from "react-router-config";
@@ -66,6 +67,12 @@ class App extends Component {
                 name="Ajout Page"
                 render={props => <AjoutSujet {...props} />}
               />
+              {/* <Route
+                exact
+                path="/Modifier"
+                name="Modifier Page"
+                render={props => <ModifierPresentateur {...props} />}
+              /> */}
               <Route
                 exact
                 path="/presentateurs"
