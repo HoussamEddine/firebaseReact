@@ -6,6 +6,12 @@ export default {
       name: 'Menu',
       url: '/pages' ,
       children: [
+
+        {
+          name: 'Sujets programmés',
+          url: '/users',
+         // icon: 'icon-star',
+        },
         
         {
           name: 'Sujets proposés',
@@ -17,6 +23,8 @@ export default {
           url: '/tirage',
          // icon: 'icon-star',
         },
+
+       
     
       ],
     },

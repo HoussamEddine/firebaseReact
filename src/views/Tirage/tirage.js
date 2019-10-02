@@ -3,6 +3,7 @@ import { Button } from "reactstrap";
 import firebase from "../../config/config";
 import { CardBody, Table } from "reactstrap";
 //import { Link } from 'react-router-dom';
+import animation from "./animation.css"
 
 class tirage extends React.Component {
   constructor() {
@@ -15,9 +16,22 @@ class tirage extends React.Component {
       },
       presentateur: ""
     };
-
+    this.resetCards = this.resetCards.bind(this);
+    this.timer = null;
     this.randomPerson = this.randomPerson.bind(this);
+   
   }
+  resetCards(currentTiles, currentScore) {
+    this.setState({
+      tiles: currentTiles,
+      marked: false,
+      firstCard: "",
+      firstCardIndex: -1,
+      score: currentScore
+    });
+    clearInterval(this.timer);
+  }
+
   componentWillMount() {
     const ref = firebase.database().ref("Presentateurs");
     ref.on("value", snapshot => {
@@ -26,6 +40,7 @@ class tirage extends React.Component {
       });
     });
   }
+
 
   randomPerson() {
     let presentateursObj = this.state.presentateurs,
@@ -42,20 +57,13 @@ class tirage extends React.Component {
 
   render() {
     const presentateur = this.state.presentateur;
-
+   // this.timer = setTimeout(() => this.randomPerson(), 300);
+   
     return (
-      <div>
+      <div className={animation.tbody}>
         <CardBody style={{ width: "50%" }}>
-          <Table responsive hover>
-            <thead>
-              <tr>
-                <th scope="col">Nom</th>
-                <th scope="col">Prenom</th>
-                <th scope="col">Email</th>
-              </tr>
-            </thead>
-
-            <tbody>
+          <Table responsive hover >
+            <tbody >
               <td>{presentateur.Nom}</td>
               <td>{presentateur.Prenom}</td>
               <td>{presentateur.Email}</td>

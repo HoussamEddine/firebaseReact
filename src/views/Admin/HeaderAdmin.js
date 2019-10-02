@@ -23,15 +23,21 @@ import {
 //import users from'../Users/Users';
 
 class HeaderAdmin extends Component {
+  constructor(props){
+      super(props);
+      this.logout = this.logout.bind(this);
+  }
 
-  logout=()=>{
+  logout(){
 
-    //if(
-      fire.auth().signOut()
-    //  )
-       return <Route exact path="/Login" />
-   
+    fire.auth().signOut().then(function() {
+      // Sign-out successful.
+    }).catch(function(error) {
+      // An error happened.
+    });
 }
+
+
 
 render(){
     return(
@@ -47,17 +53,7 @@ render(){
         />
         <AppSidebarToggler className="d-md-down-none" display="lg" />
 
-        <Nav className="d-md-down-none" navbar>
-         {/* <NavItem className="px-3">
-            <NavLink to="/dashboard" className="nav-link" >Dashboard</NavLink>
-          </NavItem> */} 
-          <NavItem className="px-3">
-            <Link to="/Admin" className="nav-link">Affecter un sujet</Link>
-          </NavItem>
-        <NavItem className="px-3">
-            <NavLink to="#" className="nav-link">Settings</NavLink>
-          </NavItem> 
-        </Nav>
+      
         <Nav className="ml-auto" navbar>
           
          {/**  <NavItem className="d-md-down-none">
@@ -73,7 +69,7 @@ render(){
             <DropdownMenu right>
              
               
-            <DropdownItem onClick={this.logout}><i className="fa fa-lock"></i> <Link to="/users"> Logout </Link></DropdownItem>
+            <DropdownItem onClick={this.logout}><i className="fa fa-lock"></i> <Link to="#"> Logout </Link></DropdownItem>
            
              
             </DropdownMenu>

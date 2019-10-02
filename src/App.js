@@ -5,6 +5,8 @@ import "./App.scss";
 import Admin from "./views/Admin/Admin";
 import AjoutSujet from "./views/Admin/Sujet";
 import AjoutPresentateur from "./views/Admin/Presentateurs";
+import Affectation from "./views/Admin/Affectation/index" ;
+
 // import ModifierPresentateur from "./views/Admin/Presentateurs/ModifierPresentateur";
 
 /*import PrivateRoute from "./PrivateRoute";
@@ -78,7 +80,14 @@ class App extends Component {
                 path="/presentateurs"
                 name="Ajout Page"
                 render={props => <AjoutPresentateur {...props} />}
-              />
+                />
+
+                <Route
+                exact
+                path="/Affec"
+                name="Affectation Page"
+                render={props => <Affectation {...props} />}
+                />
 
               <Route
                 path="/"

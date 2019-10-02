@@ -50,7 +50,7 @@ export default {
 
     {
       name: "Affectation",
-      url: "/affectation",
+      url: "/Affec",
       icon: " icon-list"
       // children: [
 

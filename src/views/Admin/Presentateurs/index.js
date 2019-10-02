@@ -1,32 +1,29 @@
-import React, { Component } from "react";
+import React, { Component, Suspense } from "react";
 import Modifier from "./ModifierPresentateur";
+import {
+  AppSidebar,
+  AppSidebarFooter,
+  AppSidebarForm,
+  AppSidebarHeader,
+  AppSidebarMinimizer,
+  AppBreadcrumb2 as AppBreadcrumb,
+  AppSidebarNav2 as AppSidebarNav
+} from "@coreui/react";
+import Navi from "../Navi";
+
+import * as router from "react-router-dom";
 import {
   Card,
   CardBody,
   CardHeader,
   Col,
-  ListGroup,
-  ListGroupItem,
   Table,
-  Badge,
   Button,
   CardFooter,
-  Collapse,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Fade,
   Form,
   FormGroup,
-  FormText,
-  FormFeedback,
   Input,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupButtonDropdown,
-  InputGroupText,
-  Label,
-  Row
+  Label
 } from "reactstrap";
 
 // import {
@@ -95,14 +92,14 @@ class AjoutPresentateur extends Component {
       .then(u => {
         this.setState({
           userAdded: true,
-          message: "added succeffuly"
+          message: "Ajouté avec succès"
         });
       })
       .catch(e => {
         console.log(e);
         this.setState({
           userAdded: false,
-          message: "error adding User"
+          message: "Erreur"
         });
       });
   }
@@ -156,12 +153,18 @@ class AjoutPresentateur extends Component {
           <td>{pres.Nom}</td>
           <td>{pres.Prenom}</td>
           <td>{pres.Email}</td>
+
           <Button
+            size="sm"
+            color="danger"
             onClick={e => {
               this.delete(e, pres.id, presentateursArr);
             }}
           >
-            Supprimer
+            <i
+              class="icons d-block cui-trash"
+              style={{ fontSize: "large" }}
+            ></i>
           </Button>
           <Modifier
             update={(e, state) => {
@@ -176,13 +179,32 @@ class AjoutPresentateur extends Component {
     let message = this.state.message;
 
     return (
-      <div>
+      <div className="app">
         <DefaultAdmin />
 
-        <div style={{ display: "grid", gridTemplateColumns: "50% 50%" }}>
+        {/******************************************* Menu **************************/}
+
+        <div className="app-body">
+          <AppSidebar fixed display="lg">
+            <AppSidebarHeader />
+            <AppSidebarForm />
+            <Suspense>
+              <AppSidebarNav navConfig={Navi} {...this.props} router={router} />
+            </Suspense>
+            <AppSidebarFooter />
+            <AppSidebarMinimizer />
+          </AppSidebar>
+        </div>
+
+        <div
+          style={{
+            marginLeft: "400px",
+            width: "50%"
+          }}
+        >
           <div>
-            <Col style={{ marginLeft: "auto", marginRight: "auto" }}>
-              <Card style={{ marginTop: "94px" }}>
+            <Col>
+              <Card>
                 <CardHeader>
                   <strong>Ajouter</strong>
                 </CardHeader>
@@ -195,7 +217,6 @@ class AjoutPresentateur extends Component {
                       <Col xs="12" md="9">
                         <Input
                           type="input"
-                          id="hf-email"
                           name="Nom"
                           autoComplete="nom"
                           value={this.state.Nom}
@@ -262,19 +283,21 @@ class AjoutPresentateur extends Component {
           </div>
 
           <div style={{ alignSelf: "center", justifySelf: "center" }}>
-            <CardBody>
-              <Table responsive hover>
-                <thead>
-                  <tr>
-                    <th scope="col">Présentateur</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  <td>{presentateur}</td>
-                </tbody>
-              </Table>
-            </CardBody>
+            <Col>
+              <Card>
+                <CardHeader>
+                  <strong>Modifier / Supprimer</strong>
+                </CardHeader>
+                <CardBody>
+                  <Table responsive hover>
+                    <tbody>
+                      <td>{presentateur}</td>
+                    </tbody>
+                  </Table>
+                </CardBody>
+                <CardFooter></CardFooter>
+              </Card>
+            </Col>
           </div>
         </div>
       </div>

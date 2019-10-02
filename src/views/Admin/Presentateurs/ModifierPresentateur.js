@@ -46,10 +46,10 @@ class Modifier extends Component {
           <Popup
             modal
             trigger={
-              <Button
+              <Button size="sm"
                 style={{ backgroundColor: "#339FFF", paddingTop: "-10px" }}
               >
-                Modifier
+                <i class="icons d-block cui-note" style={{fontSize :"large"}}></i> 
               </Button>
             }
           >
@@ -64,7 +64,7 @@ class Modifier extends Component {
                       <th>Nom</th>
                       <th>Prenom</th>
                       <th>Email</th>
-                      <th></th>
+                      <th> </th>
                       <tbody>
                         <tr>
                           <td>
@@ -93,12 +93,14 @@ class Modifier extends Component {
                           </td>
                         </tr>
                         <tr>
-                          <Button
+                          <Button  type="submit"
+                                    size="sm"
+                                    color="primary"
                             onClick={e => {
                               this.props.update(e, state);
                             }}
                           >
-                            Eregistrer
+                           <i className="fa fa-dot-circle-o"></i> Eregistrer
                           </Button>
                         </tr>
                       </tbody>

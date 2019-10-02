@@ -1,43 +1,28 @@
 import React, { Component, Suspense } from "react";
 import Modifier from "./ModifierSujet";
-import Popup from "reactjs-popup";
+// import Popup from "reactjs-popup";
 import {
   Card,
   CardBody,
   CardHeader,
   Col,
-  ListGroup,
-  ListGroupItem,
+ 
   Table,
-  Badge,
+
   Button,
   CardFooter,
-  Collapse,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Fade,
+
   Form,
   FormGroup,
-  FormText,
-  FormFeedback,
+  
   Input,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupButtonDropdown,
-  InputGroupText,
+  
   Label,
-  Row,
-  Nav,
-  NavItem,
-  NavLink,
-  Dropdown
+ 
 } from "reactstrap";
 
 import {
-  AppAside,
-  AppFooter,
-  AppHeader,
+ 
   AppSidebar,
   AppSidebarFooter,
   AppSidebarForm,
@@ -47,10 +32,10 @@ import {
   AppSidebarNav2 as AppSidebarNav
 } from "@coreui/react";
 import DefaultAdmin from "../DefaultAdmin";
-import Admin from "../Admin";
+// import Admin from "../Admin";
 import Navi from "../Navi";
 import firebase from "../../../config/config";
-import { blockStatement } from "@babel/types";
+// import { blockStatement } from "@babel/types";
 
 import * as router from "react-router-dom";
 
@@ -116,7 +101,7 @@ class GererSujet extends Component {
   }
   delete(e, sujetId) {
     if (sujetId === 0) {
-      this.setState({ message: "cannot remove the last child" });
+      this.setState({ message: "on peut pas supprimer la dernière ligne" });
       return;
     }
     const ref = firebase.database().ref("Sujets");
@@ -162,28 +147,35 @@ class GererSujet extends Component {
       return (
         <tr key={i}>
           <td>{sujets.Name}</td>
-          <Button
-            onClick={e => {
-              this.delete(e, sujets.id);
-            }}
-          >
-            Supprimer
-          </Button>
-          <Modifier
-            update={(e, state) => {
-              this.update(e, state, sujets.id);
-            }}
-            clicked={() => sujets}
-          />
+          <td>
+              <Button 
+                    size="sm"
+                    color="danger"
+              onClick={e => {
+                this.delete(e, sujets.id);
+              }}>
+
+              <i class="icons d-block cui-trash" style={{fontSize :"large"}}></i> 
+            </Button>
+          </td>
+          <td>
+              <Modifier
+              update={(e, state) => {
+                this.update(e, state, sujets.id);
+              }}
+              clicked={() => sujets}
+            />
+          </td>
+          
         </tr>
       );
     });
 
     return (
-      <div>
+      <div className="app">
         <DefaultAdmin />
 
-        {/******************************************* Menu *************************
+        {/******************************************* Menu **************************/}
 
          <div className="app-body">
           <AppSidebar fixed display="lg">
@@ -195,12 +187,16 @@ class GererSujet extends Component {
             <AppSidebarFooter />
             <AppSidebarMinimizer />
           </AppSidebar>
-        </div> */}
+        </div> 
 
-        <div style={{ display: "grid", gridTemplateColumns: "50% 50%" }}>
-          <div>
-            <Col style={{ marginTop: "20%" }}>
+        <div style={{
+            marginLeft: "400px",
+            width: "50%"
+          }}>
+          
+            <Col >
               <Card>
+                <div>
                 <CardHeader>
                   <strong>Ajouter</strong>
                 </CardHeader>
@@ -230,6 +226,7 @@ class GererSujet extends Component {
                     <i className="fa fa-dot-circle-o"></i> Enregistrer
                   </Button>
                   <Button
+                    style={{marginBottom:"4px"}}
                     type="reset"
                     size="sm"
                     color="danger"
@@ -244,12 +241,20 @@ class GererSujet extends Component {
                     {message}
                   </p>
                 </CardFooter>
-              </Card>
+                </div>
+                </Card>
             </Col>
-          </div>
+         
 
-          <div style={{ marginTop: "20%" }}>
-            <CardBody>
+         <div style={{ alignSelf: "center", justifySelf: "center" }}>
+               
+               
+            <Col>
+            <CardHeader>
+                  <strong>Modifier / Supprimer</strong>
+                </CardHeader>
+            <Card>
+              <CardBody>
               <Table responsive hover>
                 <thead>
                   <tr>
@@ -261,9 +266,13 @@ class GererSujet extends Component {
                   <td>{sujets}</td>
                 </tbody>
               </Table>
-            </CardBody>
-          </div>
-        </div>
+              </CardBody>
+              <CardFooter></CardFooter>
+           </Card>
+           </Col>
+           </div>          
+         
+        </ div>
       </div>
     );
   }

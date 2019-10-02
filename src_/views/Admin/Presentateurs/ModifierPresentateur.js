@@ -17,17 +17,20 @@ class Modifier extends Component {
     this.handelChange = this.handelChange.bind(this);
     this.clickHandler = this.clickHandler.bind(this);
     this.state = {
-      NewSujet: ""
+      NewNom: "",
+      NewPrenom: "",
+      NewEmail: ""
     };
   }
   handelChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
   clickHandler() {
-    let sujet = this.props.clicked();
-    console.log(sujet);
+    let pers = this.props.clicked();
     this.setState({
-      NewSujet: sujet.Name
+      NewNom: pers.Nom,
+      NewPrenom: pers.Prenom,
+      NewEmail: pers.Email
     });
   }
 
@@ -43,8 +46,10 @@ class Modifier extends Component {
           <Popup
             modal
             trigger={
-              <Button  size="sm"  style={{ backgroundColor: "#339FFF", paddingTop: "-10px" }} >
-                 <i class="icons d-block cui-note" style={{fontSize :"large"}}></i> 
+              <Button
+                style={{ backgroundColor: "#339FFF", paddingTop: "-10px" }}
+              >
+                Modifier
               </Button>
             }
           >
@@ -56,30 +61,44 @@ class Modifier extends Component {
                   </CardHeader>
                   <CardBody>
                     <Table responsive hover>
-                      <th>Sujet</th>
-                      
+                      <th>Nom</th>
+                      <th>Prenom</th>
+                      <th>Email</th>
                       <th></th>
                       <tbody>
                         <tr>
                           <td>
                             <input
                               className="form-control"
-                              value={this.state.NewSujet}
-                              name="NewSujet"
+                              value={this.state.NewNom}
+                              name="NewNom"
                               onChange={this.handelChange}
                             />
                           </td>
-                          <td></td>
+                          <td>
+                            <input
+                              className="form-control"
+                              value={this.state.NewPrenom}
+                              name="NewPrenom"
+                              onChange={this.handelChange}
+                            />
+                          </td>
+                          <td>
+                            <input
+                              className="form-control"
+                              value={this.state.NewEmail}
+                              name="NewEmail"
+                              onChange={this.handelChange}
+                            />
+                          </td>
                         </tr>
                         <tr>
-                          <Button  type="submit"
-                                    size="sm"
-                                    color="primary"
+                          <Button
                             onClick={e => {
                               this.props.update(e, state);
                             }}
                           >
-                           <i className="fa fa-dot-circle-o"></i> Eregistrer
+                            Eregistrer
                           </Button>
                         </tr>
                       </tbody>
