@@ -147,7 +147,10 @@ class GererSujet extends Component {
       return (
         <tr key={i}>
           <td>{sujets.Name}</td>
-          <td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td style={{float:"left"}}>
               <Button 
                     size="sm"
                     color="danger"
@@ -157,8 +160,6 @@ class GererSujet extends Component {
 
               <i class="icons d-block cui-trash" style={{fontSize :"large"}}></i> 
             </Button>
-          </td>
-          <td>
               <Modifier
               update={(e, state) => {
                 this.update(e, state, sujets.id);
@@ -226,7 +227,7 @@ class GererSujet extends Component {
                     <i className="fa fa-dot-circle-o"></i> Enregistrer
                   </Button>
                   <Button
-                    style={{marginBottom:"4px"}}
+                    
                     type="reset"
                     size="sm"
                     color="danger"

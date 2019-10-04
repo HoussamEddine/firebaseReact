@@ -1,4 +1,5 @@
 import React, { Component, Suspense } from "react";
+import { Redirect } from "react-router-dom";
 import {
   Card,
   CardBody,
@@ -26,6 +27,7 @@ import * as router from "react-router-dom";
 import Navi from "../Navi";
 import ListePre from "./ListePre";
 import AddAffect from "./AddAffec";
+import "./affectation.css";
 
 class Affectation extends Component {
   constructor(props) {
@@ -92,7 +94,6 @@ class Affectation extends Component {
 
     firebase
       .database()
-      /* hna bda lghalat : this.state.AffectId mam3rofach b7alha b7al this.state.sujet w chi lakhor */
 
       .ref("Sujets_pr/" + ++this.state.AffecId)
       .set({
@@ -134,7 +135,7 @@ class Affectation extends Component {
     const sujets = sujetsArr.map((sujets, i) => {
       return (
         <tr key={i}>
-          <td>{sujets}</td>
+          <td key={i}>{sujets}</td>
           <td>
             {
               <Input
@@ -144,7 +145,7 @@ class Affectation extends Component {
                 name="Presentateur"
               >
                 <option disabled selected value>
-                  -- Selectionez un Presentateur --
+                  -- Selectionnez un Présentateur --
                 </option>
                 {presentateursArr.map(pres => (
                   <option value={pres.Prenom + " " + pres.Nom}>
@@ -174,65 +175,63 @@ class Affectation extends Component {
         </tr>
       );
     });
+    if (!this.props.isAuth) return <Redirect to="/login" />;
+    else
+      return (
+        <div className="app">
+          <DefaultAdmin />
 
-    return (
-      <div className="app">
-        <DefaultAdmin />
+          {/******************************************* Menu ************************* */}
 
-        {/******************************************* Menu ************************* */}
+          <div style={{ marginTop: "54px", width: "10%" }}>
+            <AppSidebar fixed display="lg">
+              <AppSidebarHeader />
+              <AppSidebarForm />
+              <Suspense>
+                <AppSidebarNav
+                  navConfig={Navi}
+                  {...this.props}
+                  router={router}
+                />
+              </Suspense>
+              <AppSidebarFooter />
+              <AppSidebarMinimizer />
+            </AppSidebar>
+          </div>
 
-        <div style={{ marginTop: "54px", width: "10%" }}>
-          <AppSidebar fixed display="lg">
-            <AppSidebarHeader />
-            <AppSidebarForm />
-            <Suspense>
-              <AppSidebarNav navConfig={Navi} {...this.props} router={router} />
-            </Suspense>
-            <AppSidebarFooter />
-            <AppSidebarMinimizer />
-          </AppSidebar>
+          <Row>
+            <Col xl={7} className="affectation-column">
+              <Card>
+                <CardHeader>
+                  <i className="fa fa-align-justify"></i>
+                  <strong>Affectation</strong>
+                </CardHeader>
+                <CardBody>
+                  <Table responsive hover>
+                    <thead>
+                      <tr>
+                        <th scope="col">Sujets</th>
+                        <th scope="col">Presentateurs</th>
+                        <th scope="col">Date</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>{sujets}</tbody>
+                  </Table>
+                </CardBody>
+                <CardFooter>
+                  <p
+                    className="text-muted"
+                    style={{ display: "inline-block", marginLeft: "25px" }}
+                  >
+                    {message}
+                  </p>
+                </CardFooter>
+              </Card>
+            </Col>
+          </Row>
         </div>
-
-        <Row
-          style={{
-            marginLeft: "390px",
-            marginright: "auto",
-            width: "100%",
-            marginTop: "0px"
-          }}
-        >
-          <Col xl={7}>
-            <Card>
-              <CardHeader>
-                <i className="fa fa-align-justify"></i>
-                <strong>Affectation</strong>
-              </CardHeader>
-              <CardBody>
-                <Table responsive hover>
-                  <thead>
-                    <tr>
-                      <th scope="col">Sujets</th>
-                      <th scope="col">Presentateurs</th>
-                      <th scope="col">Date</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>{sujets}</tbody>
-                </Table>
-              </CardBody>
-              <CardFooter>
-                <p
-                  className="text-muted"
-                  style={{ display: "inline-block", marginLeft: "25px" }}
-                >
-                  {message}
-                </p>
-              </CardFooter>
-            </Card>
-          </Col>
-        </Row>
-      </div>
-    );
+      );
   }
 }
 

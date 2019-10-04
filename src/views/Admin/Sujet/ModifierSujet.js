@@ -43,51 +43,67 @@ class Modifier extends Component {
           <Popup
             modal
             trigger={
-              <Button  size="sm"  style={{ backgroundColor: "#339FFF", paddingTop: "-10px" }} >
-                 <i class="icons d-block cui-note" style={{fontSize :"large"}}></i> 
+              <Button size="sm" color="primary">
+                <i
+                  class="icons d-block cui-note"
+                  style={{ fontSize: "large" }}
+                ></i>
               </Button>
             }
           >
-            <Row>
-              <Col>
-                <Card>
-                  <CardHeader>
-                    <i className="fa fa-align-justify"></i> Modifier
-                  </CardHeader>
-                  <CardBody>
-                    <Table responsive hover>
-                      <th>Sujet</th>
-                      
-                      <th></th>
-                      <tbody>
-                        <tr>
-                          <td>
-                            <input
-                              className="form-control"
-                              value={this.state.NewSujet}
-                              name="NewSujet"
-                              onChange={this.handelChange}
-                            />
-                          </td>
-                          <td></td>
-                        </tr>
-                        <tr>
-                          <Button  type="submit"
-                                    size="sm"
-                                    color="primary"
-                            onClick={e => {
-                              this.props.update(e, state);
-                            }}
-                          >
-                           <i className="fa fa-dot-circle-o"></i> Eregistrer
-                          </Button>
-                        </tr>
-                      </tbody>
-                    </Table>
-                  </CardBody>
-                </Card>
-              </Col>
-            </Row>
+            {close => (
+              <div>
+                <a
+                  className="close"
+                  onClick={close}
+                  style={{ cursor: "pointer" }}
+                >
+                  &times;
+                </a>
+                <Row>
+                  <Col>
+                    <Card>
+                      <CardHeader>
+                        <i className="fa fa-align-justify"></i> Modifier
+                      </CardHeader>
+                      <CardBody>
+                        <Table responsive hover>
+                          <th>Sujet</th>
+
+                          <th></th>
+                          <tbody>
+                            <tr>
+                              <td>
+                                <input
+                                  className="form-control"
+                                  value={this.state.NewSujet}
+                                  name="NewSujet"
+                                  onChange={this.handelChange}
+                                />
+                              </td>
+                              <td></td>
+                            </tr>
+                            <tr>
+                              <Button
+                                type="submit"
+                                size="sm"
+                                color="primary"
+                                onClick={e => {
+                                  this.props.update(e, state);
+                                }}
+                              >
+                                <i className="fa fa-dot-circle-o"></i>{" "}
+                                Eregistrer
+                              </Button>
+                            </tr>
+                          </tbody>
+                        </Table>
+                      </CardBody>
+                    </Card>
+                  </Col>
+                </Row>
+              </div>
+            )}
           </Popup>
         </div>
       </div>

@@ -20,7 +20,6 @@ import {
   AppSidebarNav2 as AppSidebarNav,
 } from '@coreui/react';
 
-//import users from'../Users/Users';
 
 class HeaderAdmin extends Component {
   constructor(props){
@@ -40,46 +39,30 @@ class HeaderAdmin extends Component {
 
 
 render(){
+
     return(
-
-        
-        <AppHeader fixed>
-        <Suspense  >
-        <React.Fragment>
-        <AppSidebarToggler className="d-lg-none" display="md" mobile />
-        <AppNavbarBrand
-          full={{ src: logo, width: 100, height: 40, alt: 'Novelis Logo' }}
-          minimized={{ src: sygnet, width: 30, height: 30, alt: 'Novelis Logo' }}
-        />
-        <AppSidebarToggler className="d-md-down-none" display="lg" />
-
       
-        <Nav className="ml-auto" navbar>
-          
-         {/**  <NavItem className="d-md-down-none">
-            <NavLink to="#" className="nav-link"><i className="icon-list"></i></NavLink>
-          </NavItem>
-         <NavItem className="d-md-down-none">
-            <NavLink to="#" className="nav-link"><i className="icon-location-pin"></i></NavLink>
-          </NavItem>*/} 
-          <UncontrolledDropdown nav direction="down">
-             <DropdownToggle nav>
-              <img src={'../../assets/img/avatars/admin1.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" />
-            </DropdownToggle> 
-            <DropdownMenu right>
-             
-              
-            <DropdownItem onClick={this.logout}><i className="fa fa-lock"></i> <Link to="#"> Logout </Link></DropdownItem>
-           
-             
-            </DropdownMenu>
-          </UncontrolledDropdown>
-        </Nav>
-       {/** <AppAsideToggler className="d-md-down-none" /> menu droit */} 
-        {/*<AppAsideToggler className="d-lg-none" mobile />*/}
-      </React.Fragment>
-      </Suspense>
-      </AppHeader>
+     <React.Fragment>
+     <AppSidebarToggler className="d-lg-none" display="md" mobile />
+     <AppNavbarBrand
+       full={{ src: logo, width: 100, height: 40, alt: 'Novelis Logo' }}
+       minimized={{ src: sygnet, width: 30, height: 30, alt: 'Novelis Logo' }}
+     />
+     <AppSidebarToggler className="d-md-down-none" display="lg" />
+
+     
+     <Nav className="ml-auto" navbar>
+     <UncontrolledDropdown nav direction="down">
+          <DropdownToggle nav>
+           <img src={'../../assets/img/avatars/admin1.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" />
+         </DropdownToggle> 
+        <DropdownMenu right>
+           <DropdownItem onClick={this.logout}><i className="fa fa-lock"></i> Logout</DropdownItem>
+         </DropdownMenu>
+       </UncontrolledDropdown>
+     </Nav>
+   </React.Fragment>
+
     );
 }
 

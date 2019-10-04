@@ -199,7 +199,7 @@ class AjoutPresentateur extends Component {
         <div
           style={{
             marginLeft: "400px",
-            width: "50%"
+            width: "50%" ,maxWidth:"100%"
           }}
         >
           <div>

@@ -60,7 +60,7 @@ class Login extends Component {
   }
 
   render() {
-    if (this.state.isLoggedIn) return <Redirect to="/admin" />;
+    if (this.props.isAuth) return <Redirect to="/admin" />;
     else
       return (
         <div className="app flex-row align-items-center">
@@ -116,48 +116,30 @@ class Login extends Component {
                               Connecter
                             </Button>
                           </Col>
-                          <Col xs="6" className="text-right">
+                          {/**<Col xs="6" className="text-right">
                             <Button color="link" className="px-0">
                               Mot de passe oublié?
                             </Button>
-                          </Col>
+                          </Col> */}
                         </Row>
-                      </Form>
-                    </CardBody>
-                  </Card>
-                  <Card
-                    className="text-white bg-primary py-5 d-md-down-none"
-                    style={{ width: "44%" }}
-                  >
-                    <CardBody className="text-center">
-                      <div>
-                        <h2>Inscrivez-vous!</h2>
-
-                        <Link to="/register">
-                          <Button
-                            color="primary"
-                            className="mt-3"
-                            active
-                            tabIndex={-1}
-                          >
-                            S'inscrire
-                          </Button>
-                        </Link>
                         <br />
                         <br />
-                        <p
-                          className="text-muted"
-                          style={{ backgroundColor: "red" }}
-                        >
+                        <p className="text-muted" style={{ color: "red" }}>
                           {this.state.auth
                             ? this.state.error
                               ? this.state.error.message
                               : null
                             : null}
                         </p>
-                      </div>
+                      </Form>
                     </CardBody>
                   </Card>
+                  {/** <Card
+                    className="text-white bg-primary py-5 d-md-down-none"
+                    style={{ width: "44%" }}
+                  >
+
+                  </Card> */}
                 </CardGroup>
               </Col>
             </Row>

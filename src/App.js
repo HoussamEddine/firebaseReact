@@ -1,18 +1,12 @@
 import React, { Component } from "react";
 import { HashRouter, Route, Switch } from "react-router-dom";
 import "./App.scss";
-//import firebase from "./config/config";
+import firebase from "./config/config";
+import "firebase/auth";
 import Admin from "./views/Admin/Admin";
 import AjoutSujet from "./views/Admin/Sujet";
 import AjoutPresentateur from "./views/Admin/Presentateurs";
-import Affectation from "./views/Admin/Affectation/index" ;
-
-// import ModifierPresentateur from "./views/Admin/Presentateurs/ModifierPresentateur";
-
-/*import PrivateRoute from "./PrivateRoute";
-import { renderRoutes } from "react-router-config";
-import { any } from "prop-types";
-*/
+import Affectation from "./views/Admin/Affectation/index";
 
 const loading = () => (
   <div className="animated fadeIn pt-3 text-center">Loading...</div>
@@ -24,45 +18,49 @@ const DefaultLayout = React.lazy(() => import("./containers/DefaultLayout"));
 // Pages
 const Login = React.lazy(() => import("./views/Pages/Login"));
 const Register = React.lazy(() => import("./views/Pages/Register"));
-const Page404 = React.lazy(() => import("./views/Pages/Page404"));
-const Page500 = React.lazy(() => import("./views/Pages/Page500"));
 
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      // isMounted: false,
-      user: {}
+      isAuth: null
     };
   }
+  componentDidMount() {
+    this.listener = firebase.auth().onAuthStateChanged(isAuth => {
+      isAuth ? this.setState({ isAuth }) : this.setState({ isAuth: null });
+    });
+  }
+  componentWillUnmount() {
+    firebase.auth().signOut();
+    console.log("unmount");
 
-  /* componentWillUnmount() {
-    this.setState({ isMounted: false });
-  }*/
+    this.listener();
+  }
 
   render() {
-    console.log("user", this.state.user);
-
     return (
       <div className="App">
         <HashRouter>
           <React.Suspense fallback={loading()}>
-            {/* {this.state.user ? <Admin /> : <Login />} */}
             <Switch>
               <Route
                 exact
                 path="/Login"
                 name="Login Page"
-                render={props => <Login {...props} />}
+                render={props => (
+                  <Login {...props} isAuth={this.state.isAuth} />
+                )}
               />
               <Route
                 exact
                 path="/Admin"
                 name="Admin Page"
-                render={props => <Admin {...props} />}
+                render={props => (
+                  <Admin {...props} isAuth={this.state.isAuth} />
+                )}
               />
-
               <Route
                 exact
                 path="/sujet"
@@ -80,19 +78,22 @@ class App extends Component {
                 path="/presentateurs"
                 name="Ajout Page"
                 render={props => <AjoutPresentateur {...props} />}
-                />
+              />
 
-                <Route
+              <Route
                 exact
                 path="/Affec"
                 name="Affectation Page"
-                render={props => <Affectation {...props} />}
-                />
-
+                render={props => (
+                  <Affectation {...props} isAuth={this.state.isAuth} />
+                )}
+              />
               <Route
                 path="/"
                 name="Home"
-                render={props => <DefaultLayout {...props} />}
+                render={props => (
+                  <DefaultLayout {...props} isAuth={this.state.isAuth} />
+                )}
               />
             </Switch>
           </React.Suspense>

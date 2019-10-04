@@ -8,8 +8,8 @@ export default {
       children: [
 
         {
-          name: 'Sujets programmés',
-          url: '/users',
+          name: 'Sujets planifiés',
+          url: '/SujetPl',
          // icon: 'icon-star',
         },
         

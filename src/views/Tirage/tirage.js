@@ -1,9 +1,11 @@
 import React from "react";
 import { Button } from "reactstrap";
 import firebase from "../../config/config";
-import { CardBody, Table } from "reactstrap";
-//import { Link } from 'react-router-dom';
-import animation from "./animation.css"
+import { Card, CardBody, CardHeader, Col, Row, Table ,CardFooter } from "reactstrap";
+import Popup from "reactjs-popup";
+
+import Content from '../Popup/Content';
+import index from '../Popup/index.css';
 
 class tirage extends React.Component {
   constructor() {
@@ -16,12 +18,12 @@ class tirage extends React.Component {
       },
       presentateur: ""
     };
-    this.resetCards = this.resetCards.bind(this);
+   // this.resetCards = this.resetCards.bind(this);
     this.timer = null;
     this.randomPerson = this.randomPerson.bind(this);
    
   }
-  resetCards(currentTiles, currentScore) {
+ /* resetCards(currentTiles, currentScore) {
     this.setState({
       tiles: currentTiles,
       marked: false,
@@ -30,7 +32,7 @@ class tirage extends React.Component {
       score: currentScore
     });
     clearInterval(this.timer);
-  }
+  }*/
 
   componentWillMount() {
     const ref = firebase.database().ref("Presentateurs");
@@ -53,28 +55,41 @@ class tirage extends React.Component {
     this.setState({
       presentateur: presentateur
     });
+    
+    this.timer = setTimeout(() => this.randomPerson(), 500);
   }
 
   render() {
     const presentateur = this.state.presentateur;
-   // this.timer = setTimeout(() => this.randomPerson(), 300);
    
     return (
-      <div className={animation.tbody}>
-        <CardBody style={{ width: "50%" }}>
-          <Table responsive hover >
-            <tbody >
-              <td>{presentateur.Nom}</td>
-              <td>{presentateur.Prenom}</td>
-              <td>{presentateur.Email}</td>
+    <div className="app">
+       
+      <div>
+        <Col>
+        <Card>
+            <CardHeader>
+              <strong>Tirage au sort</strong>
+            </CardHeader>
+        <CardBody >
+          <Table responsive hover>
+                     
+           <tbody>
+              
+              <tr > <center><h1 style={{ width:"80%" }}>{presentateur.Nom} {presentateur.Prenom}</h1></center></tr>
+              <tr ><center><Button onClick={this.randomPerson} className="btn btn-lg btn-pill btn-danger">Commencer</Button></center></tr>
+              <Popup modal trigger={<button>Click Me</button>}>
+                Modal Content
+                {close => <Content close={close} />}
+              </Popup>
             </tbody>
           </Table>
         </CardBody>
-        {/* <h1>Le prochain Presentateur est : </h1> */}
-        <br />
-        {/* <h1>{presentateur}</h1> <br /> */}
-        <Button onClick={this.randomPerson}>Tirage au sort</Button>
+        <CardFooter></CardFooter>
+       </Card>
+       </Col>
       </div>
+    </div>
     );
   }
 }

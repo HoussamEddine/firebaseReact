@@ -1,27 +1,17 @@
 export default {
   items: [
     {
+      name: "Accueil",
+
+      url: "/Admin",
+      icon: " icon-list"
+   
+    },
+    {
       name: "Gestion Sujets",
       url: "/sujet",
       icon: " icon-list"
-      // children: [
-
-      //     {
-      //         name: 'Ajouter',
-      //         url: 'Ajout',
-      //        // icon: 'icon-star',
-      //       },
-      //       {
-      //         name: 'Supprimer',
-      //         url: '/admin',
-      //        // icon: 'icon-star',
-      //       },
-      //       {
-      //         name: 'Modifier',
-      //        // url: '/tirage',
-      //        // icon: 'icon-star',
-      //       },
-      // ],
+   
     },
 
     {

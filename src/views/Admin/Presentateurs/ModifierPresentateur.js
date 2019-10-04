@@ -1,5 +1,7 @@
 import React, { Component, Suspense } from "react";
 import Popup from "reactjs-popup";
+import Content from "../../Popup/Content";
+import index from "../../Popup/index.css";
 
 import {
   Card,
@@ -45,70 +47,86 @@ class Modifier extends Component {
         <div>
           <Popup
             modal
+            style={index}
             trigger={
-              <Button size="sm"
-                style={{ backgroundColor: "#339FFF", paddingTop: "-10px" }}
-              >
-                <i class="icons d-block cui-note" style={{fontSize :"large"}}></i> 
+              <Button size="sm" color="primary">
+                <i
+                  class="icons d-block cui-note"
+                  style={{ fontSize: "large" }}
+                ></i>
               </Button>
             }
           >
-            <Row>
-              <Col>
-                <Card>
-                  <CardHeader>
-                    <i className="fa fa-align-justify"></i> Modifier
-                  </CardHeader>
-                  <CardBody>
-                    <Table responsive hover>
-                      <th>Nom</th>
-                      <th>Prenom</th>
-                      <th>Email</th>
-                      <th> </th>
-                      <tbody>
-                        <tr>
-                          <td>
-                            <input
-                              className="form-control"
-                              value={this.state.NewNom}
-                              name="NewNom"
-                              onChange={this.handelChange}
-                            />
-                          </td>
-                          <td>
-                            <input
-                              className="form-control"
-                              value={this.state.NewPrenom}
-                              name="NewPrenom"
-                              onChange={this.handelChange}
-                            />
-                          </td>
-                          <td>
-                            <input
-                              className="form-control"
-                              value={this.state.NewEmail}
-                              name="NewEmail"
-                              onChange={this.handelChange}
-                            />
-                          </td>
-                        </tr>
-                        <tr>
-                          <Button  type="submit"
-                                    size="sm"
-                                    color="primary"
-                            onClick={e => {
-                              this.props.update(e, state);
-                            }}
-                          >
-                           <i className="fa fa-dot-circle-o"></i> Eregistrer
-                          </Button>
-                        </tr>
-                      </tbody>
-                    </Table>
-                  </CardBody>
-                </Card>
-              </Col>
-            </Row>
+            {close => (
+              <div>
+                <a
+                  className="close"
+                  onClick={close}
+                  style={{ cursor: "pointer" }}
+                >
+                  &times;
+                </a>
+                <Row>
+                  <Col>
+                    <Card>
+                      <CardHeader>
+                        <i className="fa fa-align-justify"></i> Modifier
+                      </CardHeader>
+                      <CardBody>
+                        <Table responsive hover>
+                          <th>Nom</th>
+                          <th>Prenom</th>
+                          <th>Email</th>
+                          <th> </th>
+                          <tbody>
+                            <tr>
+                              <td>
+                                <input
+                                  className="form-control"
+                                  value={this.state.NewNom}
+                                  name="NewNom"
+                                  onChange={this.handelChange}
+                                />
+                              </td>
+                              <td>
+                                <input
+                                  className="form-control"
+                                  value={this.state.NewPrenom}
+                                  name="NewPrenom"
+                                  onChange={this.handelChange}
+                                />
+                              </td>
+                              <td>
+                                <input
+                                  type="input"
+                                  className="form-control"
+                                  value={this.state.NewEmail}
+                                  name="NewEmail"
+                                  onChange={this.handelChange}
+                                />
+                              </td>
+                            </tr>
+                            <tr>
+                              <Button
+                                type="submit"
+                                size="sm"
+                                color="primary"
+                                onClick={e => {
+                                  this.props.update(e, state);
+                                }}
+                              >
+                                <i className="fa fa-dot-circle-o"></i>{" "}
+                                Eregistrer
+                              </Button>
+                            </tr>
+                          </tbody>
+                        </Table>
+                      </CardBody>
+                    </Card>
+                  </Col>
+                </Row>
+              </div>
+            )}
           </Popup>
         </div>
       </div>
