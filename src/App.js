@@ -17,7 +17,7 @@ const DefaultLayout = React.lazy(() => import("./containers/DefaultLayout"));
 
 // Pages
 const Login = React.lazy(() => import("./views/Pages/Login"));
-const Register = React.lazy(() => import("./views/Pages/Register"));
+//const Register = React.lazy(() => import("./views/Pages/Register"));
 
 class App extends Component {
   constructor(props) {
@@ -65,7 +65,7 @@ class App extends Component {
                 exact
                 path="/sujet"
                 name="Ajout Page"
-                render={props => <AjoutSujet {...props} />}
+                render={props => <AjoutSujet {...props} isAuth={this.state.isAuth}/>}
               />
               {/* <Route
                 exact
@@ -77,7 +77,7 @@ class App extends Component {
                 exact
                 path="/presentateurs"
                 name="Ajout Page"
-                render={props => <AjoutPresentateur {...props} />}
+                render={props => <AjoutPresentateur {...props} isAuth={this.state.isAuth} />}
               />
 
               <Route

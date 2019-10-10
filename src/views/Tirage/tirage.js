@@ -56,7 +56,8 @@ class tirage extends React.Component {
       presentateur: presentateur
     });
     
-    this.timer = setTimeout(() => this.randomPerson(), 500);
+    this.timer = setTimeout(() => this.randomPerson(), 90);
+    setTimeout(() =>clearTimeout(this.timer),6000);
   }
 
   render() {
@@ -69,21 +70,15 @@ class tirage extends React.Component {
         <Col>
         <Card>
             <CardHeader>
-              <strong>Tirage au sort</strong>
+              
             </CardHeader>
         <CardBody >
-          <Table responsive hover>
-                     
-           <tbody>
+         
               
-              <tr > <center><h1 style={{ width:"80%" }}>{presentateur.Nom} {presentateur.Prenom}</h1></center></tr>
-              <tr ><center><Button onClick={this.randomPerson} className="btn btn-lg btn-pill btn-danger">Commencer</Button></center></tr>
-              <Popup modal trigger={<button>Click Me</button>}>
-                Modal Content
-                {close => <Content close={close} />}
-              </Popup>
-            </tbody>
-          </Table>
+              <center><h1 style={{ width:"80%" }}>{presentateur.Nom} {presentateur.Prenom}</h1></center>
+             <center><Button onClick={this.randomPerson} className="btn btn-lg btn-pill btn-danger">Commencer</Button></center>
+              
+           
         </CardBody>
         <CardFooter></CardFooter>
        </Card>

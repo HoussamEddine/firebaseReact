@@ -37,6 +37,7 @@ class DefaultLayout extends Component {
   logout(e) {
     e.preventDefault();
     firebase.auth().signOut();
+    this.props.history.push("/SujetPl");
   }
 
   render() {
@@ -47,7 +48,7 @@ class DefaultLayout extends Component {
           <Suspense fallback={this.loading()}>
             <DefaultHeader
               onLogin={e => this.singin(e)}
-              onLogout={e => this.logout(e)}
+             // onLogout={e => this.logout(e)}
               isAuth={isAuth}
             />
           </Suspense>

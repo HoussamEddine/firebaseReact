@@ -175,13 +175,13 @@ class Admin extends Component {
                 {
                   // width: "80%",
                   // marginLeft: "18%",
-                  // paddingBottom: "8%"
+                   paddingBottom: "78%"
                 }
               }
             >
               <Card>
                 <CardHeader>
-                  <strong>Sujet</strong>
+                  
                 </CardHeader>
                 <CardBody>
                   <Table responsive hover>

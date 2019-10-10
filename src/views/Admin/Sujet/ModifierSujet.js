@@ -11,6 +11,8 @@ import {
   Row
 } from "reactstrap";
 
+import "./Res-sujet.css";
+
 class Modifier extends Component {
   constructor(props) {
     super(props);
@@ -35,15 +37,14 @@ class Modifier extends Component {
     const state = this.state;
     return (
       <div
-        className="animated fadeIn"
+        className="animated fadeIn btn-mdf"
         onClick={this.clickHandler}
-        style={{ display: "inline-block", margin: "7px 10px 0 10px" }}
       >
         <div>
           <Popup
             modal
             trigger={
-              <Button size="sm" color="primary">
+              <Button  className=" btn " size="sm" color="primary">
                 <i
                   class="icons d-block cui-note"
                   style={{ fontSize: "large" }}

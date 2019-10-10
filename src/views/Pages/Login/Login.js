@@ -16,7 +16,6 @@ import {
   InputGroupText,
   Row
 } from "reactstrap";
-import Admin from "../../Admin/Admin";
 
 class Login extends Component {
   constructor(props) {
@@ -116,6 +115,7 @@ class Login extends Component {
                               Connecter
                             </Button>
                           </Col>
+                         
                           {/**<Col xs="6" className="text-right">
                             <Button color="link" className="px-0">
                               Mot de passe oublié?
@@ -134,12 +134,7 @@ class Login extends Component {
                       </Form>
                     </CardBody>
                   </Card>
-                  {/** <Card
-                    className="text-white bg-primary py-5 d-md-down-none"
-                    style={{ width: "44%" }}
-                  >
-
-                  </Card> */}
+                 
                 </CardGroup>
               </Col>
             </Row>
@@ -147,6 +142,6 @@ class Login extends Component {
         </div>
       );
   }
-  // }
+  
 }
 export default Login;

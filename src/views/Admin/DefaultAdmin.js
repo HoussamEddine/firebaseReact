@@ -1,17 +1,13 @@
 import React,{Component ,Suspense} from 'react';
+
+import { Redirect, Route, Switch } from "react-router-dom";
 import {
    
     AppHeader,
     AppBreadcrumb2 as AppBreadcrumb,
     AppSidebarNav2 as AppSidebarNav,
   } from '@coreui/react';
-import * as router from 'react-router-dom';
-import { Redirect, Route, Switch } from 'react-router-dom';
-import { Container } from 'reactstrap';
-
-import routes from '../../routes';
-  
-import Sidebar from './Sidebar';
+import firebase from 'firebase';
 
 const HeaderAdmin = React.lazy(() => import('./HeaderAdmin'));
 //const Sidebar =React.lazy(() => import('./Sidebar'));
@@ -20,13 +16,20 @@ class DefaultAdmin extends Component{
 constructor(props){
     super(props);
 }
-
+logout(e) {
+    e.preventDefault();
+    firebase.auth().signOut();    
+   // this.props.history.push("/SujetPl");
+  }
     render(){
+        const isAuth = this.props.isAuth;
         return(
             <div>
              <AppHeader fixed>
                   <Suspense  >
-                     <HeaderAdmin />
+                     <HeaderAdmin
+                      onLogout={e => this.logout(e)}
+                   isAuth={isAuth} />
                  </Suspense>
               </AppHeader>
               

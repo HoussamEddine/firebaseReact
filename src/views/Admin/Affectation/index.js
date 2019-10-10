@@ -25,8 +25,6 @@ import firebase from "../../../config/config";
 import DefaultAdmin from "../DefaultAdmin";
 import * as router from "react-router-dom";
 import Navi from "../Navi";
-import ListePre from "./ListePre";
-import AddAffect from "./AddAffec";
 import "./affectation.css";
 
 class Affectation extends Component {

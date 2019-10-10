@@ -1,4 +1,6 @@
 import React, { Component, Suspense } from "react";
+
+import { Redirect, Route, Switch } from "react-router-dom";
 import Modifier from "./ModifierSujet";
 // import Popup from "reactjs-popup";
 import {
@@ -38,6 +40,7 @@ import firebase from "../../../config/config";
 // import { blockStatement } from "@babel/types";
 
 import * as router from "react-router-dom";
+import "./Res-sujet.css";
 
 class GererSujet extends Component {
   constructor(props) {
@@ -151,7 +154,7 @@ class GererSujet extends Component {
           <td></td>
           <td></td>
           <td style={{float:"left"}}>
-              <Button 
+              <Button className=" btn btn-mdf"
                     size="sm"
                     color="danger"
               onClick={e => {
@@ -171,8 +174,10 @@ class GererSujet extends Component {
         </tr>
       );
     });
-
-    return (
+    
+    if (!this.props.isAuth) return <Redirect to="/login" />;
+    else
+      return (
       <div className="app">
         <DefaultAdmin />
 
@@ -190,12 +195,9 @@ class GererSujet extends Component {
           </AppSidebar>
         </div> 
 
-        <div style={{
-            marginLeft: "400px",
-            width: "50%"
-          }}>
+        <div  className="Sujet-column" >
           
-            <Col >
+            <Col>
               <Card>
                 <div>
                 <CardHeader>

@@ -109,7 +109,16 @@ class ModifierAffec extends Component {
                 ></i>
               </Button>
             }
-          >
+             >
+                {close => (
+              <div>
+                <a
+                  className="close"
+                  onClick={close}
+                  style={{ cursor: "pointer" }}
+                >
+                  &times;
+                </a>
             <Row>
               <Col>
                 <Card>
@@ -186,6 +195,8 @@ class ModifierAffec extends Component {
                 </Card>
               </Col>
             </Row>
+            </div> )
+            }
           </Popup>
         </div>
       </div>

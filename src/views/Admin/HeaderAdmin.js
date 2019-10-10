@@ -1,6 +1,7 @@
 import React, { Component , Suspense} from 'react'; 
 import fire from '../../config/config';
 
+import { Redirect} from "react-router-dom";
 import { Link, NavLink ,Route } from 'react-router-dom';
 import { Badge, UncontrolledDropdown, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem } from 'reactstrap';
 
@@ -19,26 +20,22 @@ import {
   AppBreadcrumb2 as AppBreadcrumb,
   AppSidebarNav2 as AppSidebarNav,
 } from '@coreui/react';
+import SujetPl from '../Sujet_pl/SujetPl';
 
 
 class HeaderAdmin extends Component {
   constructor(props){
       super(props);
-      this.logout = this.logout.bind(this);
+     // this.logout = this.logout.bind(this);
   }
 
-  logout(){
-
-    fire.auth().signOut().then(function() {
-      // Sign-out successful.
-    }).catch(function(error) {
-      // An error happened.
-    });
-}
+ 
 
 
 
 render(){
+  
+  //const isAuth = this.props.isAuth;
 
     return(
       
@@ -54,10 +51,16 @@ render(){
      <Nav className="ml-auto" navbar>
      <UncontrolledDropdown nav direction="down">
           <DropdownToggle nav>
-           <img src={'../../assets/img/avatars/admin1.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" />
+           <img src={'../../assets/img/avatars/admin1.jpg'} className="img-avatar" />
          </DropdownToggle> 
         <DropdownMenu right>
-           <DropdownItem onClick={this.logout}><i className="fa fa-lock"></i> Logout</DropdownItem>
+        <DropdownItem 
+                onClick={e => this.props.onLogout(e)} 
+               /**style={isAuth ? { display: "block" } : { display: "none" }} */ 
+               to="SujetPl">               
+                <Link to="SujetPl"  ><i className="fa fa-lock"></i> Logout</Link>
+              </DropdownItem>
+          
          </DropdownMenu>
        </UncontrolledDropdown>
      </Nav>

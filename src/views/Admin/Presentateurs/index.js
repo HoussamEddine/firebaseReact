@@ -11,6 +11,7 @@ import {
 } from "@coreui/react";
 import Navi from "../Navi";
 
+import { Redirect, Route, Switch } from "react-router-dom";
 import * as router from "react-router-dom";
 import {
   Card,
@@ -39,6 +40,8 @@ import {
 //   AppSidebarNav2 as AppSidebarNav
 // } from "@coreui/react";
 import DefaultAdmin from "../DefaultAdmin";
+
+import "../Sujet/Res-sujet.css";
 
 import firebase from "../../../config/config";
 // import { blockStatement } from "@babel/types";
@@ -154,7 +157,7 @@ class AjoutPresentateur extends Component {
           <td>{pres.Prenom}</td>
           <td>{pres.Email}</td>
 
-          <Button
+          <Button className=" btn "
             size="sm"
             color="danger"
             onClick={e => {
@@ -177,9 +180,11 @@ class AjoutPresentateur extends Component {
     });
 
     let message = this.state.message;
-
-    return (
+    if (!this.props.isAuth) return <Redirect to="/login" />;
+    else
+      return (
       <div className="app">
+
         <DefaultAdmin />
 
         {/******************************************* Menu **************************/}
@@ -196,13 +201,8 @@ class AjoutPresentateur extends Component {
           </AppSidebar>
         </div>
 
-        <div
-          style={{
-            marginLeft: "400px",
-            width: "50%" ,maxWidth:"100%"
-          }}
-        >
-          <div>
+        <div  className="Sujet-column" >
+          <div  >
             <Col>
               <Card>
                 <CardHeader>
