@@ -1,29 +1,23 @@
 import React, { Component } from "react";
-import * as firebase from "firebase";
-//import { Link } from 'react-router-dom';
+import { connect } from "react-redux";
+import getSujets from "./../../store/actions/sujetsPro";
+
 import { Card, CardBody, CardHeader, Col, Row, Table } from "reactstrap";
-//import app from'../../config';
-//import fire from '../../config/config';
 
 class Sujetspropo extends Component {
   constructor(props) {
     super(props);
-    //firebase.initializeApp(fire);
+
     this.state = {
       sujet_propose: []
     };
   }
   componentWillMount() {
-    const ref = firebase.database().ref("Sujets");
-    ref.on("value", snapshot => {
-      this.setState({
-        sujet_propose: snapshot.val()
-      });
-    });
+    this.props.getSujets();
   }
 
   render() {
-    let sujetsObj = this.state.sujet_propose;
+    let sujetsObj = this.props.data.Sujets_Pr;
 
     let sujetsArr = [];
     for (let suj in sujetsObj) {
@@ -49,12 +43,6 @@ class Sujetspropo extends Component {
               </CardHeader>
               <CardBody>
                 <Table responsive hover>
-                  {/** <thead>
-                    <tr>
-                        <th scope="col">Sujets</th>
-
-                    </tr>
-                  </thead>*/}
                   <tbody>{sujets}</tbody>
                 </Table>
               </CardBody>
@@ -65,5 +53,18 @@ class Sujetspropo extends Component {
     );
   }
 }
+const mapStateToProps = state => {
+  return {
+    data: state
+  };
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    getSujets: () => dispatch(getSujets())
+  };
+};
 
-export default Sujetspropo;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Sujetspropo);

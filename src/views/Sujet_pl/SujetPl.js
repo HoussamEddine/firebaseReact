@@ -1,13 +1,5 @@
 import React, { Component } from "react";
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  Col,
-  Row,
-  Table,
-  CardFooter
-} from "reactstrap";
+
 import firebase from "../../config/config";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -50,21 +42,32 @@ class SujetPl extends Component {
       const name = presentateursObj[pre];
       presentateursArr.push(name);
     }
-
-    let presentateur = presentateursArr.map((pres, i) => {
-      return (
-        <tr key={i}>
-          <td>{pres.Sujet}</td>
-          <td>{pres.Presentateur}</td>
-          <td>{pres.Date}</td>
-        </tr>
-      );
+    let eventsPre = presentateursArr.map((pres, i) => {
+      return {
+        id: i,
+        title: "Sujet: " + pres.Sujet + " \n Prsentateur: " + pres.Presentateur,
+        start: pres.Date
+      };
     });
+    // let presentateur = presentateursArr.map((pres, i) => {
+    //   return (
+    //     <tr key={i}>
+    //       <td>{pres.Sujet}</td>
+    //       <td>{pres.Presentateur}</td>
+    //       <td>{pres.Date}</td>
+    //     </tr>
+    //   );
+    // });
 
     return (
       <div className="app" style={{ background: "white", padding: "10px" }}>
-        <FullCalendar defaultView="dayGridMonth" plugins={[dayGridPlugin]} />
-        <div>
+        <FullCalendar
+          defaultView="dayGridMonth"
+          plugins={[dayGridPlugin]}
+          locale="fr"
+          events={eventsPre}
+        />
+        {/* <div>
           <Col>
             <Card>
               <CardHeader></CardHeader>
@@ -81,7 +84,7 @@ class SujetPl extends Component {
               <CardFooter></CardFooter>
             </Card>
           </Col>
-        </div>
+        </div> */}
       </div>
     );
   }
