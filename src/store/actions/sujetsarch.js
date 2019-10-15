@@ -1,15 +1,15 @@
 import firebase from "../../config/config";
 
-const getSujets = () => {
+const getSujetsArch = () => {
   return dispatch => {
     let payload;
-    const ref = firebase.database().ref("Sujets");
+    const ref = firebase.database().ref("Sujets_arch");
     ref &&
       ref.on("value", snapshot => {
         payload = snapshot.val();
-        dispatch({ type: "DATA_READY", payload });
+        dispatch({ type: "SUJETSARCH_READY", payload });
       });
   };
 };
 
-export default getSujets;
+export default getSujetsArch;

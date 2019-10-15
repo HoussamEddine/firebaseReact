@@ -1,11 +1,7 @@
 import React,{Component ,Suspense} from 'react';
-
-import { Redirect, Route, Switch } from "react-router-dom";
 import {
    
-    AppHeader,
-    AppBreadcrumb2 as AppBreadcrumb,
-    AppSidebarNav2 as AppSidebarNav,
+    AppHeader
   } from '@coreui/react';
 import firebase from 'firebase';
 

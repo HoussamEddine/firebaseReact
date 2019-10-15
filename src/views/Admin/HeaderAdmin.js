@@ -1,26 +1,11 @@
 import React, { Component , Suspense} from 'react'; 
-import fire from '../../config/config';
 
-import { Redirect} from "react-router-dom";
-import { Link, NavLink ,Route } from 'react-router-dom';
-import { Badge, UncontrolledDropdown, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem } from 'reactstrap';
+import { Link} from 'react-router-dom';
+import {  UncontrolledDropdown, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem } from 'reactstrap';
 
 import {  AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
 import logo from '../../assets/img/brand/logo.jpg'
 import sygnet from '../../assets/img/brand/sygnet.jpg'
-import {
-  AppAside,
-  AppFooter,
-  AppHeader,
-  AppSidebar,
-  AppSidebarFooter,
-  AppSidebarForm,
-  AppSidebarHeader,
-  AppSidebarMinimizer,
-  AppBreadcrumb2 as AppBreadcrumb,
-  AppSidebarNav2 as AppSidebarNav,
-} from '@coreui/react';
-import SujetPl from '../Sujet_pl/SujetPl';
 
 
 class HeaderAdmin extends Component {

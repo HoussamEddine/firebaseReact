@@ -3,6 +3,8 @@ import React, { Component } from "react";
 import firebase from "../../config/config";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
+import getSujetsPl from "../../store/actions/sujetsPl";
+import { connect } from "react-redux";
 
 class SujetPl extends Component {
   constructor(props) {
@@ -17,35 +19,21 @@ class SujetPl extends Component {
   }
 
   componentWillMount() {
-    const ref = firebase.database().ref("Sujets_pr");
-    ref.on("value", snapshot => {
-      let value = snapshot.val(),
-        presentateurId;
-      if (value.length) {
-        presentateurId = value.length - 1;
-      } else {
-        for (let id in value) {
-          presentateurId = id;
-        }
-      }
-      this.setState({
-        presentateurs: snapshot.val(),
-        presentateurId: presentateurId
-      });
-    });
+    this.props.getSujetsPl();
   }
 
   render() {
-    let presentateursObj = this.state.presentateurs,
+    let presentateursObj = this.props.data.SujetsPl,
       presentateursArr = [];
     for (let pre in presentateursObj) {
       const name = presentateursObj[pre];
       presentateursArr.push(name);
     }
+    console.log(presentateursArr);
     let eventsPre = presentateursArr.map((pres, i) => {
       return {
         id: i,
-        title: "Sujet: " + pres.Sujet + " \n Prsentateur: " + pres.Presentateur,
+        title: pres.Sujet + " \n " + pres.Presentateur,
         start: pres.Date
       };
     });
@@ -67,6 +55,7 @@ class SujetPl extends Component {
           locale="fr"
           events={eventsPre}
         />
+
         {/* <div>
           <Col>
             <Card>
@@ -89,4 +78,18 @@ class SujetPl extends Component {
     );
   }
 }
-export default SujetPl;
+const mapStateToProps = state => {
+  return {
+    data: state
+  };
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    getSujetsPl: () => dispatch(getSujetsPl())
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SujetPl);

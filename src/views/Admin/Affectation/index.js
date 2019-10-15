@@ -113,6 +113,8 @@ class Affectation extends Component {
           message: "Erreur"
         });
       });
+
+      
   }
   render() {
     let sujetsObj = this.state.Sujets,
@@ -162,7 +164,7 @@ class Affectation extends Component {
               type="submit"
               size="sm"
               color="primary"
-              onClick={e => this.addAffect(e, sujets)}
+              onClick={e => this.addAffect(e, sujets)} title="Affecter"
             >
               <i
                 className="icons d-block cui-share"

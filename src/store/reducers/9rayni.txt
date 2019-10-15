@@ -1,0 +1,3 @@
+f wasat reducers khas ykoun ghi index wa7d f wasto katjm3i 9a3 les reducers li 3andki
+makhaskich dispatchi nafs l action kola reducer khasso action dyalo
+ f wasat this.props.data khaski tzidi smiya s7i7a diri daymin console.log(this.props.data ) bach tbalak

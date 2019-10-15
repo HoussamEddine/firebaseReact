@@ -1,11 +1,8 @@
 import React from "react";
 import { Button } from "reactstrap";
 import firebase from "../../config/config";
-import { Card, CardBody, CardHeader, Col, Row, Table ,CardFooter } from "reactstrap";
-import Popup from "reactjs-popup";
+import { Card, CardBody, CardHeader, Col ,CardFooter } from "reactstrap";
 
-import Content from '../Popup/Content';
-import index from '../Popup/index.css';
 
 class tirage extends React.Component {
   constructor() {

@@ -34,7 +34,6 @@ class DefaultHeader extends Component {
     // eslint-disable-next-line
     const { children, ...attributes } = this.props;
     const isAuth = this.props.isAuth;
-    console.log("from header", isAuth);
 
     return (
       <React.Fragment>
@@ -62,16 +61,16 @@ class DefaultHeader extends Component {
             <DropdownMenu right>
               <DropdownItem
                 onClick={e => this.props.onLogin(e)}
-              /**style={isAuth ? { display: "none" } : { display: "block" }} */
+                /**style={isAuth ? { display: "none" } : { display: "block" }} */
               >
                 <i className="fa fa-lock"></i> Login
               </DropdownItem>
-            {/** <DropdownItem
+              {/** <DropdownItem
                 onClick={e => this.props.onLogout(e)}
                 style={isAuth ? { display: "block" } : { display: "none" }}
               >
                 <i className="fa fa-lock"></i> Logout
-              </DropdownItem> */} 
+              </DropdownItem> */}
             </DropdownMenu>
           </UncontrolledDropdown>
         </Nav>

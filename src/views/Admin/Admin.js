@@ -1,14 +1,8 @@
 import React, { Component, Suspense } from "react";
-import { AppNavbarBrand, AppSidebarToggler } from "@coreui/react";
-import logo from "../../assets/img/brand/logo.jpg";
-import sygnet from "../../assets/img/brand/sygnet.jpg";
 import { Redirect, Route, Switch } from "react-router-dom";
 import * as router from "react-router-dom";
-import { Container } from "reactstrap";
-import routes from "../../routes";
-import Popup from "reactjs-popup";
 import firebase from "../../config/config";
-
+import Popup from "reactjs-popup";
 import {
   AppSidebar,
   AppSidebarFooter,
@@ -22,21 +16,16 @@ import Navi from "./Navi";
 import Modifier from "./Affectation/ModifierAffec";
 
 import {
-  Badge,
   Card,
   CardBody,
   CardHeader,
   Col,
   CardFooter,
   Button,
-  ListGroup,
-  ListGroupItem,
-  Row
+  Row ,
+  Input
 } from "reactstrap";
 
-import { Link } from "react-router-dom";
-
-import { FormGroup, Input } from "reactstrap";
 import { Table } from "reactstrap";
 import "../../App.scss";
 
@@ -56,12 +45,22 @@ class Admin extends Component {
   constructor(props) {
     super(props);
     this.update = this.update.bind(this);
+    this.Archi=this.Archi.bind(this);
+    this.handelChange = this.handelChange.bind(this);
     this.state = {
       NewSujet: "",
       NewPresentateur: "",
       NewDate: "",
       presentateursId: 0,
-      presentateurs: {}
+      presentateurs: {},
+      ArchId: 0,
+      ArchAdded: false,
+      sujetAdded:false,
+      Sujet:"",
+      Presentateur:"",
+      Date:"",
+      Lien :""
+
     };
   }
   handelChange(e) {
@@ -85,6 +84,23 @@ class Admin extends Component {
         presentateurId: presentateurId
       });
     });
+    const refAr = firebase.database().ref("Sujets_arch");
+    refAr.on("value", snapshot => {
+      let value = snapshot.val(),
+      ArchId;
+      if (value.length) {
+        ArchId = value.length - 1;
+      } else {
+        for (let id in value) {
+          ArchId = id;
+        }
+      }
+      this.setState({
+        archiver: snapshot.val(),
+        ArchId: ArchId
+      });
+    });
+
   }
   delete(e, presentateurId, pArr) {
     if (pArr.length === 1) {
@@ -95,6 +111,45 @@ class Admin extends Component {
     }
     const ref = firebase.database().ref("Sujets_pr");
     ref.child(presentateurId).remove();
+  }
+
+  Archi(e, presentateurId, pArr, Sujet, Presentateur, Date){
+   
+    //**************** */add
+    e.preventDefault();
+
+    firebase.database().ref("Sujets_arch/" + ++this.state.ArchId).set({
+        id: this.state.ArchId,
+        Sujet: Sujet,
+        Presentateur:Presentateur,
+        Date: Date,
+        Lien :this.state.Lien
+       // lien: this.Lien,
+
+      })
+      .then(u => {
+        this.setState({
+          sujetAdded: true,
+          message: "Ajouté avec succès"
+        });
+      })
+      .catch(e => {
+        this.setState({
+          sujetAdded: false,
+          message: "Erreur"
+        });
+      });
+
+   //*****************delete */
+   if (pArr.length === 1) {
+    this.setState({
+      message: "Vous ne pouvez pas supprimer la dérnière ligne"
+    });
+    return;
+  }
+  const refa = firebase.database().ref("Sujets_pr");
+  refa.child(presentateurId).remove();
+
   }
 
   update = (e, s, presentateurId) => {
@@ -125,14 +180,13 @@ class Admin extends Component {
           <td>
             <Button
               size="sm"
-              color="danger"
-              onClick={e => {
-                this.delete(e, pres.id, presentateursArr);
+              color="primary"
+              onClick={e => {this.delete(e, pres.id, presentateursArr);
               }}
             >
               <i
                 className="icons d-block cui-trash"
-                style={{ fontSize: "large" }}
+                style={{ fontSize: "large" }} title="Supprimer"
               ></i>
             </Button>
             <Modifier
@@ -141,6 +195,84 @@ class Admin extends Component {
               }}
               clicked={() => pres}
             />
+
+<div
+        className="animated fadeIn"
+        onClick={this.clickHandler}
+        style={{ display: "inline-block" }}
+      > 
+            <div>
+          <Popup
+            modal
+            trigger={
+              <Button size="sm"
+              color="primary" 
+              title="Archiver">
+                <i
+                 className="icons d-block cui-layers"
+                 style={{ fontSize: "large" }}
+                 ></i>
+              </Button>
+            }
+             >
+                {close => (
+              <div>
+                <a
+                  className="close"
+                  onClick={close}
+                  style={{ cursor: "pointer" }}
+                >
+                  &times;
+                </a>
+            <Row>
+              <Col>
+                <Card>
+                  <CardHeader>
+                    <i className="fa fa-align-justify"></i> 
+                  </CardHeader>
+                  <CardBody>
+                    <Table responsive hover>
+                      <th>Ajouter un lien</th>
+                     
+                      <tbody>
+                        <tr>
+                          <td>
+                            <Input
+                              type="input"
+                             
+                              name="Lien"
+                              value={this.state.Lien}
+                              onChange={this.handelChange}
+                            >
+                              
+                            </Input>
+                          </td>
+                                               
+                        </tr>
+                        <tr>
+                        <Button
+                            size="sm"
+                            color="primary" 
+                            title="Enregistrer"
+                            onClick={e => {this.Archi(e, pres.id, presentateursArr ,pres.Sujet,
+                                                      pres.Presentateur,pres.Date);
+                            }}
+                            >
+                            Enregistrer
+                            
+                          </Button> 
+                        </tr>
+                      </tbody>
+                    </Table>
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+            </div> )
+            }
+          </Popup>
+        </div>
+</div>
           </td>
         </tr>
       );

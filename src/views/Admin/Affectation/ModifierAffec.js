@@ -105,7 +105,7 @@ class ModifierAffec extends Component {
               <Button size="sm" color="primary">
                 <i
                   className="icons d-block cui-note"
-                  style={{ fontSize: "large" }}
+                  style={{ fontSize: "large" }} title="Modifier"
                 ></i>
               </Button>
             }

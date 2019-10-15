@@ -2,11 +2,6 @@ export default {
   items: [
   
     
-    {
-      name: 'Menu',
-      url: '/pages' ,
-      children: [
-
         {
           name: 'Sujets planifiés',
           url: '/SujetPl',
@@ -19,17 +14,17 @@ export default {
          // icon: 'icon-star',
         },
         {
+          name: 'Sujets archivés',
+          url: '/SujetArch',
+         // icon: 'icon-star',
+        },
+        {
           name: 'Tirage au sort',
           url: '/tirage',
          // icon: 'icon-star',
         },
 
-       
-    
-      ],
-    },
- 
-   
-   
+        
+      
   ],
 };

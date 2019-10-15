@@ -1,13 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import getSujets from "./../../store/actions/sujetsPro";
+import getSujets from "../../store/actions/sujetsPro"
 
 import { Card, CardBody, CardHeader, Col, Row, Table } from "reactstrap";
 
 class Sujetspropo extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       sujet_propose: []
     };
@@ -17,29 +16,29 @@ class Sujetspropo extends Component {
   }
 
   render() {
-    let sujetsObj = this.props.data.Sujets_Pr;
+    let sujetsObj = this.props.data.Sujets;
 
     let sujetsArr = [];
     for (let suj in sujetsObj) {
-      const name = sujetsObj[suj].Name;
+      const name = sujetsObj[suj];
       sujetsArr.push(name);
     }
-
+     
     const sujets = sujetsArr.map((sujets, i) => {
       return (
         <tr key={i}>
-          <td>{sujets}</td>
+          <td>{sujets.Name}</td>
         </tr>
       );
     });
-
+    console.log("proposé", sujets)
     return (
       <div className="animated fadeIn">
         <Row>
           <Col xl={6}>
             <Card>
               <CardHeader>
-                <i className="fa fa-align-justify"></i> Sujets proosés
+                <i className="fa fa-align-justify"></i> 
               </CardHeader>
               <CardBody>
                 <Table responsive hover>
