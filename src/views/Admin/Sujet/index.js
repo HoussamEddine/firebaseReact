@@ -8,23 +8,16 @@ import {
   CardBody,
   CardHeader,
   Col,
- 
   Table,
-
   Button,
   CardFooter,
-
   Form,
   FormGroup,
-  
   Input,
-  
-  Label,
- 
+  Label
 } from "reactstrap";
 
 import {
- 
   AppSidebar,
   AppSidebarFooter,
   AppSidebarForm,
@@ -41,6 +34,9 @@ import firebase from "../../../config/config";
 
 import * as router from "react-router-dom";
 import "./Res-sujet.css";
+
+import getSujets from "../../../store/actions/sujetsPro";
+import { connect } from "react-redux";
 
 class GererSujet extends Component {
   constructor(props) {
@@ -119,33 +115,33 @@ class GererSujet extends Component {
     ref.child(sujetId).update(sujetUp);
   }
   componentWillMount() {
-    const ref = firebase.database().ref("Sujets");
-    ref.on("value", snapshot => {
-      let value = snapshot.val(),
-        sujetId;
-      if (value.length) {
-        sujetId = value.length - 1;
-      } else {
-        for (let id in value) {
-          sujetId = id;
-        }
-      }
-      this.setState({
-        sujet_pr: snapshot.val(),
-        sujetId: sujetId
-      });
-    });
+    this.props.getSujets();
+    // const ref = firebase.database().ref("Sujets");
+    // ref.on("value", snapshot => {
+    //   let value = snapshot.val(),
+    //     sujetId;
+    //   if (value.length) {
+    //     sujetId = value.length - 1;
+    //   } else {
+    //     for (let id in value) {
+    //       sujetId = id;
+    //     }
+    //   }
+    //   this.setState({
+    //     sujet_pr: snapshot.val(),
+    //     sujetId: sujetId
+    //   });
+    // });
   }
   render() {
-    let sujetsObj = this.state.sujet_pr,
+    let sujetsObj = this.props.data.Sujets,
       message = this.state.message,
       sujetsArr = [];
-
+    // console.log(sujetsObj);
     for (let suj in sujetsObj) {
       const name = sujetsObj[suj];
       sujetsArr.push(name);
     }
-
     const sujets = sujetsArr.map((sujets, i) => {
       return (
         <tr key={i}>
@@ -153,131 +149,147 @@ class GererSujet extends Component {
           <td></td>
           <td></td>
           <td></td>
-          <td style={{float:"left"}}>
-              <Button className=" btn btn-mdf"
-                    size="sm"
-                    color="danger"
+          <td style={{ float: "left" }}>
+            <Button
+              className=" btn btn-mdf"
+              size="sm"
+              color="danger"
               onClick={e => {
                 this.delete(e, sujets.id);
-              }}>
-
-              <i class="icons d-block cui-trash" style={{fontSize :"large"}}></i> 
+              }}
+            >
+              <i
+                class="icons d-block cui-trash"
+                style={{ fontSize: "large" }}
+              ></i>
             </Button>
-              <Modifier
+            <Modifier
               update={(e, state) => {
                 this.update(e, state, sujets.id);
               }}
               clicked={() => sujets}
             />
           </td>
-          
         </tr>
       );
     });
-    
+
     if (!this.props.isAuth) return <Redirect to="/login" />;
     else
       return (
-      <div className="app">
-        <DefaultAdmin />
+        <div className="app">
+          <DefaultAdmin />
 
-        {/******************************************* Menu **************************/}
+          {/******************************************* Menu **************************/}
 
-         <div className="app-body">
-          <AppSidebar fixed display="lg">
-            <AppSidebarHeader />
-            <AppSidebarForm />
-            <Suspense>
-              <AppSidebarNav navConfig={Navi} {...this.props} router={router} />
-            </Suspense>
-            <AppSidebarFooter />
-            <AppSidebarMinimizer />
-          </AppSidebar>
-        </div> 
+          <div className="app-body">
+            <AppSidebar fixed display="lg">
+              <AppSidebarHeader />
+              <AppSidebarForm />
+              <Suspense>
+                <AppSidebarNav
+                  navConfig={Navi}
+                  {...this.props}
+                  router={router}
+                />
+              </Suspense>
+              <AppSidebarFooter />
+              <AppSidebarMinimizer />
+            </AppSidebar>
+          </div>
 
-        <div  className="Sujet-column" >
-          
+          <div className="Sujet-column">
             <Col>
               <Card>
                 <div>
-                <CardHeader>
-                  <strong>Ajouter</strong>
-                </CardHeader>
-                <CardBody>
-                  <Form>
-                    <FormGroup row>
-                      <Col md="3">
-                        <Label>Sujet</Label>
-                      </Col>
-                      <Col xs="12" md="9">
-                        <Input
-                          onChange={this.handleChange}
-                          value={this.state.sujet}
-                          name="sujet"
-                        />
-                      </Col>
-                    </FormGroup>
-                  </Form>
-                </CardBody>
-                <CardFooter>
-                  <Button
-                    type="submit"
-                    size="sm"
-                    color="primary"
-                    onClick={this.addSujet}
-                  >
-                    <i className="fa fa-dot-circle-o"></i> Enregistrer
-                  </Button>
-                  <Button
-                    
-                    type="reset"
-                    size="sm"
-                    color="danger"
-                    onClick={this.annuler}
-                  >
-                    <i className="fa fa-ban"></i> Annuler
-                  </Button>
-                  <p
-                    className="text-muted"
-                    style={{ display: "inline-block", marginLeft: "25px" }}
-                  >
-                    {message}
-                  </p>
-                </CardFooter>
+                  <CardHeader>
+                    <strong>Ajouter</strong>
+                  </CardHeader>
+                  <CardBody>
+                    <Form>
+                      <FormGroup row>
+                        <Col md="3">
+                          <Label>Sujet</Label>
+                        </Col>
+                        <Col xs="12" md="9">
+                          <Input
+                            onChange={this.handleChange}
+                            value={this.state.sujet}
+                            name="sujet"
+                          />
+                        </Col>
+                      </FormGroup>
+                    </Form>
+                  </CardBody>
+                  <CardFooter>
+                    <Button
+                      type="submit"
+                      size="sm"
+                      color="primary"
+                      onClick={this.addSujet}
+                    >
+                      <i className="fa fa-dot-circle-o"></i> Enregistrer
+                    </Button>
+                    <Button
+                      type="reset"
+                      size="sm"
+                      color="danger"
+                      onClick={this.annuler}
+                    >
+                      <i className="fa fa-ban"></i> Annuler
+                    </Button>
+                    <p
+                      className="text-muted"
+                      style={{ display: "inline-block", marginLeft: "25px" }}
+                    >
+                      {message}
+                    </p>
+                  </CardFooter>
                 </div>
-                </Card>
+              </Card>
             </Col>
-         
 
-         <div style={{ alignSelf: "center", justifySelf: "center" }}>
-               
-               
-            <Col>
-            <CardHeader>
+            <div style={{ alignSelf: "center", justifySelf: "center" }}>
+              <Col>
+                <CardHeader>
                   <strong>Modifier / Supprimer</strong>
                 </CardHeader>
-            <Card>
-              <CardBody>
-              <Table responsive hover>
-                <thead>
-                  <tr>
-                    <th scope="col">Sujets</th>
-                  </tr>
-                </thead>
+                <Card>
+                  <CardBody>
+                    <Table responsive hover>
+                      <thead>
+                        <tr>
+                          <th scope="col">Sujets</th>
+                        </tr>
+                      </thead>
 
-                <tbody>
-                  <td>{sujets}</td>
-                </tbody>
-              </Table>
-              </CardBody>
-              <CardFooter></CardFooter>
-           </Card>
-           </Col>
-           </div>          
-         
-        </ div>
-      </div>
-    );
+                      <tbody>
+                        <td>{sujets}</td>
+                      </tbody>
+                    </Table>
+                  </CardBody>
+                  <CardFooter></CardFooter>
+                </Card>
+              </Col>
+            </div>
+          </div>
+        </div>
+      );
   }
 }
-export default GererSujet;
+
+const mapStateToProps = state => {
+  return {
+    data: state
+  };
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    getSujets: () => dispatch(getSujets())
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(GererSujet);

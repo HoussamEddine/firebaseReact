@@ -1,7 +1,7 @@
 import React, { Component, Suspense } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import * as router from "react-router-dom";
-import firebase from "../../config/config";
+
 import Popup from "reactjs-popup";
 import {
   AppSidebar,
@@ -22,7 +22,7 @@ import {
   Col,
   CardFooter,
   Button,
-  Row ,
+  Row,
   Input
 } from "reactstrap";
 
@@ -30,9 +30,17 @@ import { Table } from "reactstrap";
 import "../../App.scss";
 
 import "./admin.css";
-// import * as firebase from "firebase";
+/// redux
+import getSujetsPl from "../../store/actions/sujetsPl";
+import getSujetsArch from "../../store/actions/sujetsarch";
+import { connect } from "react-redux";
 
-//const HeaderAdmin = React.lazy(() => import('./HeaderAdmin'));
+// api
+
+import deleteElem from "./../../api/delete";
+import update from "./../../api/update";
+import archive from "./../../api/archive";
+
 const Sidebar = React.lazy(() => import("./Sidebar"));
 
 const DefaultAdmin = React.lazy(() => import("./DefaultAdmin"));
@@ -44,8 +52,8 @@ class Admin extends Component {
 
   constructor(props) {
     super(props);
-    this.update = this.update.bind(this);
-    this.Archi=this.Archi.bind(this);
+    // this.update = this.update.bind(this);
+    // this.Archi = this.Archi.bind(this);
     this.handelChange = this.handelChange.bind(this);
     this.state = {
       NewSujet: "",
@@ -55,12 +63,11 @@ class Admin extends Component {
       presentateurs: {},
       ArchId: 0,
       ArchAdded: false,
-      sujetAdded:false,
-      Sujet:"",
-      Presentateur:"",
-      Date:"",
-      Lien :""
-
+      sujetAdded: false,
+      Sujet: "",
+      Presentateur: "",
+      Date: "",
+      Lien: ""
     };
   }
   handelChange(e) {
@@ -68,110 +75,113 @@ class Admin extends Component {
   }
 
   componentWillMount() {
-    const ref = firebase.database().ref("Sujets_pr");
-    ref.on("value", snapshot => {
-      let value = snapshot.val(),
-        presentateurId;
-      if (value.length) {
-        presentateurId = value.length - 1;
-      } else {
-        for (let id in value) {
-          presentateurId = id;
-        }
-      }
-      this.setState({
-        presentateurs: snapshot.val(),
-        presentateurId: presentateurId
-      });
-    });
-    const refAr = firebase.database().ref("Sujets_arch");
-    refAr.on("value", snapshot => {
-      let value = snapshot.val(),
-      ArchId;
-      if (value.length) {
-        ArchId = value.length - 1;
-      } else {
-        for (let id in value) {
-          ArchId = id;
-        }
-      }
-      this.setState({
-        archiver: snapshot.val(),
-        ArchId: ArchId
-      });
-    });
-
+    this.props.getSujetsPl();
+    // const ref = firebase.database().ref("Sujets_pr");
+    // ref.on("value", snapshot => {
+    //   let value = snapshot.val(),
+    //     presentateurId;
+    //   if (value.length) {
+    //     presentateurId = value.length - 1;
+    //   } else {
+    //     for (let id in value) {
+    //       presentateurId = id;
+    //     }
+    //   }
+    //   this.setState({
+    //     presentateurs: snapshot.val(),
+    //     presentateurId: presentateurId
+    //   });
+    // });
+    // const refAr = firebase.database().ref("Sujets_arch");
+    // refAr.on("value", snapshot => {
+    //   let value = snapshot.val(),
+    //     ArchId;
+    //   if (value.length) {
+    //     ArchId = value.length - 1;
+    //   } else {
+    //     for (let id in value) {
+    //       ArchId = id;
+    //     }
+    //   }
+    //   this.setState({
+    //     archiver: snapshot.val(),
+    //     ArchId: ArchId
+    //   });
+    // });
+    this.props.getSujetsArch();
   }
-  delete(e, presentateurId, pArr) {
-    if (pArr.length === 1) {
-      this.setState({
-        message: "Vous ne pouvez pas supprimer la dérnière ligne"
-      });
-      return;
-    }
-    const ref = firebase.database().ref("Sujets_pr");
-    ref.child(presentateurId).remove();
-  }
+  // delete(e, presentateurId, pArr) {
+  //   if (pArr.length === 1) {
+  //     this.setState({
+  //       message: "Vous ne pouvez pas supprimer la dérnière ligne"
+  //     });
+  //     return;
+  //   }
+  //   const ref = firebase.database().ref("Sujets_pr");
+  //   ref.child(presentateurId).remove();
+  // }
 
-  Archi(e, presentateurId, pArr, Sujet, Presentateur, Date){
-   
+  Archi(e, presentateurId, pArr, Sujet, Presentateur, Date) {
     //**************** */add
     e.preventDefault();
+    console.log(presentateurId);
 
-    firebase.database().ref("Sujets_arch/" + ++this.state.ArchId).set({
-        id: this.state.ArchId,
-        Sujet: Sujet,
-        Presentateur:Presentateur,
-        Date: Date,
-        Lien :this.state.Lien
-       // lien: this.Lien,
+    // firebase
+    //   .database()
+    //   .ref("Sujets_arch/" + ++this.state.ArchId)
+    //   .set({
+    //     id: this.state.ArchId,
+    //     Sujet: Sujet,
+    //     Presentateur: Presentateur,
+    //     Date: Date,
+    //     Lien: this.state.Lien
+    //     // lien: this.Lien,
+    //   })
+    //   .then(u => {
+    //     this.setState({
+    //       sujetAdded: true,
+    //       message: "Ajouté avec succès"
+    //     });
+    //   })
+    //   .catch(e => {
+    //     this.setState({
+    //       sujetAdded: false,
+    //       message: "Erreur"
+    //     });
+    //   });
 
-      })
-      .then(u => {
-        this.setState({
-          sujetAdded: true,
-          message: "Ajouté avec succès"
-        });
-      })
-      .catch(e => {
-        this.setState({
-          sujetAdded: false,
-          message: "Erreur"
-        });
-      });
-
-   //*****************delete */
-   if (pArr.length === 1) {
-    this.setState({
-      message: "Vous ne pouvez pas supprimer la dérnière ligne"
-    });
-    return;
+    //*****************delete */
+    // if (pArr.length === 1) {
+    //   this.setState({
+    //     message: "Vous ne pouvez pas supprimer la dérnière ligne"
+    //   });
+    //   return;
+    // }
+    // const refa = firebase.database().ref("Sujets_pr");
+    // refa.child(presentateurId).remove();
   }
-  const refa = firebase.database().ref("Sujets_pr");
-  refa.child(presentateurId).remove();
 
-  }
+  // update = (e, s, presentateurId) => {
+  //   let presentateurUp = {
+  //     Sujet: s.NewSujet,
+  //     Presentateur: s.NewPresentateur,
+  //     Date: s.NewDate
+  //   };
 
-  update = (e, s, presentateurId) => {
-    let presentateurUp = {
-      Sujet: s.NewSujet,
-      Presentateur: s.NewPresentateur,
-      Date: s.NewDate
-    };
-
-    const ref = firebase.database().ref("Sujets_pr");
-    ref.child(presentateurId).update(presentateurUp);
-  };
+  //   const ref = firebase.database().ref("Sujets_pr");
+  //   ref.child(presentateurId).update(presentateurUp);
+  // }
 
   render() {
-    let presentateursObj = this.state.presentateurs,
-      presentateursArr = [];
-    for (let pre in presentateursObj) {
-      const name = presentateursObj[pre];
-      presentateursArr.push(name);
+    let dataObj = this.props.data.SujetsPl,
+      dataArr = [],
+      archId = this.props.data.Sujetsarch.archId;
+    for (let pre in dataObj) {
+      const name = dataObj[pre];
+      dataArr.push(name);
     }
 
-    let presentateur = presentateursArr.map((pres, i) => {
+    let presentateur = dataArr.map((pres, i) => {
       return (
         <tr key={i}>
           <td>{pres.Sujet}</td>
@@ -181,98 +191,102 @@ class Admin extends Component {
             <Button
               size="sm"
               color="primary"
-              onClick={e => {this.delete(e, pres.id, presentateursArr);
+              onClick={e => {
+                deleteElem(pres.id);
               }}
             >
               <i
                 className="icons d-block cui-trash"
-                style={{ fontSize: "large" }} title="Supprimer"
+                style={{ fontSize: "large" }}
+                title="Supprimer"
               ></i>
             </Button>
             <Modifier
               update={(e, state) => {
-                this.update(e, state, pres.id);
+                update(state, pres.id);
               }}
               clicked={() => pres}
             />
 
-<div
-        className="animated fadeIn"
-        onClick={this.clickHandler}
-        style={{ display: "inline-block" }}
-      > 
-            <div>
-          <Popup
-            modal
-            trigger={
-              <Button size="sm"
-              color="primary" 
-              title="Archiver">
-                <i
-                 className="icons d-block cui-layers"
-                 style={{ fontSize: "large" }}
-                 ></i>
-              </Button>
-            }
-             >
-                {close => (
+            <div
+              className="animated fadeIn"
+              onClick={this.clickHandler}
+              style={{ display: "inline-block" }}
+            >
               <div>
-                <a
-                  className="close"
-                  onClick={close}
-                  style={{ cursor: "pointer" }}
+                <Popup
+                  modal
+                  trigger={
+                    <Button size="sm" color="primary" title="Archiver">
+                      <i
+                        className="icons d-block cui-layers"
+                        style={{ fontSize: "large" }}
+                      ></i>
+                    </Button>
+                  }
                 >
-                  &times;
-                </a>
-            <Row>
-              <Col>
-                <Card>
-                  <CardHeader>
-                    <i className="fa fa-align-justify"></i> 
-                  </CardHeader>
-                  <CardBody>
-                    <Table responsive hover>
-                      <th>Ajouter un lien</th>
-                     
-                      <tbody>
-                        <tr>
-                          <td>
-                            <Input
-                              type="input"
-                             
-                              name="Lien"
-                              value={this.state.Lien}
-                              onChange={this.handelChange}
-                            >
-                              
-                            </Input>
-                          </td>
-                                               
-                        </tr>
-                        <tr>
-                        <Button
-                            size="sm"
-                            color="primary" 
-                            title="Enregistrer"
-                            onClick={e => {this.Archi(e, pres.id, presentateursArr ,pres.Sujet,
-                                                      pres.Presentateur,pres.Date);
-                            }}
-                            >
-                            Enregistrer
-                            
-                          </Button> 
-                        </tr>
-                      </tbody>
-                    </Table>
-                  </CardBody>
-                </Card>
-              </Col>
-            </Row>
-            </div> )
-            }
-          </Popup>
-        </div>
-</div>
+                  {close => (
+                    <div>
+                      <a
+                        className="close"
+                        onClick={close}
+                        style={{ cursor: "pointer" }}
+                      >
+                        &times;
+                      </a>
+                      <Row>
+                        <Col>
+                          <Card>
+                            <CardHeader>
+                              <i className="fa fa-align-justify"></i>
+                            </CardHeader>
+                            <CardBody>
+                              <Table responsive hover>
+                                <th>Ajouter un lien</th>
+
+                                <tbody>
+                                  <tr>
+                                    <td>
+                                      <Input
+                                        type="input"
+                                        name="Lien"
+                                        value={this.state.Lien}
+                                        onChange={this.handelChange}
+                                      ></Input>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <Button
+                                      size="sm"
+                                      color="primary"
+                                      title="Enregistrer"
+                                      onClick={e => {
+                                        archive(
+                                          e,
+                                          pres.id,
+                                          archId,
+
+                                          pres.Sujet,
+                                          pres.Presentateur,
+                                          pres.Date,
+                                          this.state.Lien
+                                        );
+                                      }}
+                                    >
+                                      Enregistrer
+                                    </Button>
+                                  </tr>
+                                </tbody>
+                              </Table>
+                            </CardBody>
+                          </Card>
+                        </Col>
+                      </Row>
+                    </div>
+                  )}
+                </Popup>
+              </div>
+            </div>
           </td>
         </tr>
       );
@@ -307,14 +321,12 @@ class Admin extends Component {
                 {
                   // width: "80%",
                   // marginLeft: "18%",
-                   paddingBottom: "78%"
+                  //  paddingBottom: "78%"
                 }
               }
             >
               <Card>
-                <CardHeader>
-                  
-                </CardHeader>
+                <CardHeader></CardHeader>
                 <CardBody>
                   <Table responsive hover>
                     <thead>
@@ -336,4 +348,19 @@ class Admin extends Component {
   }
 }
 
-export default Admin;
+const mapStateToProps = state => {
+  return {
+    data: state
+  };
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    getSujetsPl: () => dispatch(getSujetsPl()),
+    getSujetsArch: () => dispatch(getSujetsArch())
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Admin);

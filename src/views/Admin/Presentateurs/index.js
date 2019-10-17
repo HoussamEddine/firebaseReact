@@ -46,6 +46,9 @@ import "../Sujet/Res-sujet.css";
 import firebase from "../../../config/config";
 // import { blockStatement } from "@babel/types";
 
+import getPresentateurs from "../../../store/actions/presentateurs";
+import { connect } from "react-redux";
+
 class AjoutPresentateur extends Component {
   constructor(props) {
     super(props);
@@ -107,22 +110,23 @@ class AjoutPresentateur extends Component {
       });
   }
   componentWillMount() {
-    const ref = firebase.database().ref("Presentateurs");
-    ref.on("value", snapshot => {
-      let value = snapshot.val(),
-        presentateurId;
-      if (value.length) {
-        presentateurId = value.length - 1;
-      } else {
-        for (let id in value) {
-          presentateurId = id;
-        }
-      }
-      this.setState({
-        presentateurs: snapshot.val(),
-        presentateurId: presentateurId
-      });
-    });
+    this.props.getPresentateurs();
+    // const ref = firebase.database().ref("Presentateurs");
+    // ref.on("value", snapshot => {
+    //   let value = snapshot.val(),
+    //     presentateurId;
+    //   if (value.length) {
+    //     presentateurId = value.length - 1;
+    //   } else {
+    //     for (let id in value) {
+    //       presentateurId = id;
+    //     }
+    //   }
+    //   this.setState({
+    //     presentateurs: snapshot.val(),
+    //     presentateurId: presentateurId
+    //   });
+    // });
   }
   delete(e, presentateurId, pArr) {
     if (pArr.length === 1) {
@@ -143,7 +147,7 @@ class AjoutPresentateur extends Component {
     ref.child(presentateurId).update(presentateurUp);
   }
   render() {
-    let presentateursObj = this.state.presentateurs,
+    let presentateursObj = this.props.data.Presentateurs,
       presentateursArr = [];
     for (let pre in presentateursObj) {
       const name = presentateursObj[pre];
@@ -157,7 +161,8 @@ class AjoutPresentateur extends Component {
           <td>{pres.Prenom}</td>
           <td>{pres.Email}</td>
 
-          <Button className=" btn "
+          <Button
+            className=" btn "
             size="sm"
             color="danger"
             onClick={e => {
@@ -183,125 +188,143 @@ class AjoutPresentateur extends Component {
     if (!this.props.isAuth) return <Redirect to="/login" />;
     else
       return (
-      <div className="app">
+        <div className="app">
+          <DefaultAdmin />
 
-        <DefaultAdmin />
+          {/******************************************* Menu **************************/}
 
-        {/******************************************* Menu **************************/}
-
-        <div className="app-body">
-          <AppSidebar fixed display="lg">
-            <AppSidebarHeader />
-            <AppSidebarForm />
-            <Suspense>
-              <AppSidebarNav navConfig={Navi} {...this.props} router={router} />
-            </Suspense>
-            <AppSidebarFooter />
-            <AppSidebarMinimizer />
-          </AppSidebar>
-        </div>
-
-        <div  className="Sujet-column" >
-          <div  >
-            <Col>
-              <Card>
-                <CardHeader>
-                  <strong>Ajouter</strong>
-                </CardHeader>
-                <CardBody>
-                  <Form>
-                    <FormGroup row>
-                      <Col md="3">
-                        <Label>Nom</Label>
-                      </Col>
-                      <Col xs="12" md="9">
-                        <Input
-                          type="input"
-                          name="Nom"
-                          autoComplete="nom"
-                          value={this.state.Nom}
-                          onChange={this.handelChange}
-                        />
-                      </Col>
-                    </FormGroup>
-                    <FormGroup row>
-                      <Col md="3">
-                        <Label>Prenom</Label>
-                      </Col>
-                      <Col xs="12" md="9">
-                        <Input
-                          name="Prenom"
-                          autoComplete="prenom"
-                          value={this.state.Prenom}
-                          onChange={this.handelChange}
-                        />
-                      </Col>
-                    </FormGroup>
-                    <FormGroup row>
-                      <Col md="3">
-                        <Label>E-mail</Label>
-                      </Col>
-                      <Col xs="12" md="9">
-                        <Input
-                          type="input"
-                          id="hf-email"
-                          name="Email"
-                          autoComplete="Email"
-                          value={this.state.Email}
-                          onChange={this.handelChange}
-                        />
-                      </Col>
-                    </FormGroup>
-                  </Form>
-                </CardBody>
-                <CardFooter>
-                  <Button
-                    type="submit"
-                    size="sm"
-                    color="primary"
-                    onClick={this.addUser}
-                  >
-                    <i className="fa fa-dot-circle-o"></i> Enregistrer
-                  </Button>
-                  <Button
-                    type="reset"
-                    size="sm"
-                    color="danger"
-                    onClick={this.annuler}
-                  >
-                    <i className="fa fa-ban"></i> Annuler
-                  </Button>
-                  <p
-                    className="text-muted"
-                    style={{ display: "inline-block", marginLeft: "25px" }}
-                  >
-                    {message}
-                  </p>
-                </CardFooter>
-              </Card>
-            </Col>
+          <div className="app-body">
+            <AppSidebar fixed display="lg">
+              <AppSidebarHeader />
+              <AppSidebarForm />
+              <Suspense>
+                <AppSidebarNav
+                  navConfig={Navi}
+                  {...this.props}
+                  router={router}
+                />
+              </Suspense>
+              <AppSidebarFooter />
+              <AppSidebarMinimizer />
+            </AppSidebar>
           </div>
 
-          <div style={{ alignSelf: "center", justifySelf: "center" }}>
-            <Col>
-              <Card>
-                <CardHeader>
-                  <strong>Modifier / Supprimer</strong>
-                </CardHeader>
-                <CardBody>
-                  <Table responsive hover>
-                    <tbody>
-                      <td>{presentateur}</td>
-                    </tbody>
-                  </Table>
-                </CardBody>
-                <CardFooter></CardFooter>
-              </Card>
-            </Col>
+          <div className="Sujet-column">
+            <div>
+              <Col>
+                <Card>
+                  <CardHeader>
+                    <strong>Ajouter</strong>
+                  </CardHeader>
+                  <CardBody>
+                    <Form>
+                      <FormGroup row>
+                        <Col md="3">
+                          <Label>Nom</Label>
+                        </Col>
+                        <Col xs="12" md="9">
+                          <Input
+                            type="input"
+                            name="Nom"
+                            autoComplete="nom"
+                            value={this.state.Nom}
+                            onChange={this.handelChange}
+                          />
+                        </Col>
+                      </FormGroup>
+                      <FormGroup row>
+                        <Col md="3">
+                          <Label>Prenom</Label>
+                        </Col>
+                        <Col xs="12" md="9">
+                          <Input
+                            name="Prenom"
+                            autoComplete="prenom"
+                            value={this.state.Prenom}
+                            onChange={this.handelChange}
+                          />
+                        </Col>
+                      </FormGroup>
+                      <FormGroup row>
+                        <Col md="3">
+                          <Label>E-mail</Label>
+                        </Col>
+                        <Col xs="12" md="9">
+                          <Input
+                            type="input"
+                            id="hf-email"
+                            name="Email"
+                            autoComplete="Email"
+                            value={this.state.Email}
+                            onChange={this.handelChange}
+                          />
+                        </Col>
+                      </FormGroup>
+                    </Form>
+                  </CardBody>
+                  <CardFooter>
+                    <Button
+                      type="submit"
+                      size="sm"
+                      color="primary"
+                      onClick={this.addUser}
+                    >
+                      <i className="fa fa-dot-circle-o"></i> Enregistrer
+                    </Button>
+                    <Button
+                      type="reset"
+                      size="sm"
+                      color="danger"
+                      onClick={this.annuler}
+                    >
+                      <i className="fa fa-ban"></i> Annuler
+                    </Button>
+                    <p
+                      className="text-muted"
+                      style={{ display: "inline-block", marginLeft: "25px" }}
+                    >
+                      {message}
+                    </p>
+                  </CardFooter>
+                </Card>
+              </Col>
+            </div>
+
+            <div style={{ alignSelf: "center", justifySelf: "center" }}>
+              <Col>
+                <Card>
+                  <CardHeader>
+                    <strong>Modifier / Supprimer</strong>
+                  </CardHeader>
+                  <CardBody>
+                    <Table responsive hover>
+                      <tbody>
+                        <td>{presentateur}</td>
+                      </tbody>
+                    </Table>
+                  </CardBody>
+                  <CardFooter></CardFooter>
+                </Card>
+              </Col>
+            </div>
           </div>
         </div>
-      </div>
-    );
+      );
   }
 }
-export default AjoutPresentateur;
+
+const mapStateToProps = state => {
+  return {
+    data: state
+  };
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    getPresentateurs: () => dispatch(getPresentateurs())
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AjoutPresentateur);

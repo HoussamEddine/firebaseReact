@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 
-import firebase from "../../config/config";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import getSujetsPl from "../../store/actions/sujetsPl";
@@ -23,14 +22,14 @@ class SujetPl extends Component {
   }
 
   render() {
-    let presentateursObj = this.props.data.SujetsPl,
-      presentateursArr = [];
-    for (let pre in presentateursObj) {
-      const name = presentateursObj[pre];
-      presentateursArr.push(name);
+    let dataObj = this.props.data.SujetsPl,
+      dataArr = [];
+    for (let pre in dataObj) {
+      const name = dataObj[pre];
+      dataArr.push(name);
     }
-    console.log(presentateursArr);
-    let eventsPre = presentateursArr.map((pres, i) => {
+
+    let eventsPre = dataArr.map((pres, i) => {
       return {
         id: i,
         title: pres.Sujet + " \n " + pres.Presentateur,

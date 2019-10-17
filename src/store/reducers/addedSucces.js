@@ -1,10 +1,10 @@
-const getSujetsReducer = (state, action) => {
+const addedSucces = (state, action) => {
   let newState = { ...state };
   switch (action.type) {
-    case "DATA_READY":
+    case "ADDEDD_SUCCES":
       return { ...action.payload };
   }
   return newState;
 };
 
-export default getSujetsReducer;
+export default getPresentateursReducer;

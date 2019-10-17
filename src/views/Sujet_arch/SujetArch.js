@@ -25,7 +25,6 @@ class SujetArch extends Component {
   }
 
   render() {
-    console.log(this.props);
     let sujetarchObj = this.props.data.Sujetsarch; // hna khaski diri smiya s7i7a diri console.log(this.props) bach ta3arfi wcha rah 3andak temma
 
     let sujetsArr = [];

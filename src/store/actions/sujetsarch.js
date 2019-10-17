@@ -1,13 +1,20 @@
-import firebase from "../../config/config";
+import fetchDb from "./../../api/fetchDb";
 
 const getSujetsArch = () => {
   return dispatch => {
-    let payload;
-    const ref = firebase.database().ref("Sujets_arch");
+    let payload, ArchId;
+    const ref = fetchDb("Sujets_arch");
     ref &&
       ref.on("value", snapshot => {
         payload = snapshot.val();
-        dispatch({ type: "SUJETSARCH_READY", payload });
+        if (payload.length) {
+          ArchId = payload.length - 1;
+        } else {
+          for (let id in payload) {
+            ArchId = id;
+          }
+        }
+        dispatch({ type: "SUJETSARCH_READY", payload, ArchId: ArchId });
       });
   };
 };

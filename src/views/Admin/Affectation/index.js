@@ -27,6 +27,10 @@ import * as router from "react-router-dom";
 import Navi from "../Navi";
 import "./affectation.css";
 
+import { connect } from "react-redux";
+import getSujets from "../../../store/actions/sujetsPro";
+import getPresentateurs from "../../../store/actions/presentateurs";
+
 class Affectation extends Component {
   constructor(props) {
     super(props);
@@ -44,31 +48,33 @@ class Affectation extends Component {
   };
 
   componentWillMount() {
-    const ref = firebase.database().ref("Sujets");
-    ref.on("value", snapshot => {
-      this.setState({
-        Sujets: snapshot.val()
-      });
-    });
+    this.props.getSujets();
+    this.props.getPresentateurs();
+    // const ref = firebase.database().ref("Sujets");
+    // ref.on("value", snapshot => {
+    //   this.setState({
+    //     Sujets: snapshot.val()
+    //   });
+    // });
 
-    /*presentateurs*/
+    // /*presentateurs*/
 
-    const refP = firebase.database().ref("Presentateurs");
-    refP.on("value", snapshot => {
-      let value = snapshot.val(),
-        presentateurId;
-      if (value.length) {
-        presentateurId = value.length - 1;
-      } else {
-        for (let id in value) {
-          presentateurId = id;
-        }
-      }
-      this.setState({
-        presentateurs: snapshot.val(),
-        presentateurId: presentateurId
-      });
-    });
+    // const refP = firebase.database().ref("Presentateurs");
+    // refP.on("value", snapshot => {
+    //   let value = snapshot.val(),
+    //     presentateurId;
+    //   if (value.length) {
+    //     presentateurId = value.length - 1;
+    //   } else {
+    //     for (let id in value) {
+    //       presentateurId = id;
+    //     }
+    //   }
+    //   this.setState({
+    //     presentateurs: snapshot.val(),
+    //     presentateurId: presentateurId
+    //   });
+    // });
     /** Sujets pr */
     const refS = firebase.database().ref("Sujets_pr");
     refS.on("value", snapshot => {
@@ -113,11 +119,9 @@ class Affectation extends Component {
           message: "Erreur"
         });
       });
-
-      
   }
   render() {
-    let sujetsObj = this.state.Sujets,
+    let sujetsObj = this.props.data.Sujets,
       sujetsArr = [],
       message = this.state.message;
     for (let suj in sujetsObj) {
@@ -125,7 +129,7 @@ class Affectation extends Component {
       sujetsArr.push(name);
     }
 
-    let presentateursObj = this.state.presentateurs,
+    let presentateursObj = this.props.data.Presentateurs,
       presentateursArr = [];
     for (let pre in presentateursObj) {
       const name = presentateursObj[pre];
@@ -164,7 +168,8 @@ class Affectation extends Component {
               type="submit"
               size="sm"
               color="primary"
-              onClick={e => this.addAffect(e, sujets)} title="Affecter"
+              onClick={e => this.addAffect(e, sujets)}
+              title="Affecter"
             >
               <i
                 className="icons d-block cui-share"
@@ -235,4 +240,19 @@ class Affectation extends Component {
   }
 }
 
-export default Affectation;
+const mapStateToProps = state => {
+  return {
+    data: state
+  };
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    getSujets: () => dispatch(getSujets()),
+    getPresentateurs: () => dispatch(getPresentateurs())
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Affectation);
