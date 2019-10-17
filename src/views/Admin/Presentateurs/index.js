@@ -49,15 +49,21 @@ import firebase from "../../../config/config";
 import getPresentateurs from "../../../store/actions/presentateurs";
 import { connect } from "react-redux";
 
+// api
+
+import deleteElem from "./../../../api/delete";
+import update from "./../../../api/update";
+import addUser from "./../../../api/addUser";
+
 class AjoutPresentateur extends Component {
   constructor(props) {
     super(props);
     this.handelChange = this.handelChange.bind(this);
     // this.handelNewChange = this.handelNewChange.bind(this);
     this.annuler = this.annuler.bind(this);
-    this.addUser = this.addUser.bind(this);
-    this.delete = this.delete.bind(this);
-    this.update = this.update.bind(this);
+    // this.addUser = this.addUser.bind(this);
+    // this.delete = this.delete.bind(this);
+    // this.update = this.update.bind(this);
     this.state = {
       Nom: "",
       Prenom: "",
@@ -83,32 +89,32 @@ class AjoutPresentateur extends Component {
     });
   }
 
-  addUser(e) {
-    e.preventDefault();
+  // addUser(e) {
+  //   e.preventDefault();
 
-    firebase
-      .database()
-      .ref("Presentateurs/" + ++this.state.presentateurId)
-      .set({
-        Nom: this.state.Nom,
-        Prenom: this.state.Prenom,
-        Email: this.state.Email,
-        id: this.state.presentateurId
-      })
-      .then(u => {
-        this.setState({
-          userAdded: true,
-          message: "Ajouté avec succès"
-        });
-      })
-      .catch(e => {
-        console.log(e);
-        this.setState({
-          userAdded: false,
-          message: "Erreur"
-        });
-      });
-  }
+  //   firebase
+  //     .database()
+  //     .ref("Presentateurs/" + ++this.state.presentateurId)
+  //     .set({
+  //       Nom: this.state.Nom,
+  //       Prenom: this.state.Prenom,
+  //       Email: this.state.Email,
+  //       id: this.state.presentateurId
+  //     })
+  //     .then(u => {
+  //       this.setState({
+  //         userAdded: true,
+  //         message: "Ajouté avec succès"
+  //       });
+  //     })
+  //     .catch(e => {
+  //       console.log(e);
+  //       this.setState({
+  //         userAdded: false,
+  //         message: "Erreur"
+  //       });
+  //     });
+  // }
   componentWillMount() {
     this.props.getPresentateurs();
     // const ref = firebase.database().ref("Presentateurs");
@@ -128,25 +134,26 @@ class AjoutPresentateur extends Component {
     //   });
     // });
   }
-  delete(e, presentateurId, pArr) {
-    if (pArr.length === 1) {
-      this.setState({ message: "cannot remove the last child" });
-      return;
-    }
-    const ref = firebase.database().ref("Presentateurs");
-    ref.child(presentateurId).remove();
-  }
-  update(e, s, presentateurId) {
-    let presentateurUp = {
-      Nom: s.NewNom,
-      Prenom: s.NewPrenom,
-      Email: s.NewEmail
-    };
+  // delete(e, presentateurId, pArr) {
+  //   if (pArr.length === 1) {
+  //     this.setState({ message: "cannot remove the last child" });
+  //     return;
+  //   }
+  //   const ref = firebase.database().ref("Presentateurs");
+  //   ref.child(presentateurId).remove();
+  // }
+  // update(e, s, presentateurId) {
+  //   let presentateurUp = {
+  //     Nom: s.NewNom,
+  //     Prenom: s.NewPrenom,
+  //     Email: s.NewEmail
+  //   };
 
-    const ref = firebase.database().ref("Presentateurs");
-    ref.child(presentateurId).update(presentateurUp);
-  }
+  //   const ref = firebase.database().ref("Presentateurs");
+  //   ref.child(presentateurId).update(presentateurUp);
+  // }
   render() {
+    console.log(this.props);
     let presentateursObj = this.props.data.Presentateurs,
       presentateursArr = [];
     for (let pre in presentateursObj) {
@@ -166,7 +173,7 @@ class AjoutPresentateur extends Component {
             size="sm"
             color="danger"
             onClick={e => {
-              this.delete(e, pres.id, presentateursArr);
+              deleteElem("Presentateurs", pres.id);
             }}
           >
             <i
@@ -175,8 +182,8 @@ class AjoutPresentateur extends Component {
             ></i>
           </Button>
           <Modifier
-            update={(e, state) => {
-              this.update(e, state, pres.id);
+            update={(dbName, state, id) => {
+              update("Presentateurs", state, pres.id);
             }}
             clicked={() => pres}
           />
@@ -267,7 +274,16 @@ class AjoutPresentateur extends Component {
                       type="submit"
                       size="sm"
                       color="primary"
-                      onClick={this.addUser}
+                      onClick={(e, dbName, id, nom, prenom, email) =>
+                        addUser(
+                          e,
+                          "Presentateurs",
+                          this.props.data.Presentateurs.presentateurId,
+                          this.state.Nom,
+                          this.state.Prenom,
+                          this.state.Email
+                        )
+                      }
                     >
                       <i className="fa fa-dot-circle-o"></i> Enregistrer
                     </Button>

@@ -1,8 +1,9 @@
 import fetchDb from "./fetchDb";
 
 import { addedSucces } from "../store/actions/addedSucces";
-
+import { addedFail } from "../store/actions/addedFail";
 const archive = (
+  dbName,
   e,
   presentateurId,
   ArchId,
@@ -14,7 +15,7 @@ const archive = (
   //**************** */add
   e.preventDefault();
 
-  fetchDb("Sujets_arch/" + ++ArchId)
+  fetchDb(dbName + "/" + ++ArchId)
     .set({
       id: ArchId,
       Sujet: Sujet,
@@ -35,6 +36,7 @@ const archive = (
       //   sujetAdded: false,
       //   message: "Erreur"
       // });
+      addedFail();
     });
 
   //*****************delete */
@@ -44,7 +46,7 @@ const archive = (
   //   // });
   //   return;
   // }
-  const ref = fetchDb("Sujets_pr");
+  const ref = fetchDb(dbName);
   ref && ref.child(presentateurId).remove();
 };
 

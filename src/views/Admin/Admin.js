@@ -121,45 +121,44 @@ class Admin extends Component {
   //   ref.child(presentateurId).remove();
   // }
 
-  Archi(e, presentateurId, pArr, Sujet, Presentateur, Date) {
-    //**************** */add
-    e.preventDefault();
-    console.log(presentateurId);
+  // Archi(e, presentateurId, pArr, Sujet, Presentateur, Date) {
+  //   //**************** */add
+  //   e.preventDefault();
 
-    // firebase
-    //   .database()
-    //   .ref("Sujets_arch/" + ++this.state.ArchId)
-    //   .set({
-    //     id: this.state.ArchId,
-    //     Sujet: Sujet,
-    //     Presentateur: Presentateur,
-    //     Date: Date,
-    //     Lien: this.state.Lien
-    //     // lien: this.Lien,
-    //   })
-    //   .then(u => {
-    //     this.setState({
-    //       sujetAdded: true,
-    //       message: "Ajouté avec succès"
-    //     });
-    //   })
-    //   .catch(e => {
-    //     this.setState({
-    //       sujetAdded: false,
-    //       message: "Erreur"
-    //     });
-    //   });
+  // firebase
+  //   .database()
+  //   .ref("Sujets_arch/" + ++this.state.ArchId)
+  //   .set({
+  //     id: this.state.ArchId,
+  //     Sujet: Sujet,
+  //     Presentateur: Presentateur,
+  //     Date: Date,
+  //     Lien: this.state.Lien
+  //     // lien: this.Lien,
+  //   })
+  //   .then(u => {
+  //     this.setState({
+  //       sujetAdded: true,
+  //       message: "Ajouté avec succès"
+  //     });
+  //   })
+  //   .catch(e => {
+  //     this.setState({
+  //       sujetAdded: false,
+  //       message: "Erreur"
+  //     });
+  //   });
 
-    //*****************delete */
-    // if (pArr.length === 1) {
-    //   this.setState({
-    //     message: "Vous ne pouvez pas supprimer la dérnière ligne"
-    //   });
-    //   return;
-    // }
-    // const refa = firebase.database().ref("Sujets_pr");
-    // refa.child(presentateurId).remove();
-  }
+  //*****************delete */
+  // if (pArr.length === 1) {
+  //   this.setState({
+  //     message: "Vous ne pouvez pas supprimer la dérnière ligne"
+  //   });
+  //   return;
+  // }
+  // const refa = firebase.database().ref("Sujets_pr");
+  // refa.child(presentateurId).remove();
+  // }
 
   // update = (e, s, presentateurId) => {
   //   let presentateurUp = {
@@ -191,8 +190,8 @@ class Admin extends Component {
             <Button
               size="sm"
               color="primary"
-              onClick={e => {
-                deleteElem(pres.id);
+              onClick={() => {
+                deleteElem("Sujets_pr", pres.id);
               }}
             >
               <i
@@ -202,8 +201,8 @@ class Admin extends Component {
               ></i>
             </Button>
             <Modifier
-              update={(e, state) => {
-                update(state, pres.id);
+              update={(dbName, state, id) => {
+                update("Sujets_pr", state, pres.id);
               }}
               clicked={() => pres}
             />
@@ -262,6 +261,7 @@ class Admin extends Component {
                                       title="Enregistrer"
                                       onClick={e => {
                                         archive(
+                                          "Sujets_arch",
                                           e,
                                           pres.id,
                                           archId,
@@ -315,16 +315,7 @@ class Admin extends Component {
             </AppSidebar>
           </div>
           <div>
-            <Col
-              className="admin-column"
-              style={
-                {
-                  // width: "80%",
-                  // marginLeft: "18%",
-                  //  paddingBottom: "78%"
-                }
-              }
-            >
+            <Col className="admin-column">
               <Card>
                 <CardHeader></CardHeader>
                 <CardBody>

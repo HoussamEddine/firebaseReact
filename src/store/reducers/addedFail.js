@@ -1,10 +1,10 @@
-const addedSucces = (state, action) => {
+const addedFail = (state, action) => {
   let newState = { ...state };
   switch (action.type) {
-    case "ADDEDD_SUCCES":
+    case "ADDEDD_Fail":
       return { ...action.payload };
   }
   return newState;
 };
 
-export default addedSucces;
+export default addedFail;
