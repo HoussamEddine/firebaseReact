@@ -1,7 +1,7 @@
 import fetchDb from "./fetchDb";
 
-import { addedSucces } from "../store/actions/addedSucces";
-import { addedFail } from "../store/actions/addedFail";
+import { added } from "../store/actions/added";
+
 const archive = (
   dbName,
   e,
@@ -10,7 +10,8 @@ const archive = (
   Sujet,
   Presentateur,
   Date,
-  Lien
+  Lien,
+  dispatch
 ) => {
   //**************** */add
   e.preventDefault();
@@ -29,14 +30,14 @@ const archive = (
       //   sujetAdded: true,
       //   message: "Ajouté avec succès"
       // });
-      addedSucces();
+      dispatch(added("archive", true, "archiver avec succes"));
     })
     .catch(e => {
       // this.setState({
       //   sujetAdded: false,
       //   message: "Erreur"
       // });
-      addedFail();
+      dispatch(added("archive", true, "erreur"));
     });
 
   //*****************delete */

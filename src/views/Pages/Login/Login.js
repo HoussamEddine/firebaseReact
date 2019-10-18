@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
-import fire from "../../../config/config";
+
 import "firebase/auth";
 import {
   Button,
@@ -16,13 +16,15 @@ import {
   InputGroupText,
   Row
 } from "reactstrap";
+import { connect } from "react-redux";
+import login from "./../../../api/login";
 
 class Login extends Component {
   constructor(props) {
     super(props);
 
     this.handleChange = this.handleChange.bind(this);
-    this.login = this.login.bind(this);
+
     this.state = {
       user: {},
       email: "",
@@ -32,34 +34,17 @@ class Login extends Component {
     };
   }
 
-  login(e) {
-    this.setState({
-      auth: true,
-      error: null
-    });
-    e.preventDefault();
-    fire
-      .auth()
-      .signInWithEmailAndPassword(this.state.email, this.state.password)
-      .then(u => {
-        this.setState({
-          isLoggedIn: true
-        });
-      })
-      .catch(error => {
-        this.setState({
-          error,
-          isLoggedIn: false
-        });
-      });
-  }
-
   handleChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
 
   render() {
-    if (this.props.isAuth) return <Redirect to="/admin" />;
+    let auth = this.props.data.auth,
+      isAuth = auth.isAuth,
+      email = this.state.email,
+      password = this.state.password,
+      dispatch = this.props.dispatch;
+    if (isAuth === true) return <Redirect to="/admin" />;
     else
       return (
         <div className="app flex-row align-items-center">
@@ -81,7 +66,7 @@ class Login extends Component {
                             </InputGroupText>
                           </InputGroupAddon>
                           <Input
-                            value={this.state.email}
+                            value={email}
                             onChange={this.handleChange}
                             type="text"
                             placeholder="E-mail"
@@ -96,7 +81,7 @@ class Login extends Component {
                             </InputGroupText>
                           </InputGroupAddon>
                           <Input
-                            value={this.state.password}
+                            value={password}
                             onChange={this.handleChange}
                             type="password"
                             placeholder="Mot de passe"
@@ -108,14 +93,14 @@ class Login extends Component {
                           <Col xs="6">
                             <Button
                               type="submit"
-                              onClick={this.login}
+                              onClick={e => login(e, email, password, dispatch)}
                               color="primary"
                               className="px-4"
                             >
                               Connecter
                             </Button>
                           </Col>
-                         
+
                           {/**<Col xs="6" className="text-right">
                             <Button color="link" className="px-0">
                               Mot de passe oublié?
@@ -125,16 +110,11 @@ class Login extends Component {
                         <br />
                         <br />
                         <p className="text-muted" style={{ color: "red" }}>
-                          {this.state.auth
-                            ? this.state.error
-                              ? this.state.error.message
-                              : null
-                            : null}
+                          {auth.error ? auth.error.message : null}
                         </p>
                       </Form>
                     </CardBody>
                   </Card>
-                 
                 </CardGroup>
               </Col>
             </Row>
@@ -142,6 +122,19 @@ class Login extends Component {
         </div>
       );
   }
-  
 }
-export default Login;
+
+const mapStatetoProps = state => {
+  return {
+    data: state
+  };
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatch: dispatch
+  };
+};
+export default connect(
+  mapStatetoProps,
+  mapDispatchToProps
+)(Login);

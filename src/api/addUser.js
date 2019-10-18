@@ -1,8 +1,8 @@
-import { addedSucces } from "../store/actions/addedSucces";
-import { addedFail } from "../store/actions/addedFail";
+import { added } from "../store/actions/added";
+
 import fetchDb from "./fetchDb";
 
-const addUser = (e, dbName, presentateurId, Nom, Prenom, Email) => {
+const addUser = (e, dbName, presentateurId, Nom, Prenom, Email, dispatch) => {
   e.preventDefault();
 
   fetchDb(dbName + "/" + ++presentateurId)
@@ -13,11 +13,11 @@ const addUser = (e, dbName, presentateurId, Nom, Prenom, Email) => {
       id: presentateurId
     })
     .then(u => {
-      addedSucces();
+      dispatch(added("user", true, "ajoute avec succes"));
     })
     .catch(e => {
       console.log(e);
-      addedFail();
+      dispatch(added("user", true, "erreur"));
     });
 };
 

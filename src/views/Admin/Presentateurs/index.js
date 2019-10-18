@@ -27,24 +27,11 @@ import {
   Label
 } from "reactstrap";
 
-// import {
-//   AppAside,
-//   AppFooter,
-//   AppHeader,
-//   AppSidebar,
-//   AppSidebarFooter,
-//   AppSidebarForm,
-//   AppSidebarHeader,
-//   AppSidebarMinimizer,
-//   AppBreadcrumb2 as AppBreadcrumb,
-//   AppSidebarNav2 as AppSidebarNav
-// } from "@coreui/react";
 import DefaultAdmin from "../DefaultAdmin";
 
 import "../Sujet/Res-sujet.css";
 
 import firebase from "../../../config/config";
-// import { blockStatement } from "@babel/types";
 
 import getPresentateurs from "../../../store/actions/presentateurs";
 import { connect } from "react-redux";
@@ -59,11 +46,9 @@ class AjoutPresentateur extends Component {
   constructor(props) {
     super(props);
     this.handelChange = this.handelChange.bind(this);
-    // this.handelNewChange = this.handelNewChange.bind(this);
+
     this.annuler = this.annuler.bind(this);
-    // this.addUser = this.addUser.bind(this);
-    // this.delete = this.delete.bind(this);
-    // this.update = this.update.bind(this);
+
     this.state = {
       Nom: "",
       Prenom: "",
@@ -89,73 +74,21 @@ class AjoutPresentateur extends Component {
     });
   }
 
-  // addUser(e) {
-  //   e.preventDefault();
-
-  //   firebase
-  //     .database()
-  //     .ref("Presentateurs/" + ++this.state.presentateurId)
-  //     .set({
-  //       Nom: this.state.Nom,
-  //       Prenom: this.state.Prenom,
-  //       Email: this.state.Email,
-  //       id: this.state.presentateurId
-  //     })
-  //     .then(u => {
-  //       this.setState({
-  //         userAdded: true,
-  //         message: "Ajouté avec succès"
-  //       });
-  //     })
-  //     .catch(e => {
-  //       console.log(e);
-  //       this.setState({
-  //         userAdded: false,
-  //         message: "Erreur"
-  //       });
-  //     });
-  // }
   componentWillMount() {
     this.props.getPresentateurs();
-    // const ref = firebase.database().ref("Presentateurs");
-    // ref.on("value", snapshot => {
-    //   let value = snapshot.val(),
-    //     presentateurId;
-    //   if (value.length) {
-    //     presentateurId = value.length - 1;
-    //   } else {
-    //     for (let id in value) {
-    //       presentateurId = id;
-    //     }
-    //   }
-    //   this.setState({
-    //     presentateurs: snapshot.val(),
-    //     presentateurId: presentateurId
-    //   });
-    // });
   }
-  // delete(e, presentateurId, pArr) {
-  //   if (pArr.length === 1) {
-  //     this.setState({ message: "cannot remove the last child" });
-  //     return;
-  //   }
-  //   const ref = firebase.database().ref("Presentateurs");
-  //   ref.child(presentateurId).remove();
-  // }
-  // update(e, s, presentateurId) {
-  //   let presentateurUp = {
-  //     Nom: s.NewNom,
-  //     Prenom: s.NewPrenom,
-  //     Email: s.NewEmail
-  //   };
 
-  //   const ref = firebase.database().ref("Presentateurs");
-  //   ref.child(presentateurId).update(presentateurUp);
-  // }
   render() {
-    console.log(this.props);
+    console.log(this.props.data.added);
     let presentateursObj = this.props.data.Presentateurs,
-      presentateursArr = [];
+      presentateursArr = [],
+      presentateurId = this.props.data.Presentateurs.presentateurId,
+      dispatch = this.props.dispatch,
+      Nom = this.state.Nom,
+      Prenom = this.state.Prenom,
+      Email = this.state.Email,
+      auth = this.props.data.auth,
+      isAuth = auth.isAuth;
     for (let pre in presentateursObj) {
       const name = presentateursObj[pre];
       presentateursArr.push(name);
@@ -191,8 +124,8 @@ class AjoutPresentateur extends Component {
       );
     });
 
-    let message = this.state.message;
-    if (!this.props.isAuth) return <Redirect to="/login" />;
+    let message = this.props.data.added.message;
+    if (isAuth === false) return <Redirect to="/login" />;
     else
       return (
         <div className="app">
@@ -274,14 +207,15 @@ class AjoutPresentateur extends Component {
                       type="submit"
                       size="sm"
                       color="primary"
-                      onClick={(e, dbName, id, nom, prenom, email) =>
+                      onClick={(e, dbName, id, nom, prenom, email, disp) =>
                         addUser(
                           e,
                           "Presentateurs",
-                          this.props.data.Presentateurs.presentateurId,
-                          this.state.Nom,
-                          this.state.Prenom,
-                          this.state.Email
+                          presentateurId,
+                          Nom,
+                          Prenom,
+                          Email,
+                          dispatch
                         )
                       }
                     >
@@ -336,7 +270,8 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    getPresentateurs: () => dispatch(getPresentateurs())
+    getPresentateurs: () => dispatch(getPresentateurs()),
+    dispatch: dispatch
   };
 };
 

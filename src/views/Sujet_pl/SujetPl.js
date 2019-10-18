@@ -36,15 +36,6 @@ class SujetPl extends Component {
         start: pres.Date
       };
     });
-    // let presentateur = presentateursArr.map((pres, i) => {
-    //   return (
-    //     <tr key={i}>
-    //       <td>{pres.Sujet}</td>
-    //       <td>{pres.Presentateur}</td>
-    //       <td>{pres.Date}</td>
-    //     </tr>
-    //   );
-    // });
 
     return (
       <div className="app" style={{ background: "white", padding: "10px" }}>
@@ -54,25 +45,6 @@ class SujetPl extends Component {
           locale="fr"
           events={eventsPre}
         />
-
-        {/* <div>
-          <Col>
-            <Card>
-              <CardHeader></CardHeader>
-              <CardBody>
-                <Table responsive hover>
-                  <thead>
-                    <th>Sujet</th>
-                    <th>Présentateur</th>
-                    <th>Date</th>
-                  </thead>
-                  <tbody>{presentateur}</tbody>
-                </Table>
-              </CardBody>
-              <CardFooter></CardFooter>
-            </Card>
-          </Col>
-        </div> */}
       </div>
     );
   }

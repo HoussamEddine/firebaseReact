@@ -2,7 +2,7 @@ import React, { Component, Suspense } from "react";
 
 import { Redirect, Route, Switch } from "react-router-dom";
 import Modifier from "./ModifierSujet";
-// import Popup from "reactjs-popup";
+
 import {
   Card,
   CardBody,
@@ -29,7 +29,7 @@ import {
 import DefaultAdmin from "../DefaultAdmin";
 // import Admin from "../Admin";
 import Navi from "../Navi";
-import firebase from "../../../config/config";
+
 // import { blockStatement } from "@babel/types";
 
 import * as router from "react-router-dom";
@@ -38,6 +38,11 @@ import "./Res-sujet.css";
 import getSujets from "../../../store/actions/sujetsPro";
 import { connect } from "react-redux";
 
+// api
+import deleteElem from "./../../../api/delete";
+import update from "./../../../api/update";
+import addSujet from "./../../../api/addSujet";
+
 class GererSujet extends Component {
   constructor(props) {
     super(props);
@@ -45,8 +50,7 @@ class GererSujet extends Component {
     this.toggle = this.toggle.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.annuler = this.annuler.bind(this);
-    this.addSujet = this.addSujet.bind(this);
-    this.delete = this.delete.bind(this);
+
     this.state = {
       sujet: "",
       sujetAdded: false,
@@ -75,71 +79,21 @@ class GererSujet extends Component {
     });
   }
 
-  addSujet(e) {
-    e.preventDefault();
-
-    firebase
-      .database()
-      .ref("Sujets/" + ++this.state.sujetId)
-      .set({
-        Name: this.state.sujet,
-        id: this.state.sujetId
-      })
-      .then(u => {
-        this.setState({
-          sujetAdded: true,
-          message: "Ajouté avec succès"
-        });
-      })
-      .catch(e => {
-        this.setState({
-          userAdded: false,
-          message: "Erreur"
-        });
-      });
-  }
-  delete(e, sujetId) {
-    if (sujetId === 0) {
-      this.setState({ message: "on peut pas supprimer la dernière ligne" });
-      return;
-    }
-    const ref = firebase.database().ref("Sujets");
-    ref.child(sujetId).remove();
-  }
-  update(e, s, sujetId) {
-    let sujetUp = {
-      Name: s.NewSujet
-    };
-
-    const ref = firebase.database().ref("Sujets");
-    ref.child(sujetId).update(sujetUp);
-  }
   componentWillMount() {
     this.props.getSujets();
-    // const ref = firebase.database().ref("Sujets");
-    // ref.on("value", snapshot => {
-    //   let value = snapshot.val(),
-    //     sujetId;
-    //   if (value.length) {
-    //     sujetId = value.length - 1;
-    //   } else {
-    //     for (let id in value) {
-    //       sujetId = id;
-    //     }
-    //   }
-    //   this.setState({
-    //     sujet_pr: snapshot.val(),
-    //     sujetId: sujetId
-    //   });
-    // });
   }
   render() {
-    let sujetsObj = this.props.data.Sujets,
-      message = this.state.message,
-      sujetsArr = [];
-    // console.log(sujetsObj);
-    for (let suj in sujetsObj) {
-      const name = sujetsObj[suj];
+    let data = this.props.data,
+      message = data.added.message,
+      dispatch = this.props.dispatch,
+      sujetsArr = [],
+      sujetId = this.props.data.Sujets.sujetId,
+      sujet = this.state.sujet,
+      auth = this.props.data.auth,
+      isAuth = auth.isAuth;
+
+    for (let suj in data.Sujets) {
+      const name = data.Sujets[suj];
       sujetsArr.push(name);
     }
     const sujets = sujetsArr.map((sujets, i) => {
@@ -154,8 +108,8 @@ class GererSujet extends Component {
               className=" btn btn-mdf"
               size="sm"
               color="danger"
-              onClick={e => {
-                this.delete(e, sujets.id);
+              onClick={() => {
+                deleteElem("Sujets", sujets.id);
               }}
             >
               <i
@@ -164,8 +118,8 @@ class GererSujet extends Component {
               ></i>
             </Button>
             <Modifier
-              update={(e, state) => {
-                this.update(e, state, sujets.id);
+              update={(dbName, state, Id) => {
+                update("Sujets", state, sujets.id);
               }}
               clicked={() => sujets}
             />
@@ -174,7 +128,7 @@ class GererSujet extends Component {
       );
     });
 
-    if (!this.props.isAuth) return <Redirect to="/login" />;
+    if (isAuth === false) return <Redirect to="/login" />;
     else
       return (
         <div className="app">
@@ -214,7 +168,7 @@ class GererSujet extends Component {
                         <Col xs="12" md="9">
                           <Input
                             onChange={this.handleChange}
-                            value={this.state.sujet}
+                            value={sujet}
                             name="sujet"
                           />
                         </Col>
@@ -226,7 +180,9 @@ class GererSujet extends Component {
                       type="submit"
                       size="sm"
                       color="primary"
-                      onClick={this.addSujet}
+                      onClick={(e, dbName, id, suj, ds) => {
+                        addSujet(e, "Sujets", sujetId, sujet, dispatch);
+                      }}
                     >
                       <i className="fa fa-dot-circle-o"></i> Enregistrer
                     </Button>
@@ -285,7 +241,8 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    getSujets: () => dispatch(getSujets())
+    getSujets: () => dispatch(getSujets()),
+    dispatch: dispatch
   };
 };
 

@@ -2,22 +2,26 @@ import fetchDb from "./fetchDb";
 
 const update = (dbName, s, Id) => {
   const ref = fetchDb(dbName);
-  let presentateurUp;
+  let data;
   if (dbName === "Presentateurs") {
-    presentateurUp = {
+    data = {
       Nom: s.NewNom,
       Prenom: s.NewPrenom,
       Email: s.NewEmail
     };
+  } else if (dbName === "Sujets") {
+    data = {
+      Name: s.NewSujet
+    };
   } else {
-    presentateurUp = {
+    data = {
       Sujet: s.NewSujet,
       Presentateur: s.NewPresentateur,
       Date: s.NewDate
     };
   }
 
-  ref && ref.child(Id).update(presentateurUp);
+  ref && ref.child(Id).update(data);
 };
 
 export default update;

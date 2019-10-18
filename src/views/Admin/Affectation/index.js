@@ -31,10 +31,14 @@ import { connect } from "react-redux";
 import getSujets from "../../../store/actions/sujetsPro";
 import getPresentateurs from "../../../store/actions/presentateurs";
 
+// api
+
+import addAffect from "./../../../api/addAffect";
+
 class Affectation extends Component {
   constructor(props) {
     super(props);
-    this.addAffect = this.addAffect.bind(this);
+
     this.handelChange = this.handelChange.bind(this);
 
     this.state = {
@@ -50,80 +54,17 @@ class Affectation extends Component {
   componentWillMount() {
     this.props.getSujets();
     this.props.getPresentateurs();
-    // const ref = firebase.database().ref("Sujets");
-    // ref.on("value", snapshot => {
-    //   this.setState({
-    //     Sujets: snapshot.val()
-    //   });
-    // });
-
-    // /*presentateurs*/
-
-    // const refP = firebase.database().ref("Presentateurs");
-    // refP.on("value", snapshot => {
-    //   let value = snapshot.val(),
-    //     presentateurId;
-    //   if (value.length) {
-    //     presentateurId = value.length - 1;
-    //   } else {
-    //     for (let id in value) {
-    //       presentateurId = id;
-    //     }
-    //   }
-    //   this.setState({
-    //     presentateurs: snapshot.val(),
-    //     presentateurId: presentateurId
-    //   });
-    // });
-    /** Sujets pr */
-    const refS = firebase.database().ref("Sujets_pr");
-    refS.on("value", snapshot => {
-      let value = snapshot.val(),
-        AffecId;
-      if (value.length) {
-        AffecId = value.length - 1;
-      } else {
-        for (let id in value) {
-          AffecId = id;
-        }
-      }
-      this.setState({
-        affectation: snapshot.val(),
-        AffecId: AffecId
-      });
-    });
-  }
-  addAffect(e, sujet) {
-    e.preventDefault();
-
-    firebase
-      .database()
-
-      .ref("Sujets_pr/" + ++this.state.AffecId)
-      .set({
-        Sujet: sujet,
-        Presentateur: this.state.Presentateur,
-        Date: this.state.Date,
-        id: this.state.AffecId
-      })
-      .then(u => {
-        this.setState({
-          AffecAdded: true,
-          message: "Ajouté avec succès"
-        });
-      })
-      .catch(e => {
-        console.log(e);
-        this.setState({
-          AffecAdded: false,
-          message: "Erreur"
-        });
-      });
   }
   render() {
     let sujetsObj = this.props.data.Sujets,
+      dispatch = this.props.dispatch,
       sujetsArr = [],
-      message = this.state.message;
+      message = this.props.data.added.message,
+      affectId = this.props.data.SujetsPl.affectId,
+      Presentateur = this.state.Presentateur,
+      date = this.state.Date,
+      auth = this.props.data.auth,
+      isAuth = auth.isAuth;
     for (let suj in sujetsObj) {
       const name = sujetsObj[suj].Name;
       sujetsArr.push(name);
@@ -136,10 +77,10 @@ class Affectation extends Component {
       presentateursArr.push(name);
     }
 
-    const sujets = sujetsArr.map((sujets, i) => {
+    const sujets = sujetsArr.map((sujet, i) => {
       return (
         <tr key={i}>
-          <td key={i}>{sujets}</td>
+          <td key={i}>{sujet}</td>
           <td>
             {
               <Input
@@ -168,7 +109,17 @@ class Affectation extends Component {
               type="submit"
               size="sm"
               color="primary"
-              onClick={e => this.addAffect(e, sujets)}
+              onClick={(e, dbName, id, s, presentateur, d, dispa) => {
+                addAffect(
+                  e,
+                  "Sujets_pr",
+                  affectId,
+                  sujet,
+                  Presentateur,
+                  date,
+                  dispatch
+                );
+              }}
               title="Affecter"
             >
               <i
@@ -180,7 +131,7 @@ class Affectation extends Component {
         </tr>
       );
     });
-    if (!this.props.isAuth) return <Redirect to="/login" />;
+    if (isAuth === false) return <Redirect to="/login" />;
     else
       return (
         <div className="app">
@@ -248,7 +199,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     getSujets: () => dispatch(getSujets()),
-    getPresentateurs: () => dispatch(getPresentateurs())
+    getPresentateurs: () => dispatch(getPresentateurs()),
+    dispatch: dispatch
   };
 };
 

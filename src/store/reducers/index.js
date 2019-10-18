@@ -4,9 +4,15 @@ import getSujetsPlReducer from "./getSujetsPlReducer";
 import getSujetsarchReducer from "./getSujetsarchReducer";
 import getPresentateursReducer from "./getPresentateursReducer";
 
+import auth from "./auth";
+import added from "./added";
+
 export default combineReducers({
   Sujets: getSujetsReducer,
   SujetsPl: getSujetsPlReducer,
   Sujetsarch: getSujetsarchReducer,
-  Presentateurs: getPresentateursReducer
+  Presentateurs: getPresentateursReducer,
+
+  auth: auth,
+  added: added
 });

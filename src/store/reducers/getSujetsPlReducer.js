@@ -3,7 +3,7 @@ const getSujetsPlReducer = (state, action) => {
   switch (action.type) {
     case "SUJETSPL_READY":
       // console.log(action.payload, "action");
-      return { ...action.payload };
+      return { ...action.payload, affectId: action.affectId };
   }
   return newState;
 };
