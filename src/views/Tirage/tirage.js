@@ -2,7 +2,6 @@ import React from "react";
 import { Button } from "reactstrap";
 
 import { Card, CardBody, CardHeader, Col, CardFooter } from "reactstrap";
-import fetchDb from "../../api/fetchDb";
 
 import getPresentateurs from "../../store/actions/presentateurs";
 import { connect } from "react-redux";
@@ -22,24 +21,8 @@ class Tirage extends React.Component {
     this.timer = null;
     this.randomPerson = this.randomPerson.bind(this);
   }
-  /* resetCards(currentTiles, currentScore) {
-    this.setState({
-      tiles: currentTiles,
-      marked: false,
-      firstCard: "",
-      firstCardIndex: -1,
-      score: currentScore
-    });
-    clearInterval(this.timer);
-  }*/
 
   componentWillMount() {
-    // const ref = fetchDb("Presentateurs");
-    // ref.on("value", snapshot => {
-    //   this.setState({
-    //     presentateurs: snapshot.val()
-    //   });
-    // });
     this.props.getPresentateurs();
   }
 
@@ -50,10 +33,11 @@ class Tirage extends React.Component {
       randomNum = Math.floor(Math.random() * length),
       presentateurId = Object.keys(presentateursObj)[randomNum],
       presentateur = presentateursObj[presentateurId];
-
-    this.setState({
-      presentateur: presentateur
-    });
+    if (presentateur && presentateur.Email) {
+      this.setState({
+        presentateur: presentateur
+      });
+    }
 
     this.timer = setTimeout(() => this.randomPerson(), 90);
     setTimeout(() => clearTimeout(this.timer), 6000);

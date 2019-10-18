@@ -67,16 +67,18 @@ class Affectation extends Component {
       isAuth = auth.isAuth;
     for (let suj in sujetsObj) {
       const name = sujetsObj[suj].Name;
-      sujetsArr.push(name);
+
+      name && sujetsArr.push(name);
     }
 
-    let presentateursObj = this.props.data.Presentateurs,
-      presentateursArr = [];
-    for (let pre in presentateursObj) {
-      const name = presentateursObj[pre];
-      presentateursArr.push(name);
-    }
+    let dataObj = this.props.data.Presentateurs,
+      dataArr = [];
+    for (let pre in dataObj) {
+      const name = dataObj[pre];
 
+      name.Email && dataArr.push(name);
+    }
+    console.log(dataArr);
     const sujets = sujetsArr.map((sujet, i) => {
       return (
         <tr key={i}>
@@ -92,7 +94,7 @@ class Affectation extends Component {
                 <option disabled selected value>
                   -- Selectionnez un Présentateur --
                 </option>
-                {presentateursArr.map(pres => (
+                {dataArr.map(pres => (
                   <option value={pres.Prenom + " " + pres.Nom}>
                     {pres.Prenom} {pres.Nom}
                   </option>

@@ -21,9 +21,11 @@ class Sujetspropo extends Component {
     let sujetsArr = [];
     for (let suj in sujetsObj) {
       const name = sujetsObj[suj];
-      sujetsArr.push(name);
-    }
 
+      name.Name && sujetsArr.push(name);
+    }
+    // console.log(this.state);
+    console.log(this.props);
     const sujets = sujetsArr.map((sujets, i) => {
       return (
         <tr key={i}>
@@ -54,7 +56,8 @@ class Sujetspropo extends Component {
 }
 const mapStateToProps = state => {
   return {
-    data: state
+    data: state,
+    ids: state.sujetId
   };
 };
 const mapDispatchToProps = dispatch => {

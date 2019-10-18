@@ -36,12 +36,13 @@ import * as router from "react-router-dom";
 import "./Res-sujet.css";
 
 import getSujets from "../../../store/actions/sujetsPro";
+import addSujet from "../../../store/actions/addSujetAction";
 import { connect } from "react-redux";
 
 // api
 import deleteElem from "./../../../api/delete";
 import update from "./../../../api/update";
-import addSujet from "./../../../api/addSujet";
+// import addSujet from "./../../../api/addSujet";
 
 class GererSujet extends Component {
   constructor(props) {
@@ -94,7 +95,8 @@ class GererSujet extends Component {
 
     for (let suj in data.Sujets) {
       const name = data.Sujets[suj];
-      sujetsArr.push(name);
+
+      name.Name && sujetsArr.push(name);
     }
     const sujets = sujetsArr.map((sujets, i) => {
       return (
@@ -180,8 +182,14 @@ class GererSujet extends Component {
                       type="submit"
                       size="sm"
                       color="primary"
-                      onClick={(e, dbName, id, suj, ds) => {
-                        addSujet(e, "Sujets", sujetId, sujet, dispatch);
+                      onClick={(event, dbName, id, suj, ds) => {
+                        this.props.addSujet(
+                          event,
+                          "Sujets",
+                          sujetId,
+                          sujet,
+                          dispatch
+                        );
                       }}
                     >
                       <i className="fa fa-dot-circle-o"></i> Enregistrer
@@ -242,7 +250,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     getSujets: () => dispatch(getSujets()),
-    dispatch: dispatch
+    // dispatch: dispatch,
+    addSujet: (e, dbName, id, suj, ds) =>
+      dispatch(addSujet(e, dbName, id, suj, ds))
   };
 };
 

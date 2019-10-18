@@ -79,7 +79,6 @@ class AjoutPresentateur extends Component {
   }
 
   render() {
-    console.log(this.props.data.added);
     let presentateursObj = this.props.data.Presentateurs,
       presentateursArr = [],
       presentateurId = this.props.data.Presentateurs.presentateurId,
@@ -91,7 +90,7 @@ class AjoutPresentateur extends Component {
       isAuth = auth.isAuth;
     for (let pre in presentateursObj) {
       const name = presentateursObj[pre];
-      presentateursArr.push(name);
+      name.Email && presentateursArr.push(name);
     }
 
     let presentateur = presentateursArr.map((pres, i) => {

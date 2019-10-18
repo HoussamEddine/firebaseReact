@@ -1,9 +1,9 @@
-export const auth = (bool, error) => {
+export const auth = (bool, err) => {
   return dispatch => {
     dispatch({
       type: "AUTH",
       isAuth: bool,
-      error: error
+      error: err
     });
   };
 };

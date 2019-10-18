@@ -30,7 +30,7 @@ class SujetArch extends Component {
     let sujetsArr = [];
     for (let suj in sujetarchObj) {
       const name = sujetarchObj[suj];
-      sujetsArr.push(name);
+      name.Sujet && sujetsArr.push(name);
     }
 
     const Sujetsarch = sujetsArr.map((sujets, i) => {

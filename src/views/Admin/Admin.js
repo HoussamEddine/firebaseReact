@@ -177,7 +177,8 @@ class Admin extends Component {
       archId = this.props.data.Sujetsarch.archId;
     for (let pre in dataObj) {
       const name = dataObj[pre];
-      dataArr.push(name);
+
+      name.Sujet && dataArr.push(name);
     }
 
     let presentateur = dataArr.map((pres, i) => {
@@ -291,7 +292,7 @@ class Admin extends Component {
         </tr>
       );
     });
-    if (!this.props.isAuth) return <Redirect to="/login" />;
+    if (this.props.isAuth === false) return <Redirect to="/login" />;
     else
       return (
         <div className="app">

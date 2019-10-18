@@ -26,7 +26,8 @@ class SujetPl extends Component {
       dataArr = [];
     for (let pre in dataObj) {
       const name = dataObj[pre];
-      dataArr.push(name);
+
+      name.Sujet && dataArr.push(name);
     }
 
     let eventsPre = dataArr.map((pres, i) => {
