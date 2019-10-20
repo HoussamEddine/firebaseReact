@@ -20,7 +20,6 @@ import {
   AppBreadcrumb2 as AppBreadcrumb,
   AppSidebarNav2 as AppSidebarNav
 } from "@coreui/react";
-import firebase from "../../../config/config";
 
 import DefaultAdmin from "../DefaultAdmin";
 import * as router from "react-router-dom";
@@ -29,11 +28,9 @@ import "./affectation.css";
 
 import { connect } from "react-redux";
 import getSujets from "../../../store/actions/sujetsPro";
+import getSujetsPl from "../../../store/actions/sujetsPl";
 import getPresentateurs from "../../../store/actions/presentateurs";
-
-// api
-
-import addAffect from "./../../../api/addAffect";
+import affectation from "../../../store/actions/affectationAction";
 
 class Affectation extends Component {
   constructor(props) {
@@ -52,12 +49,12 @@ class Affectation extends Component {
   };
 
   componentWillMount() {
+    this.props.getSujetsPl();
     this.props.getSujets();
     this.props.getPresentateurs();
   }
   render() {
     let sujetsObj = this.props.data.Sujets,
-      dispatch = this.props.dispatch,
       sujetsArr = [],
       message = this.props.data.added.message,
       affectId = this.props.data.SujetsPl.affectId,
@@ -65,6 +62,7 @@ class Affectation extends Component {
       date = this.state.Date,
       auth = this.props.data.auth,
       isAuth = auth.isAuth;
+    console.log(this.props);
     for (let suj in sujetsObj) {
       const name = sujetsObj[suj].Name;
 
@@ -78,7 +76,7 @@ class Affectation extends Component {
 
       name.Email && dataArr.push(name);
     }
-    console.log(dataArr);
+
     const sujets = sujetsArr.map((sujet, i) => {
       return (
         <tr key={i}>
@@ -111,15 +109,14 @@ class Affectation extends Component {
               type="submit"
               size="sm"
               color="primary"
-              onClick={(e, dbName, id, s, presentateur, d, dispa) => {
-                addAffect(
+              onClick={(e, dbName, id, s, presentateur, d) => {
+                this.props.affectation(
                   e,
                   "Sujets_pr",
                   affectId,
                   sujet,
                   Presentateur,
-                  date,
-                  dispatch
+                  date
                 );
               }}
               title="Affecter"
@@ -133,7 +130,8 @@ class Affectation extends Component {
         </tr>
       );
     });
-    if (isAuth === false) return <Redirect to="/login" />;
+    if (isAuth === undefined || isAuth === false)
+      return <Redirect to="/login" />;
     else
       return (
         <div className="app">
@@ -200,9 +198,11 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
+    getSujetsPl: () => dispatch(getSujetsPl()),
     getSujets: () => dispatch(getSujets()),
     getPresentateurs: () => dispatch(getPresentateurs()),
-    dispatch: dispatch
+    affectation: (e, dbName, affectId, sujet, presentateur, date) =>
+      dispatch(affectation(e, dbName, affectId, sujet, presentateur, date))
   };
 };
 

@@ -1,38 +1,41 @@
-import React,{Component ,Suspense} from 'react';
-import {
-   
-    AppHeader
-  } from '@coreui/react';
-import firebase from 'firebase';
+import React, { Component, Suspense } from "react";
+import { AppHeader } from "@coreui/react";
+import { connect } from "react-redux";
+import firebase from "../../config/config";
+import logout from "./../../store/actions/logoutAction";
 
-const HeaderAdmin = React.lazy(() => import('./HeaderAdmin'));
-//const Sidebar =React.lazy(() => import('./Sidebar'));
+const HeaderAdmin = React.lazy(() => import("./HeaderAdmin"));
 
-class DefaultAdmin extends Component{
-constructor(props){
+class DefaultAdmin extends Component {
+  constructor(props) {
     super(props);
-}
-logout(e) {
-    e.preventDefault();
-    firebase.auth().signOut();    
-   // this.props.history.push("/SujetPl");
   }
-    render(){
-        const isAuth = this.props.isAuth;
-        return(
-            <div>
-             <AppHeader fixed>
-                  <Suspense  >
-                     <HeaderAdmin
-                      onLogout={e => this.logout(e)}
-                   isAuth={isAuth} />
-                 </Suspense>
-              </AppHeader>
-              
-             
-            </div>
-        );
-    }
-
+  logout(e) {
+    e.preventDefault();
+    firebase.auth().signOut();
+    this.props.dispatch(logout(e));
+    // this.props.history.push("/SujetPl");
+  }
+  render() {
+    console.log(this.props);
+    return (
+      <div>
+        <AppHeader fixed>
+          <Suspense>
+            <HeaderAdmin onLogout={e => this.logout(e)} />
+          </Suspense>
+        </AppHeader>
+      </div>
+    );
+  }
 }
-export default DefaultAdmin;
+
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatch: dispatch
+  };
+};
+export default connect(
+  null,
+  mapDispatchToProps
+)(DefaultAdmin);

@@ -31,16 +31,18 @@ import DefaultAdmin from "../DefaultAdmin";
 
 import "../Sujet/Res-sujet.css";
 
-import firebase from "../../../config/config";
-
 import getPresentateurs from "../../../store/actions/presentateurs";
 import { connect } from "react-redux";
 
 // api
 
-import deleteElem from "./../../../api/delete";
-import update from "./../../../api/update";
-import addUser from "./../../../api/addUser";
+// import deleteElem from "./../../../api/delete";
+// // import update from "./../../../api/update";
+// import addUser from "./../../../api/addUser";
+
+import deleteSP from "../../../store/actions/deleteAction";
+import update from "../../../store/actions/updateAction";
+import addPresentateur from "../../../store/actions/addPresentateurAction";
 
 class AjoutPresentateur extends Component {
   constructor(props) {
@@ -105,7 +107,7 @@ class AjoutPresentateur extends Component {
             size="sm"
             color="danger"
             onClick={e => {
-              deleteElem("Presentateurs", pres.id);
+              this.props.deleteSP("Presentateurs", pres.id);
             }}
           >
             <i
@@ -115,7 +117,7 @@ class AjoutPresentateur extends Component {
           </Button>
           <Modifier
             update={(dbName, state, id) => {
-              update("Presentateurs", state, pres.id);
+              this.props.update("Presentateurs", state, pres.id);
             }}
             clicked={() => pres}
           />
@@ -124,7 +126,8 @@ class AjoutPresentateur extends Component {
     });
 
     let message = this.props.data.added.message;
-    if (isAuth === false) return <Redirect to="/login" />;
+    if (isAuth === undefined || isAuth === false)
+      return <Redirect to="/login" />;
     else
       return (
         <div className="app">
@@ -207,7 +210,7 @@ class AjoutPresentateur extends Component {
                       size="sm"
                       color="primary"
                       onClick={(e, dbName, id, nom, prenom, email, disp) =>
-                        addUser(
+                        this.props.addPresentateur(
                           e,
                           "Presentateurs",
                           presentateurId,
@@ -270,7 +273,10 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     getPresentateurs: () => dispatch(getPresentateurs()),
-    dispatch: dispatch
+    deleteSP: (dbName, id) => dispatch(deleteSP(dbName, id)),
+    update: (dbName, s, id) => dispatch(update(dbName, s, id)),
+    addPresentateur: (e, dbName, id, nom, prenom, email) =>
+      dispatch(addPresentateur(e, dbName, id, nom, prenom, email))
   };
 };
 

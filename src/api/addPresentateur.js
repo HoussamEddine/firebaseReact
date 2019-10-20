@@ -2,7 +2,15 @@ import { added } from "../store/actions/added";
 
 import fetchDb from "./fetchDb";
 
-const addUser = (e, dbName, presentateurId, Nom, Prenom, Email, dispatch) => {
+const addPresentateur = (
+  e,
+  dbName,
+  presentateurId,
+  Nom,
+  Prenom,
+  Email,
+  dispatch
+) => {
   e.preventDefault();
 
   fetchDb(dbName + "/" + ++presentateurId)
@@ -21,4 +29,4 @@ const addUser = (e, dbName, presentateurId, Nom, Prenom, Email, dispatch) => {
     });
 };
 
-export default addUser;
+export default addPresentateur;

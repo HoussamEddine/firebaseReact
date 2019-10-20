@@ -12,7 +12,6 @@ export default combineReducers({
   SujetsPl: getSujetsPlReducer,
   Sujetsarch: getSujetsarchReducer,
   Presentateurs: getPresentateursReducer,
-
   auth: auth,
   added: added
 });

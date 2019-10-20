@@ -17,7 +17,7 @@ import {
   Row
 } from "reactstrap";
 import { connect } from "react-redux";
-import login from "./../../../api/login";
+import login from "../../../store/actions/loginAction";
 
 class Login extends Component {
   constructor(props) {
@@ -93,7 +93,9 @@ class Login extends Component {
                           <Col xs="6">
                             <Button
                               type="submit"
-                              onClick={e => login(e, email, password, dispatch)}
+                              onClick={e =>
+                                this.props.login(e, email, password, dispatch)
+                              }
                               color="primary"
                               className="px-4"
                             >
@@ -131,7 +133,7 @@ const mapStatetoProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    dispatch: dispatch
+    login: (e, email, password) => dispatch(login(e, email, password))
   };
 };
 export default connect(

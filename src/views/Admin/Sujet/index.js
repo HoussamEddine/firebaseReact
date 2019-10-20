@@ -37,11 +37,13 @@ import "./Res-sujet.css";
 
 import getSujets from "../../../store/actions/sujetsPro";
 import addSujet from "../../../store/actions/addSujetAction";
+import deleteSP from "../../../store/actions/deleteAction";
+import updateAction from "../../../store/actions/updateAction";
 import { connect } from "react-redux";
 
 // api
-import deleteElem from "./../../../api/delete";
-import update from "./../../../api/update";
+// import deleteElem from "./../../../api/delete";
+// import update from "./../../../api/update";
 // import addSujet from "./../../../api/addSujet";
 
 class GererSujet extends Component {
@@ -111,7 +113,7 @@ class GererSujet extends Component {
               size="sm"
               color="danger"
               onClick={() => {
-                deleteElem("Sujets", sujets.id);
+                this.props.deleteSP("Sujets", sujets.id);
               }}
             >
               <i
@@ -121,7 +123,7 @@ class GererSujet extends Component {
             </Button>
             <Modifier
               update={(dbName, state, Id) => {
-                update("Sujets", state, sujets.id);
+                this.props.update("Sujets", state, sujets.id);
               }}
               clicked={() => sujets}
             />
@@ -130,7 +132,8 @@ class GererSujet extends Component {
       );
     });
 
-    if (isAuth === false) return <Redirect to="/login" />;
+    if (isAuth === undefined || isAuth === false)
+      return <Redirect to="/login" />;
     else
       return (
         <div className="app">
@@ -252,7 +255,11 @@ const mapDispatchToProps = dispatch => {
     getSujets: () => dispatch(getSujets()),
     // dispatch: dispatch,
     addSujet: (e, dbName, id, suj, ds) =>
-      dispatch(addSujet(e, dbName, id, suj, ds))
+      dispatch(addSujet(e, dbName, id, suj, ds)),
+    deleteSP: (dbName, id) => dispatch(deleteSP(dbName, id)),
+    update: (dbName, s, id) => {
+      dispatch(updateAction(dbName, s, id));
+    }
   };
 };
 

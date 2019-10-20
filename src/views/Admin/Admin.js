@@ -33,13 +33,10 @@ import "./admin.css";
 /// redux
 import getSujetsPl from "../../store/actions/sujetsPl";
 import getSujetsArch from "../../store/actions/sujetsarch";
+import deleteSP from "../../store/actions/deleteAction";
+import update from "../../store/actions/updateAction";
+import archive from "../../store/actions/archiveAction";
 import { connect } from "react-redux";
-
-// api
-
-import deleteElem from "./../../api/delete";
-import update from "./../../api/update";
-import archive from "./../../api/archive";
 
 const Sidebar = React.lazy(() => import("./Sidebar"));
 
@@ -52,8 +49,7 @@ class Admin extends Component {
 
   constructor(props) {
     super(props);
-    // this.update = this.update.bind(this);
-    // this.Archi = this.Archi.bind(this);
+
     this.handelChange = this.handelChange.bind(this);
     this.state = {
       NewSujet: "",
@@ -76,105 +72,15 @@ class Admin extends Component {
 
   componentWillMount() {
     this.props.getSujetsPl();
-    // const ref = firebase.database().ref("Sujets_pr");
-    // ref.on("value", snapshot => {
-    //   let value = snapshot.val(),
-    //     presentateurId;
-    //   if (value.length) {
-    //     presentateurId = value.length - 1;
-    //   } else {
-    //     for (let id in value) {
-    //       presentateurId = id;
-    //     }
-    //   }
-    //   this.setState({
-    //     presentateurs: snapshot.val(),
-    //     presentateurId: presentateurId
-    //   });
-    // });
-    // const refAr = firebase.database().ref("Sujets_arch");
-    // refAr.on("value", snapshot => {
-    //   let value = snapshot.val(),
-    //     ArchId;
-    //   if (value.length) {
-    //     ArchId = value.length - 1;
-    //   } else {
-    //     for (let id in value) {
-    //       ArchId = id;
-    //     }
-    //   }
-    //   this.setState({
-    //     archiver: snapshot.val(),
-    //     ArchId: ArchId
-    //   });
-    // });
     this.props.getSujetsArch();
   }
-  // delete(e, presentateurId, pArr) {
-  //   if (pArr.length === 1) {
-  //     this.setState({
-  //       message: "Vous ne pouvez pas supprimer la dérnière ligne"
-  //     });
-  //     return;
-  //   }
-  //   const ref = firebase.database().ref("Sujets_pr");
-  //   ref.child(presentateurId).remove();
-  // }
-
-  // Archi(e, presentateurId, pArr, Sujet, Presentateur, Date) {
-  //   //**************** */add
-  //   e.preventDefault();
-
-  // firebase
-  //   .database()
-  //   .ref("Sujets_arch/" + ++this.state.ArchId)
-  //   .set({
-  //     id: this.state.ArchId,
-  //     Sujet: Sujet,
-  //     Presentateur: Presentateur,
-  //     Date: Date,
-  //     Lien: this.state.Lien
-  //     // lien: this.Lien,
-  //   })
-  //   .then(u => {
-  //     this.setState({
-  //       sujetAdded: true,
-  //       message: "Ajouté avec succès"
-  //     });
-  //   })
-  //   .catch(e => {
-  //     this.setState({
-  //       sujetAdded: false,
-  //       message: "Erreur"
-  //     });
-  //   });
-
-  //*****************delete */
-  // if (pArr.length === 1) {
-  //   this.setState({
-  //     message: "Vous ne pouvez pas supprimer la dérnière ligne"
-  //   });
-  //   return;
-  // }
-  // const refa = firebase.database().ref("Sujets_pr");
-  // refa.child(presentateurId).remove();
-  // }
-
-  // update = (e, s, presentateurId) => {
-  //   let presentateurUp = {
-  //     Sujet: s.NewSujet,
-  //     Presentateur: s.NewPresentateur,
-  //     Date: s.NewDate
-  //   };
-
-  //   const ref = firebase.database().ref("Sujets_pr");
-  //   ref.child(presentateurId).update(presentateurUp);
-  // }
 
   render() {
     let dataObj = this.props.data.SujetsPl,
       dataArr = [],
-      archId = this.props.data.Sujetsarch.archId;
+      archId = this.props.data.Sujetsarch.archId,
+      auth = this.props.data.auth,
+      isAuth = auth.isAuth;
     for (let pre in dataObj) {
       const name = dataObj[pre];
 
@@ -192,7 +98,7 @@ class Admin extends Component {
               size="sm"
               color="primary"
               onClick={() => {
-                deleteElem("Sujets_pr", pres.id);
+                this.props.deleteSP("Sujets_pr", pres.id);
               }}
             >
               <i
@@ -203,7 +109,7 @@ class Admin extends Component {
             </Button>
             <Modifier
               update={(dbName, state, id) => {
-                update("Sujets_pr", state, pres.id);
+                this.props.update("Sujets_pr", state, pres.id);
               }}
               clicked={() => pres}
             />
@@ -261,12 +167,12 @@ class Admin extends Component {
                                       color="primary"
                                       title="Enregistrer"
                                       onClick={e => {
-                                        archive(
-                                          "Sujets_arch",
+                                        this.props.archive(
                                           e,
+                                          "Sujets_arch",
+                                          "Sujets_pr",
                                           pres.id,
                                           archId,
-
                                           pres.Sujet,
                                           pres.Presentateur,
                                           pres.Date,
@@ -292,7 +198,8 @@ class Admin extends Component {
         </tr>
       );
     });
-    if (this.props.isAuth === false) return <Redirect to="/login" />;
+    if (isAuth === undefined || isAuth === false)
+      return <Redirect to="/login" />;
     else
       return (
         <div className="app">
@@ -348,7 +255,35 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     getSujetsPl: () => dispatch(getSujetsPl()),
-    getSujetsArch: () => dispatch(getSujetsArch())
+    getSujetsArch: () => dispatch(getSujetsArch()),
+    deleteSP: (dbName, id) => dispatch(deleteSP(dbName, id)),
+    update: (dbName, s, id) => {
+      dispatch(update(dbName, s, id));
+    },
+    archive: (
+      e,
+      dbName,
+      dbNameS,
+      presentateurId,
+      ArchId,
+      Sujet,
+      Presentateur,
+      date,
+      Lien
+    ) =>
+      dispatch(
+        archive(
+          e,
+          dbName,
+          dbNameS,
+          presentateurId,
+          ArchId,
+          Sujet,
+          Presentateur,
+          date,
+          Lien
+        )
+      )
   };
 };
 

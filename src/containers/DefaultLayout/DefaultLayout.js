@@ -2,7 +2,7 @@ import React, { Component, Suspense } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import * as router from "react-router-dom";
 import { Container } from "reactstrap";
-
+import { connect } from "react-redux";
 import {
   AppAside,
   AppFooter,
@@ -20,7 +20,7 @@ import navigation from "../../_nav";
 // routes config
 import routes from "../../routes";
 import firebase from "../../config/config";
-
+import logout from "./../../store/actions/logoutAction";
 const DefaultAside = React.lazy(() => import("./DefaultAside"));
 const DefaultFooter = React.lazy(() => import("./DefaultFooter"));
 const DefaultHeader = React.lazy(() => import("./DefaultHeader"));
@@ -37,6 +37,7 @@ class DefaultLayout extends Component {
   logout(e) {
     e.preventDefault();
     firebase.auth().signOut();
+    this.props.dispatch(logout(e));
     this.props.history.push("/SujetPl");
   }
 
@@ -48,8 +49,8 @@ class DefaultLayout extends Component {
           <Suspense fallback={this.loading()}>
             <DefaultHeader
               onLogin={e => this.singin(e)}
-             // onLogout={e => this.logout(e)}
-              isAuth={isAuth}
+              onLogout={e => this.logout(e)}
+              // isAuth={isAuth}
             />
           </Suspense>
         </AppHeader>
@@ -104,4 +105,12 @@ class DefaultLayout extends Component {
   }
 }
 
-export default DefaultLayout;
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatch: dispatch
+  };
+};
+export default connect(
+  null,
+  mapDispatchToProps
+)(DefaultLayout);

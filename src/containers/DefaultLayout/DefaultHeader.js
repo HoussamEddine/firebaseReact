@@ -13,7 +13,8 @@ import PropTypes from "prop-types";
 import { AppNavbarBrand, AppSidebarToggler } from "@coreui/react";
 import logo from "../../assets/img/brand/logo.jpg";
 import sygnet from "../../assets/img/brand/sygnet.jpg";
-
+import { connect } from "react-redux";
+import logout from "./../../store/actions/logoutAction";
 import Login from "../../views/Pages/Login/Login";
 
 const propTypes = {
@@ -29,11 +30,13 @@ class DefaultHeader extends Component {
   //     this.props.history.push("/Login");
   //   }
   // }
-
+  // onLogout(e) {
+  //   this.props.dispatch(logout(e));
+  // }
   render() {
     // eslint-disable-next-line
     const { children, ...attributes } = this.props;
-    const isAuth = this.props.isAuth;
+    const isAuth = this.props.data.auth.isAuth;
 
     return (
       <React.Fragment>
@@ -61,16 +64,16 @@ class DefaultHeader extends Component {
             <DropdownMenu right>
               <DropdownItem
                 onClick={e => this.props.onLogin(e)}
-                /**style={isAuth ? { display: "none" } : { display: "block" }} */
+                style={isAuth ? { display: "none" } : { display: "block" }}
               >
                 <i className="fa fa-lock"></i> Login
               </DropdownItem>
-              {/** <DropdownItem
+              <DropdownItem
                 onClick={e => this.props.onLogout(e)}
                 style={isAuth ? { display: "block" } : { display: "none" }}
               >
                 <i className="fa fa-lock"></i> Logout
-              </DropdownItem> */}
+              </DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
         </Nav>
@@ -82,4 +85,17 @@ class DefaultHeader extends Component {
 DefaultHeader.propTypes = propTypes;
 DefaultHeader.defaultProps = defaultProps;
 
-export default DefaultHeader;
+const mapStateToProps = state => {
+  return {
+    data: state
+  };
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatch: dispatch
+  };
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DefaultHeader);
