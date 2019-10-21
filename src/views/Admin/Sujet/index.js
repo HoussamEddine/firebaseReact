@@ -185,14 +185,8 @@ class GererSujet extends Component {
                       type="submit"
                       size="sm"
                       color="primary"
-                      onClick={(event, dbName, id, suj, ds) => {
-                        this.props.addSujet(
-                          event,
-                          "Sujets",
-                          sujetId,
-                          sujet,
-                          dispatch
-                        );
+                      onClick={(event, dbName, id, suj) => {
+                        this.props.addSujet(event, "Sujets", sujetId, sujet);
                       }}
                     >
                       <i className="fa fa-dot-circle-o"></i> Enregistrer
@@ -254,8 +248,7 @@ const mapDispatchToProps = dispatch => {
   return {
     getSujets: () => dispatch(getSujets()),
     // dispatch: dispatch,
-    addSujet: (e, dbName, id, suj, ds) =>
-      dispatch(addSujet(e, dbName, id, suj, ds)),
+    addSujet: (e, dbName, id, suj) => dispatch(addSujet(e, dbName, id, suj)),
     deleteSP: (dbName, id) => dispatch(deleteSP(dbName, id)),
     update: (dbName, s, id) => {
       dispatch(updateAction(dbName, s, id));

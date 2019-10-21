@@ -1,16 +1,11 @@
 import { added } from "./added";
+import addSujet from "./../../api/addSujet";
 
-import fetchDb from "./../../api/fetchDb";
+// import fetchDb from "./../../api/fetchDb";
 
-const addSujet = (e, dbName, sujetId, sujet) => {
+const addSujetAction = (e, dbName, sujetId, sujet) => {
   return dispatch => {
-    e.preventDefault();
-
-    fetchDb(dbName + "/" + ++sujetId)
-      .set({
-        Name: sujet,
-        id: sujetId
-      })
+    addSujet(e, dbName, sujetId, sujet)
       .then(u => {
         dispatch(added("Sujets", true, "ajoute avec succes"));
       })
@@ -19,4 +14,4 @@ const addSujet = (e, dbName, sujetId, sujet) => {
       });
   };
 };
-export default addSujet;
+export default addSujetAction;
