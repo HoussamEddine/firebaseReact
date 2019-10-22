@@ -1,9 +1,6 @@
-import fetchDb from "./../../api/fetchDb";
+import deleteA from "./../../api/delete";
 
 const deleteSP = (dbName, Id) => {
-  return () => {
-    const ref = fetchDb(dbName);
-    ref && ref.child(Id).remove();
-  };
+  return () => deleteA(dbName, Id);
 };
 export default deleteSP;

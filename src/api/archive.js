@@ -1,54 +1,33 @@
 import fetchDb from "./fetchDb";
 
-import { added } from "../store/actions/added";
-
-const archive = (
-  dbName,
-  e,
-  presentateurId,
-  ArchId,
-  Sujet,
-  Presentateur,
-  Date,
-  Lien,
-  dispatch
-) => {
+const archive = (dbName, e, ArchId, Sujet, Presentateur, date, Lien) => {
   //**************** */add
   e.preventDefault();
 
-  fetchDb(dbName + "/" + ++ArchId)
-    .set({
-      id: ArchId,
-      Sujet: Sujet,
-      Presentateur: Presentateur,
-      Date: Date,
-      Lien: Lien
-      // lien: this.Lien,
-    })
-    .then(u => {
-      // this.setState({
-      //   sujetAdded: true,
-      //   message: "Ajouté avec succès"
-      // });
-      dispatch(added("archive", true, "archiver avec succes"));
-    })
-    .catch(e => {
-      // this.setState({
-      //   sujetAdded: false,
-      //   message: "Erreur"
-      // });
-      dispatch(added("archive", true, "erreur"));
-    });
-
-  //*****************delete */
-  // if (pArr.length === 1) {
+  return fetchDb(dbName + "/" + ++ArchId).set({
+    id: ArchId,
+    Sujet: Sujet,
+    Presentateur: Presentateur,
+    Date: date,
+    Lien: Lien
+  });
+  // .then(u => {
   //   // this.setState({
-  //   //   message: "Vous ne pouvez pas supprimer la dérnière ligne"
+  //   //   sujetAdded: true,
+  //   //   message: "Ajouté avec succès"
   //   // });
-  //   return;
-  // }
-  const ref = fetchDb(dbName);
-  ref && ref.child(presentateurId).remove();
+  //   dispatch(added("archive", true, "archiver avec succes"));
+  // })
+  // .catch(e => {
+  //   // this.setState({
+  //   //   sujetAdded: false,
+  //   //   message: "Erreur"
+  //   // });
+  //   dispatch(added("archive", true, "erreur"));
+  // });
+
+  // const ref = fetchDb(dbName);
+  // ref && ref.child(presentateurId).remove();
 };
 
 export default archive;

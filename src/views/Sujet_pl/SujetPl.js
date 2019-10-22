@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import getSujetsPl from "../../store/actions/sujetsPl";
+import getSujetsPl from "../../store/actions/getSujetPlanif";
 import { connect } from "react-redux";
 
 class SujetPl extends Component {

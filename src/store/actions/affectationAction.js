@@ -1,17 +1,11 @@
 import { added } from "./added";
 
-import fetchDb from "./../../api/fetchDb";
+import addAffect from "./../../api/addAffect";
 
 const affectationAction = (e, dbName, affectId, sujet, presentateur, date) => {
   return dispatch => {
     e.preventDefault();
-    fetchDb(dbName + "/" + ++affectId)
-      .set({
-        Sujet: sujet,
-        Presentateur: presentateur,
-        Date: date,
-        id: affectId
-      })
+    addAffect(e, dbName, affectId, sujet, presentateur, date)
       .then(u => {
         dispatch(added("affectation", true, "ajoute avec succes"));
       })

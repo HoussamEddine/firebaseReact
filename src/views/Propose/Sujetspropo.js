@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import getSujets from "../../store/actions/sujetsPro";
+import getSujets from "../../store/actions/getSujetPropos";
 
 import { Card, CardBody, CardHeader, Col, Row, Table } from "reactstrap";
 

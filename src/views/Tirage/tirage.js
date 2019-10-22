@@ -3,7 +3,7 @@ import { Button } from "reactstrap";
 
 import { Card, CardBody, CardHeader, Col, CardFooter } from "reactstrap";
 
-import getPresentateurs from "../../store/actions/presentateurs";
+import getPresentateurs from "../../store/actions/getPresentateur";
 import { connect } from "react-redux";
 
 class Tirage extends React.Component {

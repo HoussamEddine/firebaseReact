@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Card, CardBody, CardHeader, Col, Row, Table } from "reactstrap";
-import * as firebase from "firebase";
-import getSujetsArch from "../../store/actions/sujetsarch";
+
+import getSujetsArch from "../../store/actions/getSujetArch";
 import { connect } from "react-redux";
 class SujetArch extends Component {
   constructor(props) {

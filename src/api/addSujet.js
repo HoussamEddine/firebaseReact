@@ -9,11 +9,5 @@ const addSujet = (e, dbName, sujetId, sujet) => {
     Name: sujet,
     id: sujetId
   });
-  // .then(u => {
-  //   dispatch(added("Sujets", true, "ajoute avec succes"));
-  // })
-  // .catch(e => {
-  //   dispatch(added("Sujets", false, "erreur"));
-  // });
 };
 export default addSujet;

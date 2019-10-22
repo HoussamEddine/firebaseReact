@@ -27,9 +27,9 @@ import Navi from "../Navi";
 import "./affectation.css";
 
 import { connect } from "react-redux";
-import getSujets from "../../../store/actions/sujetsPro";
-import getSujetsPl from "../../../store/actions/sujetsPl";
-import getPresentateurs from "../../../store/actions/presentateurs";
+import getSujets from "../../../store/actions/getSujetPropos";
+import getSujetsPl from "../../../store/actions/getSujetPlanif";
+import getPresentateurs from "../../../store/actions/getPresentateur";
 import affectation from "../../../store/actions/affectationAction";
 
 class Affectation extends Component {

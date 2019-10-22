@@ -1,4 +1,4 @@
-import fetchDb from "./../../api/fetchDb";
+import fetchDb from "../../api/fetchDb";
 
 const getSujetsPl = () => {
   return dispatch => {

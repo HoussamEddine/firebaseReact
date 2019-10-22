@@ -1,4 +1,4 @@
-import fetchDb from "../../api/fetchDb";
+import archive from "./../../api/archive";
 
 import { added } from "./added";
 import deleteSP from "./deleteAction";
@@ -16,14 +16,16 @@ const archiveAction = (
   return dispatch => {
     e.preventDefault();
 
-    fetchDb(dbName + "/" + ++ArchId)
-      .set({
-        id: ArchId,
-        Sujet: Sujet,
-        Presentateur: Presentateur,
-        Date: date,
-        Lien: Lien
-      })
+    archive(
+      dbName,
+      e,
+
+      ArchId,
+      Sujet,
+      Presentateur,
+      date,
+      Lien
+    )
       .then(u => {
         dispatch(added("archive", true, "archiver avec succes"));
       })

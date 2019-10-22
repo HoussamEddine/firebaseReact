@@ -35,7 +35,7 @@ import Navi from "../Navi";
 import * as router from "react-router-dom";
 import "./Res-sujet.css";
 
-import getSujets from "../../../store/actions/sujetsPro";
+import getSujets from "../../../store/actions/getSujetPropos";
 import addSujet from "../../../store/actions/addSujetAction";
 import deleteSP from "../../../store/actions/deleteAction";
 import updateAction from "../../../store/actions/updateAction";

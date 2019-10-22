@@ -31,14 +31,8 @@ import DefaultAdmin from "../DefaultAdmin";
 
 import "../Sujet/Res-sujet.css";
 
-import getPresentateurs from "../../../store/actions/presentateurs";
 import { connect } from "react-redux";
-
-// api
-
-// import deleteElem from "./../../../api/delete";
-// // import update from "./../../../api/update";
-// import addUser from "./../../../api/addUser";
+import getPresentateurs from "../../../store/actions/getPresentateur";
 
 import deleteSP from "../../../store/actions/deleteAction";
 import update from "../../../store/actions/updateAction";
@@ -209,15 +203,14 @@ class AjoutPresentateur extends Component {
                       type="submit"
                       size="sm"
                       color="primary"
-                      onClick={(e, dbName, id, nom, prenom, email, disp) =>
+                      onClick={(e, dbName, id, nom, prenom, email) =>
                         this.props.addPresentateur(
                           e,
                           "Presentateurs",
                           presentateurId,
                           Nom,
                           Prenom,
-                          Email,
-                          dispatch
+                          Email
                         )
                       }
                     >

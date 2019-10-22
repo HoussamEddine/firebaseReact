@@ -31,8 +31,8 @@ import "../../App.scss";
 
 import "./admin.css";
 /// redux
-import getSujetsPl from "../../store/actions/sujetsPl";
-import getSujetsArch from "../../store/actions/sujetsarch";
+import getSujetsPl from "../../store/actions/getSujetPlanif";
+import getSujetsArch from "../../store/actions/getSujetArch";
 import deleteSP from "../../store/actions/deleteAction";
 import update from "../../store/actions/updateAction";
 import archive from "../../store/actions/archiveAction";

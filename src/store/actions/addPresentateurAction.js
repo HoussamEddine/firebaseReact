@@ -1,18 +1,19 @@
 import { added } from "./added";
 
-import fetchDb from "./../../api/fetchDb";
+import addPresentateur from "./../../api/addPresentateur";
 
-const addPresentateur = (e, dbName, presentateurId, Nom, Prenom, Email) => {
+const addPresentateurAction = (
+  e,
+  dbName,
+  presentateurId,
+  Nom,
+  Prenom,
+  Email
+) => {
   return dispatch => {
     e.preventDefault();
 
-    fetchDb(dbName + "/" + ++presentateurId)
-      .set({
-        Nom: Nom,
-        Prenom: Prenom,
-        Email: Email,
-        id: presentateurId
-      })
+    addPresentateur(e, dbName, presentateurId, Nom, Prenom, Email)
       .then(u => {
         dispatch(added("user", true, "ajoute avec succes"));
       })
@@ -23,4 +24,4 @@ const addPresentateur = (e, dbName, presentateurId, Nom, Prenom, Email) => {
   };
 };
 
-export default addPresentateur;
+export default addPresentateurAction;

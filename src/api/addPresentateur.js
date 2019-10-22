@@ -1,32 +1,14 @@
-import { added } from "../store/actions/added";
-
 import fetchDb from "./fetchDb";
 
-const addPresentateur = (
-  e,
-  dbName,
-  presentateurId,
-  Nom,
-  Prenom,
-  Email,
-  dispatch
-) => {
+const addPresentateur = (e, dbName, presentateurId, Nom, Prenom, Email) => {
   e.preventDefault();
 
-  fetchDb(dbName + "/" + ++presentateurId)
-    .set({
-      Nom: Nom,
-      Prenom: Prenom,
-      Email: Email,
-      id: presentateurId
-    })
-    .then(u => {
-      dispatch(added("user", true, "ajoute avec succes"));
-    })
-    .catch(e => {
-      console.log(e);
-      dispatch(added("user", true, "erreur"));
-    });
+  return fetchDb(dbName + "/" + ++presentateurId).set({
+    Nom: Nom,
+    Prenom: Prenom,
+    Email: Email,
+    id: presentateurId
+  });
 };
 
 export default addPresentateur;
