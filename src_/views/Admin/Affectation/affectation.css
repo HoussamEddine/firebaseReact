@@ -1,0 +1,20 @@
+.affectation-column {
+  width: 80%;
+  margin-left: 29%;
+  padding-top: 2%;
+}
+.row {
+  margin: 0;
+}
+@media screen and (max-width: 992px) {
+  .affectation-column {
+    width: 100%;
+    margin-left: 0;
+    padding-top: 1%;
+  }
+}
+@media screen and (max-width: 400px) {
+  .admin-column {
+    padding-bottom: 0;
+  }
+}

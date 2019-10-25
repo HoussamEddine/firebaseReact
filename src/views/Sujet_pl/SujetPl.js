@@ -40,12 +40,16 @@ class SujetPl extends Component {
 
     return (
       <div className="app" style={{ background: "white", padding: "10px" }}>
-        <FullCalendar
+         <FullCalendar
           defaultView="dayGridMonth"
           plugins={[dayGridPlugin]}
           locale="fr"
           events={eventsPre}
-        />
+          title={eventsPre}
+          weekends={false} 
+          contentHeight={500}
+          eventTextColor="white"
+          />
       </div>
     );
   }

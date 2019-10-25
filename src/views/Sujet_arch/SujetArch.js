@@ -11,21 +11,16 @@ class SujetArch extends Component {
       Sujet: "",
       Presentateur: "",
       Date: "",
-      Lien: ""
+      Lien: "",
+      Lien2:""
     };
   }
   componentWillMount() {
-    /* const ref = firebase.database().ref("Sujets_arch");
-          ref.on("value",snapshot => {
-              this.setState({
-                  sujet_arch: snapshot.val()
-              });
-          });*/
     this.props.getSujetsArch();
   }
 
   render() {
-    let sujetarchObj = this.props.data.Sujetsarch; // hna khaski diri smiya s7i7a diri console.log(this.props) bach ta3arfi wcha rah 3andak temma
+    let sujetarchObj = this.props.data.Sujetsarch; 
 
     let sujetsArr = [];
     for (let suj in sujetarchObj) {
@@ -40,9 +35,12 @@ class SujetArch extends Component {
           <td>{sujets.Presentateur}</td>
           <td>{sujets.Date}</td>
           <td>
-            <a href={sujets.Lien} target="_blank">
-              {sujets.Lien}
-            </a>
+           <tr><a href={sujets.Lien} target="_blank" >
+             {sujets.Lien}
+            </a></tr> 
+            <tr><a href={sujets.Lien2} target="_blank" aria-label="2éme Lien">
+              {sujets.Lien2}
+            </a></tr>
           </td>
         </tr>
       );

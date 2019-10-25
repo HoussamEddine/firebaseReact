@@ -1,3 +1,7 @@
+
+
+/***************************************************************************** */
+
 import React, { Component, Suspense } from "react";
 import { Redirect } from "react-router-dom";
 import {
@@ -63,11 +67,13 @@ class Affectation extends Component {
       auth = this.props.data.auth,
       isAuth = auth.isAuth;
     console.log(this.props);
-    for (let suj in sujetsObj) {
-      const name = sujetsObj[suj].Name;
 
-      name && sujetsArr.push(name);
+    for (let suj in sujetsObj) {
+      const name = sujetsObj[suj];
+      name.Name && sujetsArr.push(name);
     }
+
+   
 
     let dataObj = this.props.data.Presentateurs,
       dataArr = [];
@@ -80,7 +86,7 @@ class Affectation extends Component {
     const sujets = sujetsArr.map((sujet, i) => {
       return (
         <tr key={i}>
-          <td key={i}>{sujet}</td>
+          <td key={i}>{sujet.Name}</td>
           <td>
             {
               <Input
@@ -109,12 +115,14 @@ class Affectation extends Component {
               type="submit"
               size="sm"
               color="primary"
-              onClick={(e, dbName, id, s, presentateur, d) => {
+              onClick={(e, dbName,dbNameS,ids, id, s, presentateur, d) => {
                 this.props.affectation(
                   e,
                   "Sujets_pr",
+                  "Sujets",
+                  sujet.id,
                   affectId,
-                  sujet,
+                  sujet.Name,
                   Presentateur,
                   date
                 );
@@ -201,8 +209,9 @@ const mapDispatchToProps = dispatch => {
     getSujetsPl: () => dispatch(getSujetsPl()),
     getSujets: () => dispatch(getSujets()),
     getPresentateurs: () => dispatch(getPresentateurs()),
-    affectation: (e, dbName, affectId, sujet, presentateur, date) =>
-      dispatch(affectation(e, dbName, affectId, sujet, presentateur, date))
+    affectation: ( e, dbName, dbNameS, sujetId, affectId, sujet, presentateur, date) =>
+      dispatch(affectation( e, dbName, dbNameS, sujetId, affectId, sujet, presentateur, date))
+     
   };
 };
 

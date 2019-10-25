@@ -54,13 +54,13 @@ class Modifier extends Component {
           >
             {close => (
               <div>
-                <a
+                <Button 
+                  size="sm"
                   className="close"
                   onClick={close}
-                  style={{ cursor: "pointer" }}
-                >
-                  &times;
-                </a>
+                  style={{ color: "red" }} >
+                    <i class="fa fa-times-circle fa-lg  " /> 
+                </Button>
                 <Row>
                   <Col>
                     <Card>

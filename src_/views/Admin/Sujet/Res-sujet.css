@@ -1,0 +1,42 @@
+.Sujet-column {
+  width: 80%;
+  margin-left: 19%;
+  padding-bottom: 8%;
+}
+@media screen and (max-width: 900px) {
+  .Sujet-column {
+    width: 100%;
+    margin-left: 0;
+    padding-bottom: 6%;
+  }
+}
+@media screen and (max-width: 400px) {
+  .Sujet-column {
+    padding-bottom: 0;
+  }
+ 
+}
+
+@media screen and (min-width: 999px){
+    .Sujet-column {
+        margin-left: 400px;
+        width : 50%;
+
+    }
+}
+@media screen and (max-width : 384px){
+    .btn{
+        display: block;
+    }
+}
+@media screen and (min-width: 387px) {
+    
+    .btn-mdf{
+         display: inline-block;
+         margin: 7px 10px 0 10px;
+    
+        
+    
+    
+        }
+  }
