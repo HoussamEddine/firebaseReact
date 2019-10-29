@@ -1,6 +1,6 @@
 import React, { Component, Suspense } from "react";
 
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import Modifier from "./ModifierSujet";
 
 import {
@@ -34,12 +34,13 @@ import Navi from "../Navi";
 
 import * as router from "react-router-dom";
 import "./Res-sujet.css";
+import { connect } from "react-redux";
 
 import getSujets from "../../../store/actions/getSujetPropos";
 import addSujet from "../../../store/actions/addSujetAction";
 import deleteSP from "../../../store/actions/deleteAction";
 import updateAction from "../../../store/actions/updateAction";
-import { connect } from "react-redux";
+import { added } from "../../../store/actions/added";
 
 // api
 // import deleteElem from "./../../../api/delete";
@@ -85,6 +86,14 @@ class GererSujet extends Component {
   componentWillMount() {
     this.props.getSujets();
   }
+  componentWillReceiveProps(p) {
+    if (p.data.added.added) {
+      setTimeout(
+        () => this.props.dispatch(added("affectation", false, "")),
+        3000
+      );
+    }
+  }
   render() {
     let data = this.props.data,
       message = data.added.message,
@@ -113,7 +122,7 @@ class GererSujet extends Component {
               size="sm"
               color="danger"
               onClick={() => {
-                this.props.deleteSP("Sujets", sujets.id);
+                this.props.deleteSP("Sujets", sujets.id, dispatch);
               }}
             >
               <i
@@ -122,8 +131,8 @@ class GererSujet extends Component {
               ></i>
             </Button>
             <Modifier
-              update={(dbName, state, Id) => {
-                this.props.update("Sujets", state, sujets.id);
+              update={(dbName, state, Id, ds) => {
+                this.props.update("Sujets", state, sujets.id, dispatch);
               }}
               clicked={() => sujets}
             />
@@ -221,12 +230,16 @@ class GererSujet extends Component {
                       <thead>
                         <tr>
                           <th scope="col">Sujets</th>
+                          <th> </th>
+                          <th> </th>
+                          <th> </th>
+                          <th> </th>
+                          <th> </th>
+                          <th> </th>
                         </tr>
                       </thead>
 
-                      <tbody>
-                        <td>{sujets}</td>
-                      </tbody>
+                      <tbody>{sujets}</tbody>
                     </Table>
                   </CardBody>
                   <CardFooter></CardFooter>
@@ -246,12 +259,12 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
+    dispatch: dispatch,
     getSujets: () => dispatch(getSujets()),
-    // dispatch: dispatch,
     addSujet: (e, dbName, id, suj) => dispatch(addSujet(e, dbName, id, suj)),
-    deleteSP: (dbName, id) => dispatch(deleteSP(dbName, id)),
-    update: (dbName, s, id) => {
-      dispatch(updateAction(dbName, s, id));
+    deleteSP: (dbName, id, ds) => dispatch(deleteSP(dbName, id, ds)),
+    update: (dbName, s, id, ds) => {
+      dispatch(updateAction(dbName, s, id, ds));
     }
   };
 };

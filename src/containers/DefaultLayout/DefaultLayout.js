@@ -19,7 +19,8 @@ import {
 import navigation from "../../_nav";
 // routes config
 import routes from "../../routes";
-import firebase from "../../config/config";
+
+import firebase from "../../config/config"
 import logout from "./../../store/actions/logoutAction";
 const DefaultAside = React.lazy(() => import("./DefaultAside"));
 const DefaultFooter = React.lazy(() => import("./DefaultFooter"));

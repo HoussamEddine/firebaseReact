@@ -11,7 +11,7 @@ class Sujetspropo extends Component {
       sujet_propose: []
     };
   }
-  componentWillMount() {
+  componentDidMount() {
     this.props.getSujets();
   }
 
@@ -21,11 +21,9 @@ class Sujetspropo extends Component {
     let sujetsArr = [];
     for (let suj in sujetsObj) {
       const name = sujetsObj[suj];
-
       name.Name && sujetsArr.push(name);
     }
-    // console.log(this.state);
-    console.log(this.props);
+
     const sujets = sujetsArr.map((sujets, i) => {
       return (
         <tr key={i}>
@@ -56,13 +54,13 @@ class Sujetspropo extends Component {
 }
 const mapStateToProps = state => {
   return {
-    data: state,
-    ids: state.sujetId
+    data: state
+    //  ids: state.sujetId : 3lach zadti hadi rah kolchi 3andak f data
   };
 };
 const mapDispatchToProps = dispatch => {
   return {
-    getSujets: () => dispatch(getSujets())
+    getSujets: cb => dispatch(getSujets())
   };
 };
 

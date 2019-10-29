@@ -11,7 +11,7 @@ import {
 } from "@coreui/react";
 import Navi from "../Navi";
 
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import * as router from "react-router-dom";
 import {
   Card,
@@ -37,6 +37,7 @@ import getPresentateurs from "../../../store/actions/getPresentateur";
 import deleteSP from "../../../store/actions/deleteAction";
 import update from "../../../store/actions/updateAction";
 import addPresentateur from "../../../store/actions/addPresentateurAction";
+import { added } from "../../../store/actions/added";
 
 class AjoutPresentateur extends Component {
   constructor(props) {
@@ -73,7 +74,14 @@ class AjoutPresentateur extends Component {
   componentWillMount() {
     this.props.getPresentateurs();
   }
-
+  componentWillReceiveProps(p) {
+    if (p.data.added.added) {
+      setTimeout(
+        () => this.props.dispatch(added("affectation", false, "")),
+        3000
+      );
+    }
+  }
   render() {
     let presentateursObj = this.props.data.Presentateurs,
       presentateursArr = [],
@@ -101,7 +109,7 @@ class AjoutPresentateur extends Component {
             size="sm"
             color="danger"
             onClick={e => {
-              this.props.deleteSP("Presentateurs", pres.id);
+              this.props.deleteSP("Presentateurs", pres.id, dispatch);
             }}
           >
             <i
@@ -110,8 +118,8 @@ class AjoutPresentateur extends Component {
             ></i>
           </Button>
           <Modifier
-            update={(dbName, state, id) => {
-              this.props.update("Presentateurs", state, pres.id);
+            update={(dbName, state, id, ds) => {
+              this.props.update("Presentateurs", state, pres.id, dispatch);
             }}
             clicked={() => pres}
           />
@@ -166,6 +174,7 @@ class AjoutPresentateur extends Component {
                             value={this.state.Nom}
                             onChange={this.handelChange}
                           />
+                          <br />
                         </Col>
                       </FormGroup>
                       <FormGroup row>
@@ -179,6 +188,7 @@ class AjoutPresentateur extends Component {
                             value={this.state.Prenom}
                             onChange={this.handelChange}
                           />
+                          <br />
                         </Col>
                       </FormGroup>
                       <FormGroup row>
@@ -265,9 +275,10 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
+    dispatch: dispatch,
     getPresentateurs: () => dispatch(getPresentateurs()),
-    deleteSP: (dbName, id) => dispatch(deleteSP(dbName, id)),
-    update: (dbName, s, id) => dispatch(update(dbName, s, id)),
+    deleteSP: (dbName, id, ds) => dispatch(deleteSP(dbName, id, ds)),
+    update: (dbName, s, id, ds) => dispatch(update(dbName, s, id, ds)),
     addPresentateur: (e, dbName, id, nom, prenom, email) =>
       dispatch(addPresentateur(e, dbName, id, nom, prenom, email))
   };

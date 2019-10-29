@@ -8,13 +8,6 @@ const addAffect = (e, dbName, affectId, sujet, presentateur, date) => {
     Date: date,
     id: affectId
   });
-  // .then(u => {
-  //   dispatch(added("affectation", true, "ajoute avec succes"));
-  // })
-  // .catch(e => {
-  //   console.log(e);
-  //   dispatch(added("affectation", false, "erreur"));
-  // });
 };
 
 export default addAffect;

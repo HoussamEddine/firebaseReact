@@ -17,7 +17,6 @@ class DefaultAdmin extends Component {
     // this.props.history.push("/SujetPl");
   }
   render() {
-    console.log(this.props);
     return (
       <div>
         <AppHeader fixed>

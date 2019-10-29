@@ -1,7 +1,18 @@
 import React, { Component, Suspense } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import * as router from "react-router-dom";
-
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Col,
+  CardFooter,
+  Button,
+  Row,
+  Input,
+  Collapse,
+  Table
+} from "reactstrap";
 import Popup from "reactjs-popup";
 import {
   AppSidebar,
@@ -14,21 +25,8 @@ import {
 } from "@coreui/react";
 import Navi from "./Navi";
 import Modifier from "./Affectation/ModifierAffec";
-
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  Col,
-  CardFooter,
-  Button,
-  Row,
-  Input
-} from "reactstrap";
-
-import { Table } from "reactstrap";
+//Css
 import "../../App.scss";
-
 import "./admin.css";
 /// redux
 import getSujetsPl from "../../store/actions/getSujetPlanif";
@@ -51,6 +49,11 @@ class Admin extends Component {
     super(props);
 
     this.handelChange = this.handelChange.bind(this);
+    this.onEntering = this.onEntering.bind(this);
+    this.onEntered = this.onEntered.bind(this);
+    this.onExiting = this.onExiting.bind(this);
+    this.onExited = this.onExited.bind(this);
+    this.toggle = this.toggle.bind(this);
     this.state = {
       NewSujet: "",
       NewPresentateur: "",
@@ -63,7 +66,8 @@ class Admin extends Component {
       Sujet: "",
       Presentateur: "",
       Date: "",
-      Lien: ""
+      Lien: "",
+      Lien2: ""
     };
   }
   handelChange(e) {
@@ -74,7 +78,26 @@ class Admin extends Component {
     this.props.getSujetsPl();
     this.props.getSujetsArch();
   }
+  onEntering() {
+    this.setState({ status: 'Opening...' });
+  }
+  onEntered() {
+    this.setState({ status: 'Opened' });
+  }
+  onExiting() {
+    this.setState({ status: 'Closing...' });
+  }
 
+  onExited() {
+    this.setState({ status: 'Closed' });
+  }
+  toggle() {
+    this.setState({ collapse: !this.state.collapse });
+  }
+   resetFields(){
+    document.getElementById('Lien').value="";
+    document.getElementById('Lien2').value=""
+    }
   render() {
     let dataObj = this.props.data.SujetsPl,
       dataArr = [],
@@ -120,49 +143,73 @@ class Admin extends Component {
               style={{ display: "inline-block" }}
             >
               <div>
-                <Popup
-                  modal
-                  trigger={
-                    <Button size="sm" color="primary" title="Archiver">
-                      <i
-                        className="icons d-block cui-layers"
-                        style={{ fontSize: "large" }}
-                      ></i>
-                    </Button>
-                  }
-                >
-                  {close => (
-                    <div>
-                      <a
-                        className="close"
-                        onClick={close}
-                        style={{ cursor: "pointer" }}
-                      >
-                        &times;
-                      </a>
-                      <Row>
-                        <Col>
-                          <Card>
-                            <CardHeader>
-                              <i className="fa fa-align-justify"></i>
-                            </CardHeader>
-                            <CardBody>
-                              <Table responsive hover>
-                                <th>Ajouter un lien</th>
-
-                                <tbody>
-                                  <tr>
-                                    <td>
-                                      <Input
-                                        type="input"
-                                        name="Lien"
-                                        value={this.state.Lien}
-                                        onChange={this.handelChange}
-                                      ></Input>
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <Button
+              <Popup
+            modal
+            trigger={
+              <Button size="sm"
+              color="primary" 
+              title="Archiver">
+                <i
+                 className="icons d-block cui-layers"
+                 style={{ fontSize: "large" }}
+                 ></i>
+              </Button>
+            }
+             >
+                {close => (
+              <div>
+                <Button 
+                onExiting={this.onExiting} onExited={this.onExited}
+                 size="sm"
+                 className="close"
+                 onClick={close}
+                 style={{ color: "red" }} >
+                   <i class="fa fa-times-circle fa-lg  " /> 
+                   
+                    
+                 </Button>
+                 
+                
+            <Row>
+              <Col>
+                <Card>
+                  <CardHeader>
+                    <i className="fa fa-align-justify" ></i> 
+                  </CardHeader>
+                  <CardBody>
+                    <Table responsive hover>
+                      <th>Ajouter un lien</th>
+                     <th>  </th>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <Input
+                              id="Lien"
+                              type="input"
+                              name="Lien"
+                              value={this.state.Lien}
+                              onChange={this.handelChange} >
+                            </Input>
+                          </td>
+                          <td>
+                            <Button size="sm" color="primary" onClick={this.toggle} style={{ marginTop:"4px"}}>
+                                <i class="fa fa-plus-circle fa-lg " />
+                            </Button>
+                          </td> 
+                          </tr>
+                          <Collapse isOpen={this.state.collapse} onEntering={this.onEntering} onEntered={this.onEntered} onExiting={this.onExiting} onExited={this.onExited}>
+                                <CardBody>
+                                  <Input type="input"
+                                        id="Lien2"
+                                        name="Lien2"
+                                        value={this.state.Lien2}
+                                        onChange={this.handelChange} />
+                                </CardBody>
+                          </Collapse>
+                        <tr>
+                      
+                        <Button
+                                      onExiting={this.onExiting} onExited={this.onExited}
                                       size="sm"
                                       color="primary"
                                       title="Enregistrer"
@@ -176,22 +223,25 @@ class Admin extends Component {
                                           pres.Sujet,
                                           pres.Presentateur,
                                           pres.Date,
-                                          this.state.Lien
-                                        );
-                                      }}
+                                          this.state.Lien,
+                                          this.state.Lien2
+                                        ); 
+                                      } }
                                     >
                                       Enregistrer
+                                      <Collapse  onExited={this.onExited} onExiting={this.onExiting} />
                                     </Button>
-                                  </tr>
-                                </tbody>
-                              </Table>
-                            </CardBody>
-                          </Card>
-                        </Col>
-                      </Row>
-                    </div>
-                  )}
-                </Popup>
+                                    
+                        </tr>
+                      </tbody>
+                    </Table>
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+            </div> )
+            }
+          </Popup>
               </div>
             </div>
           </td>
@@ -223,7 +273,12 @@ class Admin extends Component {
             </AppSidebar>
           </div>
           <div>
-            <Col className="admin-column">
+            <Col className="admin-column"
+            style={
+              {
+                 paddingBottom: "78%"
+              }
+            }>
               <Card>
                 <CardHeader></CardHeader>
                 <CardBody>
@@ -269,7 +324,8 @@ const mapDispatchToProps = dispatch => {
       Sujet,
       Presentateur,
       date,
-      Lien
+      Lien,
+      Lien2
     ) =>
       dispatch(
         archive(
@@ -281,7 +337,8 @@ const mapDispatchToProps = dispatch => {
           Sujet,
           Presentateur,
           date,
-          Lien
+          Lien,
+          Lien2
         )
       )
   };

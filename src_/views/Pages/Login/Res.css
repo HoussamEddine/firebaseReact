@@ -1,0 +1,26 @@
+
+
+@media screen and (max-width : 410px){
+    .auth{
+        font-size: 90%;
+    }
+}
+
+@media screen and (max-width : 410px){
+    .con{
+        font-size: 70%;
+    }
+}
+
+@media screen and (max-width :278px)
+{
+    .content{
+        content: 'M&P';
+    }
+    .content ::after{
+        content: 'M&P';
+        text-indent: 0;
+        line-height: initial;
+    }
+    
+}

@@ -112,13 +112,13 @@ class ModifierAffec extends Component {
              >
                 {close => (
               <div>
-                <a
-                  className="close"
-                  onClick={close}
-                  style={{ cursor: "pointer" }}
-                >
-                  &times;
-                </a>
+                <Button 
+                 size="sm"
+                 className="close"
+                 onClick={close}
+                 style={{ color: "red" }} >
+                   <i class="fa fa-times-circle fa-lg  " /> 
+                </Button>
             <Row>
               <Col>
                 <Card>

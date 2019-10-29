@@ -11,7 +11,8 @@ const archiveAction = (
   Sujet,
   Presentateur,
   date,
-  Lien
+  Lien,
+  Lien2
 ) => {
   return dispatch => {
     e.preventDefault();
@@ -24,13 +25,14 @@ const archiveAction = (
       Sujet,
       Presentateur,
       date,
-      Lien
+      Lien,
+      Lien2
     )
       .then(u => {
-        dispatch(added("archive", true, "archiver avec succes"));
+        dispatch(added("archive", true, "Archivé avec succès "));
       })
       .catch(e => {
-        dispatch(added("archive", true, "erreur"));
+        dispatch(added("archive", true, "Erreur"));
       });
 
     dispatch(deleteSP(dbNameS, presentateurId));

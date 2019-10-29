@@ -17,7 +17,7 @@ class Tirage extends React.Component {
       },
       presentateur: ""
     };
-    // this.resetCards = this.resetCards.bind(this);
+  
     this.timer = null;
     this.randomPerson = this.randomPerson.bind(this);
   }

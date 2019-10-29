@@ -1,12 +1,6 @@
 import React, { Component , Suspense} from 'react'; 
-import {  AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
-import logo from '../../assets/img/brand/logo.jpg'
-import sygnet from '../../assets/img/brand/sygnet.jpg'
 import * as router from 'react-router-dom';
 import {
-  AppAside,
-  AppFooter,
-  AppHeader,
   AppSidebar,
   AppSidebarFooter,
   AppSidebarForm,
@@ -16,7 +10,6 @@ import {
   AppSidebarNav2 as AppSidebarNav,
 } from '@coreui/react';
 
-import { HashRouter, Route, Switch } from "react-router-dom";
 import Navi from './Navi';
 
 class Sidebar extends  Component{

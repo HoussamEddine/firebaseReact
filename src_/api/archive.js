@@ -1,6 +1,6 @@
 import fetchDb from "./fetchDb";
 
-const archive = (dbName, e, ArchId, Sujet, Presentateur, date, Lien) => {
+const archive = (dbName, e, ArchId, Sujet, Presentateur, date, Lien, Lien2) => {
   //**************** */add
   e.preventDefault();
 
@@ -9,25 +9,10 @@ const archive = (dbName, e, ArchId, Sujet, Presentateur, date, Lien) => {
     Sujet: Sujet,
     Presentateur: Presentateur,
     Date: date,
-    Lien: Lien
+    Lien: Lien,
+    Lien2:Lien2
   });
-  // .then(u => {
-  //   // this.setState({
-  //   //   sujetAdded: true,
-  //   //   message: "Ajouté avec succès"
-  //   // });
-  //   dispatch(added("archive", true, "archiver avec succes"));
-  // })
-  // .catch(e => {
-  //   // this.setState({
-  //   //   sujetAdded: false,
-  //   //   message: "Erreur"
-  //   // });
-  //   dispatch(added("archive", true, "erreur"));
-  // });
-
-  // const ref = fetchDb(dbName);
-  // ref && ref.child(presentateurId).remove();
+ 
 };
 
 export default archive;

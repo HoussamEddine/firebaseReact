@@ -37,14 +37,14 @@ class Modifier extends Component {
     const state = this.state;
     return (
       <div
-        className="animated fadeIn btn-mdf"
+        className="animated fadeIn btn-mdf popup-content"
         onClick={this.clickHandler}
       >
         <div>
           <Popup
             modal
             trigger={
-              <Button  className=" btn " size="sm" color="primary">
+              <Button className=" btn " size="sm" color="primary">
                 <i
                   class="icons d-block cui-note"
                   style={{ fontSize: "large" }}
@@ -54,12 +54,13 @@ class Modifier extends Component {
           >
             {close => (
               <div>
-                <Button 
+                <Button
                   size="sm"
                   className="close"
                   onClick={close}
-                  style={{ color: "red" }} >
-                    <i class="fa fa-times-circle fa-lg  " /> 
+                  style={{ color: "red" }}
+                >
+                  <i class="fa fa-times-circle fa-lg  " />
                 </Button>
                 <Row>
                   <Col>
@@ -91,10 +92,11 @@ class Modifier extends Component {
                                 color="primary"
                                 onClick={e => {
                                   this.props.update(e, state);
+                                  close();
                                 }}
                               >
                                 <i className="fa fa-dot-circle-o"></i>{" "}
-                                Eregistrer
+                                Enregistrer
                               </Button>
                             </tr>
                           </tbody>

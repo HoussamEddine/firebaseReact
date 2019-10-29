@@ -18,6 +18,8 @@ import {
 } from "reactstrap";
 import { connect } from "react-redux";
 import login from "../../../store/actions/loginAction";
+//Css
+import "./Res.css";
 
 class Login extends Component {
   constructor(props) {
@@ -55,8 +57,8 @@ class Login extends Component {
                   <Card className="p-4">
                     <CardBody>
                       <Form>
-                        <h1>Authentification</h1>
-                        <p className="text-muted">
+                        <h1 className="auth">Authentification</h1>
+                        <p className="text-muted con">
                           Se connecter à votre compte
                         </p>
                         <InputGroup className="mb-3">
@@ -65,7 +67,8 @@ class Login extends Component {
                               <i className="icon-user"></i>
                             </InputGroupText>
                           </InputGroupAddon>
-                          <Input
+                          <Input className="con"
+                          
                             value={email}
                             onChange={this.handleChange}
                             type="text"
@@ -80,7 +83,7 @@ class Login extends Component {
                               <i className="icon-lock"></i>
                             </InputGroupText>
                           </InputGroupAddon>
-                          <Input
+                          <Input className="con content"
                             value={password}
                             onChange={this.handleChange}
                             type="password"
@@ -97,7 +100,7 @@ class Login extends Component {
                                 this.props.login(e, email, password, dispatch)
                               }
                               color="primary"
-                              className="px-4"
+                              className="px-4 con"
                             >
                               Connecter
                             </Button>
