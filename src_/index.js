@@ -14,10 +14,11 @@ import reducer from "./store/reducers";
 import { Provider } from "react-redux";
 
 import thunk from "redux-thunk";
+import promise from "redux-promise";
 
-const store = createStore(reducer, applyMiddleware(thunk));
+const store = createStore(reducer, applyMiddleware(thunk, promise));
 
-console.log(store.getState());
+
 
 ReactDOM.render(
   <Provider store={store}>

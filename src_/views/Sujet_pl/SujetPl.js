@@ -39,7 +39,7 @@ class SujetPl extends Component {
     });
 
     return (
-      <div className="app" style={{ background: "white", padding: "10px" }}>
+      <div className="app" style={{ background: "white", padding: "10px" , borderRadius: "20px" }}>
          <FullCalendar
           defaultView="dayGridMonth"
           plugins={[dayGridPlugin]}

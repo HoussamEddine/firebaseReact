@@ -4,7 +4,6 @@ export const added = (name, bool, message) => {
       type: "ADDED_STATE",
       added: bool,
       name: name,
-
       message: message
     });
   };

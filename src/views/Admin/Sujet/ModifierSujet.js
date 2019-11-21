@@ -1,6 +1,5 @@
-import React, { Component, Suspense } from "react";
+import React, { Component } from "react";
 import Popup from "reactjs-popup";
-
 import {
   Card,
   CardBody,
@@ -10,21 +9,26 @@ import {
   Button,
   Row
 } from "reactstrap";
-
 import "./Res-sujet.css";
 
 class Modifier extends Component {
   constructor(props) {
     super(props);
+    this.toggleSmall = this.toggleSmall.bind(this);
     this.handelChange = this.handelChange.bind(this);
     this.clickHandler = this.clickHandler.bind(this);
     this.state = {
-      NewSujet: ""
+      NewSujet: " "
     };
   }
   handelChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
+  toggleSmall() {
+    this.setState({
+      small: !this.state.small,
+    });
+  }
   clickHandler() {
     let sujet = this.props.clicked();
     console.log(sujet);
@@ -32,7 +36,6 @@ class Modifier extends Component {
       NewSujet: sujet.Name
     });
   }
-
   render() {
     const state = this.state;
     return (
@@ -44,11 +47,11 @@ class Modifier extends Component {
           <Popup
             modal
             trigger={
-              <Button className=" btn " size="sm" color="primary">
+              <Button className="btn" size="sm" color="primary">
                 <i
-                  class="icons d-block cui-note"
+                  className="icons d-block cui-note"
                   style={{ fontSize: "large" }}
-                ></i>
+                />
               </Button>
             }
           >
@@ -66,12 +69,11 @@ class Modifier extends Component {
                   <Col>
                     <Card>
                       <CardHeader>
-                        <i className="fa fa-align-justify"></i> Modifier
+                        <i className="fa fa-align-justify"/> Modifier
                       </CardHeader>
                       <CardBody>
                         <Table responsive hover>
                           <th>Sujet</th>
-
                           <th></th>
                           <tbody>
                             <tr>
@@ -92,10 +94,10 @@ class Modifier extends Component {
                                 color="primary"
                                 onClick={e => {
                                   this.props.update(e, state);
-                                  close();
+                                  close(); 
                                 }}
                               >
-                                <i className="fa fa-dot-circle-o"></i>{" "}
+                                <i className="fa fa-dot-circle-o"/>{" "}
                                 Enregistrer
                               </Button>
                             </tr>
@@ -113,5 +115,4 @@ class Modifier extends Component {
     );
   }
 }
-
 export default Modifier;

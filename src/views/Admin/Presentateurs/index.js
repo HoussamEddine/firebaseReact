@@ -1,18 +1,7 @@
-import React, { Component, Suspense } from "react";
+import React, { Component } from "react";
 import Modifier from "./ModifierPresentateur";
-import {
-  AppSidebar,
-  AppSidebarFooter,
-  AppSidebarForm,
-  AppSidebarHeader,
-  AppSidebarMinimizer,
-  AppBreadcrumb2 as AppBreadcrumb,
-  AppSidebarNav2 as AppSidebarNav
-} from "@coreui/react";
-import Navi from "../Navi";
-
+import Menu from "../Menu"
 import { Redirect } from "react-router-dom";
-import * as router from "react-router-dom";
 import {
   Card,
   CardBody,
@@ -26,18 +15,14 @@ import {
   Input,
   Label
 } from "reactstrap";
-
 import DefaultAdmin from "../DefaultAdmin";
-
-import "../Sujet/Res-sujet.css";
-
 import { connect } from "react-redux";
 import getPresentateurs from "../../../store/actions/getPresentateur";
-
-import deleteSP from "../../../store/actions/deleteAction";
-import update from "../../../store/actions/updateAction";
+import deleteSP from "../../../store/actions/deleteAllAction";
+import update from "../../../store/actions/updateAllAction";
 import addPresentateur from "../../../store/actions/addPresentateurAction";
-import { added } from "../../../store/actions/added";
+import { added } from "../../../store/actions/addedMsg";
+//import "../Sujet/Res-sujet.css";
 
 class AjoutPresentateur extends Component {
   constructor(props) {
@@ -47,12 +32,6 @@ class AjoutPresentateur extends Component {
     this.annuler = this.annuler.bind(this);
 
     this.state = {
-      Nom: "",
-      Prenom: "",
-      Email: "",
-      NewNom: "",
-      NewPrenom: "",
-      NewEmail: "",
       userAdded: false,
       message: null,
       presentateursId: 0,
@@ -62,7 +41,6 @@ class AjoutPresentateur extends Component {
   handelChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
-
   annuler() {
     this.setState({
       Nom: "",
@@ -70,7 +48,6 @@ class AjoutPresentateur extends Component {
       Email: ""
     });
   }
-
   componentWillMount() {
     this.props.getPresentateurs();
   }
@@ -96,37 +73,35 @@ class AjoutPresentateur extends Component {
       const name = presentateursObj[pre];
       name.Email && presentateursArr.push(name);
     }
-
     let presentateur = presentateursArr.map((pres, i) => {
       return (
         <tr key={i}>
           <td>{pres.Nom}</td>
           <td>{pres.Prenom}</td>
           <td>{pres.Email}</td>
-
-          <Button
-            className=" btn "
-            size="sm"
-            color="danger"
-            onClick={e => {
-              this.props.deleteSP("Presentateurs", pres.id, dispatch);
-            }}
-          >
-            <i
-              class="icons d-block cui-trash"
-              style={{ fontSize: "large" }}
-            ></i>
-          </Button>
-          <Modifier
-            update={(dbName, state, id, ds) => {
-              this.props.update("Presentateurs", state, pres.id, dispatch);
-            }}
-            clicked={() => pres}
-          />
+          <div style={{ float:"right"}}>
+              <Button
+                className=" btn "
+                size="sm"
+                color="danger"
+                title="Supprimer"
+                onClick={e => {
+                  this.props.deleteSP("Presentateurs", pres.id, dispatch);
+                }} >
+                <i
+                  className="icons d-block cui-trash"
+                  style={{ fontSize: "large" }}
+                />
+              </Button>
+              <Modifier
+                update={(dbName, state, id, ds) => {
+                  this.props.update("Presentateurs", state, pres.id, dispatch);
+                }}
+                clicked={() => pres} />
+          </div>
         </tr>
       );
     });
-
     let message = this.props.data.added.message;
     if (isAuth === undefined || isAuth === false)
       return <Redirect to="/login" />;
@@ -134,28 +109,10 @@ class AjoutPresentateur extends Component {
       return (
         <div className="app">
           <DefaultAdmin />
-
-          {/******************************************* Menu **************************/}
-
-          <div className="app-body">
-            <AppSidebar fixed display="lg">
-              <AppSidebarHeader />
-              <AppSidebarForm />
-              <Suspense>
-                <AppSidebarNav
-                  navConfig={Navi}
-                  {...this.props}
-                  router={router}
-                />
-              </Suspense>
-              <AppSidebarFooter />
-              <AppSidebarMinimizer />
-            </AppSidebar>
-          </div>
-
+          <Menu />
           <div className="Sujet-column">
             <div>
-              <Col>
+              <Col className="col">
                 <Card>
                   <CardHeader>
                     <strong>Ajouter</strong>
@@ -172,8 +129,7 @@ class AjoutPresentateur extends Component {
                             name="Nom"
                             autoComplete="nom"
                             value={this.state.Nom}
-                            onChange={this.handelChange}
-                          />
+                            onChange={this.handelChange} />
                           <br />
                         </Col>
                       </FormGroup>
@@ -186,8 +142,7 @@ class AjoutPresentateur extends Component {
                             name="Prenom"
                             autoComplete="prenom"
                             value={this.state.Prenom}
-                            onChange={this.handelChange}
-                          />
+                            onChange={this.handelChange} />
                           <br />
                         </Col>
                       </FormGroup>
@@ -220,11 +175,11 @@ class AjoutPresentateur extends Component {
                           presentateurId,
                           Nom,
                           Prenom,
-                          Email
-                        )
-                      }
+                          Email,
+                          this.annuler()
+                        )} 
                     >
-                      <i className="fa fa-dot-circle-o"></i> Enregistrer
+                      <i className="fa fa-dot-circle-o"/> Enregistrer
                     </Button>
                     <Button
                       type="reset"
@@ -232,7 +187,7 @@ class AjoutPresentateur extends Component {
                       color="danger"
                       onClick={this.annuler}
                     >
-                      <i className="fa fa-ban"></i> Annuler
+                      <i className="fa fa-ban"/> Annuler
                     </Button>
                     <p
                       className="text-muted"
@@ -244,9 +199,8 @@ class AjoutPresentateur extends Component {
                 </Card>
               </Col>
             </div>
-
             <div style={{ alignSelf: "center", justifySelf: "center" }}>
-              <Col>
+              <Col className="col">
                 <Card>
                   <CardHeader>
                     <strong>Modifier / Supprimer</strong>
@@ -254,11 +208,11 @@ class AjoutPresentateur extends Component {
                   <CardBody>
                     <Table responsive hover>
                       <tbody>
-                        <td>{presentateur}</td>
+                        {presentateur}
                       </tbody>
                     </Table>
                   </CardBody>
-                  <CardFooter></CardFooter>
+                  <CardFooter/>
                 </Card>
               </Col>
             </div>
@@ -267,7 +221,6 @@ class AjoutPresentateur extends Component {
       );
   }
 }
-
 const mapStateToProps = state => {
   return {
     data: state
@@ -283,7 +236,6 @@ const mapDispatchToProps = dispatch => {
       dispatch(addPresentateur(e, dbName, id, nom, prenom, email))
   };
 };
-
 export default connect(
   mapStateToProps,
   mapDispatchToProps

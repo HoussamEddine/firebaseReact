@@ -19,7 +19,6 @@ const fctGet = dbName => {
       });
   });
   return prom;
-  //return prom.then();
 };
 
 export default fctGet;

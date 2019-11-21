@@ -2,7 +2,7 @@ import firebase from "./../config/config";
 import { auth } from "./../store/actions/auth";
 
 const login = (e, email, password, dispatch) => {
-  e.preventDefault();
+ // e.preventDefault();
 
   firebase
     .auth()

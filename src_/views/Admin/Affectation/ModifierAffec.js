@@ -11,6 +11,7 @@ import {
   Input
 } from "reactstrap";
 import * as firebase from "firebase";
+import "../admin.css";
 
 class ModifierAffec extends Component {
   constructor(props) {
@@ -94,109 +95,115 @@ class ModifierAffec extends Component {
 
     return (
       <div
-        className="animated fadeIn"
+        className="animated fadeIn  "
         onClick={this.clickHandler}
         style={{ display: "inline-block", margin: "7px 10px 0 10px" }}
       >
         <div>
           <Popup
+            className="popup-content"
             modal
             trigger={
               <Button size="sm" color="primary">
                 <i
                   className="icons d-block cui-note"
-                  style={{ fontSize: "large" }} title="Modifier"
+                  style={{ fontSize: "large" }}
+                  title="Modifier"
                 ></i>
               </Button>
             }
-             >
-                {close => (
+          >
+            {close => (
               <div>
-                <Button 
-                 size="sm"
-                 className="close"
-                 onClick={close}
-                 style={{ color: "red" }} >
-                   <i class="fa fa-times-circle fa-lg  " /> 
+                <Button
+                  size="sm"
+                  className="close"
+                  onClick={close}
+                  style={{ color: "red" }}
+                >
+                  <i class="fa fa-times-circle fa-lg  " />
                 </Button>
-            <Row>
-              <Col>
-                <Card>
-                  <CardHeader>
-                    <i className="fa fa-align-justify"></i> Modifier
-                  </CardHeader>
-                  <CardBody>
-                    <Table responsive hover>
-                      <th>Sujet</th>
-                      <th>Présentateur</th>
-                      <th>Date</th>
-                      <th> </th>
-                      <tbody>
-                        <tr>
-                          <td>
-                            <Input
-                              type="select"
-                              id="select"
-                              name="NewSujet"
-                              value={this.state.NewSujet}
-                              onChange={this.handelChange}
-                            >
-                              {sujetsArr.map((es, i) => (
-                                <option key={i} value={es.Name}>
-                                  {es.Name}
-                                </option>
-                              ))}
-                              ;
-                            </Input>
-                          </td>
-                          <td>
-                            <Input
-                              type="select"
-                              id="select"
-                              name="NewPresentateur"
-                              value={this.state.NewPresentateur}
-                              onChange={this.handelChange}
-                            >
-                              {presentateursArr.map(pres => (
-                                <option
-                                  key={pres.id}
-                                  value={pres.Prenom + " " + pres.Nom}
+                <Row>
+                  <Col>
+                    <Card>
+                      <CardHeader>
+                        <i className="fa fa-align-justify"></i> Modifier
+                      </CardHeader>
+                      <CardBody>
+                        <Table responsive hover>
+                          <th>Sujet</th>
+                          <th>Présentateur</th>
+                          <th>Date</th>
+                          <th> </th>
+                          <tbody>
+                            <tr>
+                              <td>
+                                <Input
+                                  type="select"
+                                  id="select"
+                                  name="NewSujet"
+                                  value={this.state.NewSujet}
+                                  onChange={this.handelChange}
+                                  style={{ width: "max-content" }}
                                 >
-                                  {pres.Prenom} {pres.Nom}
-                                </option>
-                              ))}
-                              ;
-                            </Input>
-                          </td>
-                          <td>
-                            <Input
-                              name="NewDate"
-                              value={this.state.NewDate}
-                              onChange={this.handelChange}
-                              type="date"
-                            />
-                          </td>
-                        </tr>
-                        <tr>
-                          <Button
-                            type="submit"
-                            size="sm"
-                            color="primary"
-                            onClick={e => {
-                              this.props.update(e, state);
-                            }}
-                          >
-                            <i className="fa fa-dot-circle-o"></i> Eregistrer
-                          </Button>
-                        </tr>
-                      </tbody>
-                    </Table>
-                  </CardBody>
-                </Card>
-              </Col>
-            </Row>
-            </div> )
-            }
+                                  {sujetsArr.map((es, i) => (
+                                    <option key={i} value={es.Name}>
+                                      {es.Name}
+                                    </option>
+                                  ))}
+                                  ;
+                                </Input>
+                              </td>
+                              <td>
+                                <Input
+                                  type="select"
+                                  id="select"
+                                  name="NewPresentateur"
+                                  value={this.state.NewPresentateur}
+                                  onChange={this.handelChange}
+                                >
+                                  {presentateursArr.map(pres => (
+                                    <option
+                                      key={pres.id}
+                                      value={pres.Prenom + " " + pres.Nom}
+                                    >
+                                      {pres.Prenom} {pres.Nom}
+                                    </option>
+                                  ))}
+                                  ;
+                                </Input>
+                              </td>
+                              <td>
+                                <Input
+                                  name="NewDate"
+                                  value={this.state.NewDate}
+                                  onChange={this.handelChange}
+                                  type="date"
+                                />
+                              </td>
+                            </tr>
+                            <tr>
+                              <Button
+                                type="submit"
+                                size="sm"
+                                color="primary"
+                                onClick={e => {
+                                  this.props.update(e, state);
+                                  close();
+                                }}
+                              >
+                                <i className="fa fa-dot-circle-o"></i>{" "}
+                                Eregistrer
+                              </Button>
+                            </tr>
+                          </tbody>
+                        </Table>
+                      </CardBody>
+                    </Card>
+                  </Col>
+                </Row>
+              </div>
+            )}
           </Popup>
         </div>
       </div>

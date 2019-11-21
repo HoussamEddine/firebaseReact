@@ -1,22 +1,15 @@
-import fetchDb from "../../api/fetchDb";
+import fctGet from "../../api/fctGet";
 
-const getSujetsPl = () => {
+const getSujetPlanif = () => {
   return dispatch => {
-    let payload, affectId;
-    const ref = fetchDb("Sujets_pr");
-    ref &&
-      ref.on("value", snapshot => {
-        payload = snapshot.val();
-        if (payload.length) {
-          affectId = payload.length - 1;
-        } else {
-          for (let id in payload) {
-            affectId = id;
-          }
-        }
-        dispatch({ type: "SUJETSPL_READY", payload, affectId: affectId });
-      });
+    let data = fctGet("Sujets_pr");
+    data.then(data =>
+      dispatch({
+        type: "SUJETSPL_READY",
+        payload: data.payload,
+        affectId: data.Id
+      })
+    );
   };
 };
-
-export default getSujetsPl;
+export default getSujetPlanif;

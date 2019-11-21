@@ -1,56 +1,32 @@
-/***************************************************************************** */
-
-import React, { Component, Suspense } from "react";
+import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  Col,
-  Row,
-  Table,
-  Input,
-  Button,
-  CardFooter
-} from "reactstrap";
-import {
-  AppSidebar,
-  AppSidebarFooter,
-  AppSidebarForm,
-  AppSidebarHeader,
-  AppSidebarMinimizer,
-  AppBreadcrumb2 as AppBreadcrumb,
-  AppSidebarNav2 as AppSidebarNav
-} from "@coreui/react";
-
+import {Card,CardBody,CardHeader,Col,Row,Table,Input,Button,CardFooter} from "reactstrap";
+import Menu from '../Menu'
 import DefaultAdmin from "../DefaultAdmin";
-import * as router from "react-router-dom";
-import Navi from "../Navi";
-import "./affectation.css";
-
+import "../Resp.scss"
 import { connect } from "react-redux";
 import getSujets from "../../../store/actions/getSujetPropos";
 import getSujetsPl from "../../../store/actions/getSujetPlanif";
 import getPresentateurs from "../../../store/actions/getPresentateur";
 import affectation from "../../../store/actions/affectationAction";
-import { added } from "../../../store/actions/added";
+import { added } from "../../../store/actions/addedMsg";
 
 class Affectation extends Component {
   constructor(props) {
     super(props);
-
     this.handelChange = this.handelChange.bind(this);
-
+    this.annuler =  this.handelChange.bind(this);
     this.state = {
       Sujets: []
     };
   }
+  reset(){
+    document.getElementById('presentateur').value="-- Sélectionnez un présentateur --";
+    document.getElementById('date').value=" "
+    }
   handelChange = e => {
-    this.setState({
-      [e.target.name]: e.target.value ? e.target.value : e.currentTarget.value
-    });
+     this.setState({ [e.target.name]: e.target.value });
   };
-
   componentWillMount() {
     this.props.getSujetsPl();
     this.props.getSujets();
@@ -78,15 +54,12 @@ class Affectation extends Component {
       const name = sujetsObj[suj];
       name.Name && sujetsArr.push(name);
     }
-
     let dataObj = this.props.data.Presentateurs,
       dataArr = [];
     for (let pre in dataObj) {
       const name = dataObj[pre];
-
       name.Email && dataArr.push(name);
     }
-
     const sujets = sujetsArr.map((sujet, i) => {
       return (
         <tr key={i}>
@@ -95,24 +68,23 @@ class Affectation extends Component {
             {
               <Input
                 type="select"
-                id="select"
+                id="presentateur"
                 onChange={this.handelChange}
-                name="Presentateur"
-              >
+                name="Presentateur" >
                 <option disabled selected value>
-                  -- Selectionnez un Présentateur --
+                  -- Sélectionnez un présentateur --
                 </option>
                 {dataArr.map(pres => (
-                  <option value={pres.Prenom + " " + pres.Nom}>
+                <option value={pres.Prenom + " " + pres.Nom}>
                     {pres.Prenom} {pres.Nom}
-                  </option>
+                </option>
                 ))}
                 ;
               </Input>
             }
           </td>
           <td>
-            <Input name="Date" onChange={this.handelChange} type="date" />
+            <Input id="date" name="Date" onChange={this.handelChange} type="date" />
           </td>
           <td>
             <Button
@@ -128,15 +100,14 @@ class Affectation extends Component {
                   affectId,
                   sujet.Name,
                   Presentateur,
-                  date
-                );
+                  date                  
+                );this.reset()
               }}
-              title="Affecter"
-            >
+              title="Affecter">
               <i
                 className="icons d-block cui-share"
-                style={{ fontSize: "large" }}
-              ></i>
+                style={{ fontSize: "large" }}>
+              </i>
             </Button>
           </td>
         </tr>
@@ -147,26 +118,10 @@ class Affectation extends Component {
     else
       return (
         <div className="app">
+
           <DefaultAdmin />
-
-          {/******************************************* Menu ************************* */}
-
-          <div style={{ marginTop: "54px", width: "10%" }}>
-            <AppSidebar fixed display="lg">
-              <AppSidebarHeader />
-              <AppSidebarForm />
-              <Suspense>
-                <AppSidebarNav
-                  navConfig={Navi}
-                  {...this.props}
-                  router={router}
-                />
-              </Suspense>
-              <AppSidebarFooter />
-              <AppSidebarMinimizer />
-            </AppSidebar>
-          </div>
-
+          <Menu />
+          
           <Row>
             <Col xl={7} className="affectation-column">
               <Card>
@@ -181,7 +136,7 @@ class Affectation extends Component {
                         <th scope="col">Sujets</th>
                         <th scope="col">Presentateurs</th>
                         <th scope="col">Date</th>
-                        <th></th>
+                        <th> </th>
                       </tr>
                     </thead>
                     <tbody>{sujets}</tbody>
@@ -202,7 +157,6 @@ class Affectation extends Component {
       );
   }
 }
-
 const mapStateToProps = state => {
   return {
     data: state
@@ -238,8 +192,4 @@ const mapDispatchToProps = dispatch => {
       )
   };
 };
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Affectation);
+export default connect(mapStateToProps,mapDispatchToProps)(Affectation);

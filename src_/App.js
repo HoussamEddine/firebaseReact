@@ -7,7 +7,6 @@ import Admin from "./views/Admin/Admin";
 import AjoutSujet from "./views/Admin/Sujet";
 import AjoutPresentateur from "./views/Admin/Presentateurs";
 import Affectation from "./views/Admin/Affectation/index";
-import SujetArchiv from './views/Sujet_arch/SujetArch';
 
 const loading = () => (
   <div className="animated fadeIn pt-3 text-center">Loading...</div>
@@ -35,7 +34,6 @@ class App extends Component {
   }
   componentWillUnmount() {
     firebase.auth().signOut();
-    console.log("unmount");
 
     this.listener();
   }
@@ -62,12 +60,14 @@ class App extends Component {
                   <Admin {...props} isAuth={this.state.isAuth} />
                 )}
               />
-             
+
               <Route
                 exact
                 path="/Sujet"
                 name="Ajout Page"
-                render={props => <AjoutSujet {...props} isAuth={this.state.isAuth}/>}
+                render={props => (
+                  <AjoutSujet {...props} isAuth={this.state.isAuth} />
+                )}
               />
               {/* <Route
                 exact
@@ -79,7 +79,9 @@ class App extends Component {
                 exact
                 path="/presentateurs"
                 name="Ajout Page"
-                render={props => <AjoutPresentateur {...props} isAuth={this.state.isAuth} />}
+                render={props => (
+                  <AjoutPresentateur {...props} isAuth={this.state.isAuth} />
+                )}
               />
 
               <Route

@@ -1,0 +1,149 @@
+$maxw :587px;$maxwi :992px;$zero:0px;$minw:588px;$dix:10px;$s:6%;$w:8%;$q:400px;$c:100%;
+$mw:630px;$ib:inline-block;$b:block;
+
+.admin-column {
+    width: 80%;
+    margin-left: 19%;
+    padding-bottom: $w;
+  }
+  .popup-content {
+   // width: max-content;
+    border-radius: 20px;
+   // padding-top: 9px;
+   }
+ /* .res-popup-content{
+    width: $c;
+  }
+  @media screen and (max-width : 530px){
+    .popup{
+       width: 100%;
+    }
+    .input{
+      padding-right:0px;
+    }
+  }*/
+ .res-popup-content{
+   width: 100%;
+ }
+ @media screen and (max-width:480px)
+ {
+   .admin-column{
+   padding-left: 0px;
+   padding-right: 0px;
+ }
+}
+  .card1 {
+    margin-bottom: 14rem;
+  }
+  .app-body{
+    flex-grow: 0;
+  }
+  @media screen and (max-width: 765px){
+    .res-popup{
+      width: $c;
+    }
+  }
+  @media screen and (max-width: $maxwi) {
+    .admin-column {
+      width: $c;
+      margin-left: $zero;
+      padding-bottom: $s;
+    }
+  }
+  @media screen and (max-width: $maxw) {
+    .btn {
+        display: $b;
+        margin: 1px $zero ;
+    }
+  }
+  @media screen and (min-width:$minw){
+      .btn-res{
+          margin: $dix $dix $zero;
+          display: $ib;
+          // margin: 7px 0px 0px 10px;
+      }
+  }
+  @media screen and (min-width:$minw ) and (max-width:$mw ){
+    .block{
+        margin:$zero;
+    }
+  }
+  @media screen and (min-width: 1000px ) and ( max-width: 1261px){
+    .block{
+      margin: 7px $zero $zero $zero;
+    }
+  }
+  /********************************Affectation******/
+  .affectation-column {
+    width: 80%;
+    margin-left: 29%;
+    padding-top: 2%;
+  }
+  .row {
+    margin: 0;
+  }
+  @media screen and (max-width:$maxwi) {
+    .affectation-column {
+      width: $c;
+      margin-left: 0;
+      padding-top: 1%;
+    }
+  }
+  @media screen and (max-width:587px){
+    .affectation-column{
+      padding-right: 0px;
+      padding-left: 0px;
+    }
+  }
+ 
+  @media screen and (max-width: $q) {
+    .admin-column {
+      padding-bottom: 0;
+    }
+  }
+/********/
+@media screen and(max-width:480px){
+    .col{
+      padding-left: 0px;
+      padding-right: 0px;
+    }
+}
+
+/**********************************Sujet********************************/  
+.Sujet-column {
+  width: 80%;
+  margin-left: 19%;
+  padding-bottom: $w;
+}
+
+@media screen and (max-width: 900px) {
+  .Sujet-column {
+    width: $c;
+    margin-left: 0;
+    padding-bottom: $s;
+  }
+}
+@media screen and (max-width: $q) {
+  .Sujet-column {
+    padding-bottom: $zero;
+  } 
+}
+
+@media screen and (min-width: 999px){
+    .Sujet-column {
+        margin-left: $q;
+        width : 50%;
+       }
+}
+@media screen and (max-width : 384px){
+    .btn{
+        display: $b;
+    }
+}
+@media screen and (min-width: 387px) {
+    
+    .btn-mdf{
+         display: $ib;
+         margin: $zero $zero $zero $dix;
+        }
+  }

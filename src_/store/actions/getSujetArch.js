@@ -1,4 +1,4 @@
-import fetchDb from "../../api/fetchDb";
+/*import fetchDb from "../../api/fetchDb";
 
 const getSujetsArch = () => {
   return dispatch => {
@@ -16,6 +16,24 @@ const getSujetsArch = () => {
         }
         dispatch({ type: "SUJETSARCH_READY", payload, ArchId: ArchId });
       });
+  };
+};
+
+export default getSujetsArch;
+*/
+
+import fctGet from "../../api/fctGet";
+
+const getSujetsArch = () => {
+  return dispatch => {
+    let data = fctGet("Sujets_arch");
+    data.then(data =>
+      dispatch({
+        type: "SUJETSARCH_READY",
+        payload: data.payload,
+        ArchId: data.Id
+      })
+    );
   };
 };
 

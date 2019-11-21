@@ -1,5 +1,3 @@
-
-
 /***************************************************************************** */
 
 import React, { Component, Suspense } from "react";
@@ -35,27 +33,45 @@ import getSujets from "../../../store/actions/getSujetPropos";
 import getSujetsPl from "../../../store/actions/getSujetPlanif";
 import getPresentateurs from "../../../store/actions/getPresentateur";
 import affectation from "../../../store/actions/affectationAction";
+import { added } from "../../../store/actions/added";
 
 class Affectation extends Component {
   constructor(props) {
     super(props);
 
     this.handelChange = this.handelChange.bind(this);
-
+    this.resetInput = this.resetInput.bind(this);
     this.state = {
+      Presentateur: "",
+      Date: "",
       Sujets: []
     };
   }
   handelChange = e => {
+    console.log("change");
     this.setState({
       [e.target.name]: e.target.value ? e.target.value : e.currentTarget.value
     });
   };
-
+  resetInput() {
+    this.setState({
+      Presentateur: " ",
+      Date: " "
+    });
+    console.log(this.state);
+  }
   componentWillMount() {
     this.props.getSujetsPl();
     this.props.getSujets();
     this.props.getPresentateurs();
+  }
+  componentWillReceiveProps(p) {
+    if (p.data.added.added) {
+      setTimeout(
+        () => this.props.dispatch(added("affectation", false, "")),
+        3000
+      );
+    }
   }
   render() {
     let sujetsObj = this.props.data.Sujets,
@@ -66,14 +82,11 @@ class Affectation extends Component {
       date = this.state.Date,
       auth = this.props.data.auth,
       isAuth = auth.isAuth;
-    console.log(this.props);
 
     for (let suj in sujetsObj) {
       const name = sujetsObj[suj];
       name.Name && sujetsArr.push(name);
     }
-
-   
 
     let dataObj = this.props.data.Presentateurs,
       dataArr = [];
@@ -95,7 +108,7 @@ class Affectation extends Component {
                 onChange={this.handelChange}
                 name="Presentateur"
               >
-                <option disabled selected value>
+                <option disabled selected>
                   -- Selectionnez un Présentateur --
                 </option>
                 {dataArr.map(pres => (
@@ -115,7 +128,7 @@ class Affectation extends Component {
               type="submit"
               size="sm"
               color="primary"
-              onClick={(e, dbName,dbNameS,ids, id, s, presentateur, d) => {
+              onClick={(e, dbName, dbNameS, ids, id, s, presentateur, d) => {
                 this.props.affectation(
                   e,
                   "Sujets_pr",
@@ -206,12 +219,32 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
+    dispatch: dispatch,
     getSujetsPl: () => dispatch(getSujetsPl()),
     getSujets: () => dispatch(getSujets()),
     getPresentateurs: () => dispatch(getPresentateurs()),
-    affectation: ( e, dbName, dbNameS, sujetId, affectId, sujet, presentateur, date) =>
-      dispatch(affectation( e, dbName, dbNameS, sujetId, affectId, sujet, presentateur, date))
-     
+    affectation: (
+      e,
+      dbName,
+      dbNameS,
+      sujetId,
+      affectId,
+      sujet,
+      presentateur,
+      date
+    ) =>
+      dispatch(
+        affectation(
+          e,
+          dbName,
+          dbNameS,
+          sujetId,
+          affectId,
+          sujet,
+          presentateur,
+          date
+        )
+      )
   };
 };
 

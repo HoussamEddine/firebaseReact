@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router";
 import app from'../../config';
-
 import Login from "./Login";
 
 class LoginContainer extends Component {
@@ -17,10 +16,8 @@ class LoginContainer extends Component {
       alert(error);
     }
   };
-
   render() {
     return <Login onSubmit={this.Login} />;
   }
 }
-
 export default withRouter(LoginContainer);

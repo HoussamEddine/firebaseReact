@@ -1,21 +1,16 @@
 import React, { Component } from "react";
-import { Link, NavLink, Route } from "react-router-dom";
 import {
-  Badge,
   UncontrolledDropdown,
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
-  Nav,
-  NavItem
+  Nav
 } from "reactstrap";
 import PropTypes from "prop-types";
 import { AppNavbarBrand, AppSidebarToggler } from "@coreui/react";
 import logo from "../../assets/img/brand/logo.jpg";
 import sygnet from "../../assets/img/brand/sygnet.jpg";
 import { connect } from "react-redux";
-import logout from "./../../store/actions/logoutAction";
-import Login from "../../views/Pages/Login/Login";
 
 const propTypes = {
   children: PropTypes.node
@@ -24,15 +19,7 @@ const propTypes = {
 const defaultProps = {};
 
 class DefaultHeader extends Component {
-  // logout() {
-  //   if (fire.auth().signOut()) {
-  //     // alert("Déconnecter")
-  //     this.props.history.push("/Login");
-  //   }
-  // }
-  // onLogout(e) {
-  //   this.props.dispatch(logout(e));
-  // }
+ 
   render() {
     // eslint-disable-next-line
     const { children, ...attributes } = this.props;

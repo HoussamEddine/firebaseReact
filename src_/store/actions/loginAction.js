@@ -10,11 +10,11 @@ const loginAction = (e, email, password) => {
       .signInWithEmailAndPassword(email, password)
       .then(u => {
         dispatch(auth(true, null));
-        console.log("dispatch login true");
+      
       })
       .catch(error => {
         dispatch(auth(false, error));
-        console.log("dispatch login false");
+      
       });
   };
 };

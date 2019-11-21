@@ -1,7 +1,7 @@
 import fetchDb from "./fetchDb";
 
 const fctGet = dbName => {
-  const ref = fetchDb("Presentateurs");
+  const ref = fetchDb(dbName);
   const prom = new Promise(res => {
     ref &&
       ref.on("value", snapshot => {
@@ -14,10 +14,12 @@ const fctGet = dbName => {
             Id = id;
           }
         }
+
         res({ payload, Id });
       });
   });
   return prom;
+  //return prom.then();
 };
 
 export default fctGet;

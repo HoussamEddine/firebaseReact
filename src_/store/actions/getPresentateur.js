@@ -1,26 +1,16 @@
-import fetchDb from "../../api/fetchDb";
+import fctGet from "../../api/fctGet";
 
 const getPresentateurs = () => {
   return dispatch => {
-    let payload, presentateurId;
-    const ref = fetchDb("Presentateurs");
-    ref &&
-      ref.on("value", snapshot => {
-        payload = snapshot.val();
-        if (payload.length) {
-          presentateurId = payload.length - 1;
-        } else {
-          for (let id in payload) {
-            presentateurId = id;
-          }
-        }
-        dispatch({
-          type: "PRESENTATEURS_READY",
-          payload,
-          presentateurId: presentateurId
-        });
-      });
+    let data = fctGet("Presentateurs");
+    // console.log(data);
+    data.then(data =>
+      dispatch({
+        type: "PRESENTATEURS_READY",
+        payload: data.payload,
+        presentateurId: data.Id
+      })
+    );
   };
 };
-
 export default getPresentateurs;

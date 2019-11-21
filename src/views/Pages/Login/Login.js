@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import { Link, Redirect } from "react-router-dom";
-
-import "firebase/auth";
+import { Redirect } from "react-router-dom";
 import {
   Button,
   Card,
@@ -16,6 +14,7 @@ import {
   InputGroupText,
   Row
 } from "reactstrap";
+import "firebase/auth";
 import { connect } from "react-redux";
 import login from "../../../store/actions/loginAction";
 //Css
@@ -24,9 +23,7 @@ import "./Res.css";
 class Login extends Component {
   constructor(props) {
     super(props);
-
     this.handleChange = this.handleChange.bind(this);
-
     this.state = {
       user: {},
       email: "",
@@ -35,11 +32,9 @@ class Login extends Component {
       error: {}
     };
   }
-
   handleChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
-
   render() {
     let auth = this.props.data.auth,
       isAuth = auth.isAuth,
@@ -68,7 +63,6 @@ class Login extends Component {
                             </InputGroupText>
                           </InputGroupAddon>
                           <Input className="con"
-                          
                             value={email}
                             onChange={this.handleChange}
                             type="text"
@@ -105,12 +99,6 @@ class Login extends Component {
                               Connecter
                             </Button>
                           </Col>
-
-                          {/**<Col xs="6" className="text-right">
-                            <Button color="link" className="px-0">
-                              Mot de passe oublié?
-                            </Button>
-                          </Col> */}
                         </Row>
                         <br />
                         <br />
@@ -128,7 +116,6 @@ class Login extends Component {
       );
   }
 }
-
 const mapStatetoProps = state => {
   return {
     data: state

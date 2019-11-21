@@ -2,6 +2,7 @@ import archive from "./../../api/archive";
 
 import { added } from "./added";
 import deleteSP from "./deleteAction";
+import getSujetPlanif from "./getSujetPlanif";
 const archiveAction = (
   e,
   dbName,
@@ -17,25 +18,15 @@ const archiveAction = (
   return dispatch => {
     e.preventDefault();
 
-    archive(
-      dbName,
-      e,
-
-      ArchId,
-      Sujet,
-      Presentateur,
-      date,
-      Lien,
-      Lien2
-    )
+    archive(dbName, e, ArchId, Sujet, Presentateur, date, Lien, Lien2)
       .then(u => {
-        dispatch(added("archive", true, "Archivé avec succès "));
+        dispatch(added("archive", true, " "));
+        dispatch(deleteSP(dbNameS, presentateurId, dispatch));
+        dispatch(getSujetPlanif());
       })
       .catch(e => {
-        dispatch(added("archive", true, "Erreur"));
+        dispatch(added("archive", false, "Erreur"));
       });
-
-    dispatch(deleteSP(dbNameS, presentateurId));
   };
 };
 

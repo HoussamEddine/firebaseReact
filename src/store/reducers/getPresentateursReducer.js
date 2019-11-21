@@ -8,3 +8,4 @@ const getPresentateursReducer = (state, action) => {
 };
 
 export default getPresentateursReducer;
+

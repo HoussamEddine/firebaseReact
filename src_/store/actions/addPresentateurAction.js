@@ -1,6 +1,7 @@
 import { added } from "./added";
 
 import addPresentateur from "./../../api/addPresentateur";
+import getPresentateur from "./getPresentateur";
 
 const addPresentateurAction = (
   e,
@@ -15,11 +16,12 @@ const addPresentateurAction = (
 
     addPresentateur(e, dbName, presentateurId, Nom, Prenom, Email)
       .then(u => {
-        dispatch(added("user", true, "ajoute avec succes"));
+        dispatch(added("user", true, "Ajouté avec succès "));
+        dispatch(getPresentateur());
       })
       .catch(e => {
         console.log(e);
-        dispatch(added("user", true, "erreur"));
+        dispatch(added("user", false, "Erreur"));
       });
   };
 };

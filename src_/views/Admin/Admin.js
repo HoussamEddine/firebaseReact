@@ -1,5 +1,5 @@
 import React, { Component, Suspense } from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import * as router from "react-router-dom";
 import {
   Card,
@@ -34,6 +34,7 @@ import getSujetsArch from "../../store/actions/getSujetArch";
 import deleteSP from "../../store/actions/deleteAction";
 import update from "../../store/actions/updateAction";
 import archive from "../../store/actions/archiveAction";
+import { added } from "../../store/actions/added";
 import { connect } from "react-redux";
 
 const Sidebar = React.lazy(() => import("./Sidebar"));
@@ -78,28 +79,37 @@ class Admin extends Component {
     this.props.getSujetsPl();
     this.props.getSujetsArch();
   }
+  componentWillReceiveProps(p) {
+    if (p.data.added.added) {
+      setTimeout(
+        () => this.props.dispatch(added("affectation", false, "")),
+        3000
+      );
+    }
+  }
   onEntering() {
-    this.setState({ status: 'Opening...' });
+    this.setState({ status: "Opening..." });
   }
   onEntered() {
-    this.setState({ status: 'Opened' });
+    this.setState({ status: "Opened" });
   }
   onExiting() {
-    this.setState({ status: 'Closing...' });
+    this.setState({ status: "Closing..." });
   }
 
   onExited() {
-    this.setState({ status: 'Closed' });
+    this.setState({ status: "Closed" });
   }
   toggle() {
     this.setState({ collapse: !this.state.collapse });
   }
-   resetFields(){
-    document.getElementById('Lien').value="";
-    document.getElementById('Lien2').value=""
-    }
+  resetFields() {
+    document.getElementById("Lien").value = "";
+    document.getElementById("Lien2").value = "";
+  }
   render() {
     let dataObj = this.props.data.SujetsPl,
+      dispatch = this.props.dispatch,
       dataArr = [],
       archId = this.props.data.Sujetsarch.archId,
       auth = this.props.data.auth,
@@ -121,7 +131,7 @@ class Admin extends Component {
               size="sm"
               color="primary"
               onClick={() => {
-                this.props.deleteSP("Sujets_pr", pres.id);
+                this.props.deleteSP("Sujets_pr", pres.id, dispatch);
               }}
             >
               <i
@@ -131,8 +141,8 @@ class Admin extends Component {
               ></i>
             </Button>
             <Modifier
-              update={(dbName, state, id) => {
-                this.props.update("Sujets_pr", state, pres.id);
+              update={(dbName, state, id, ds) => {
+                this.props.update("Sujets_pr", state, pres.id, dispatch);
               }}
               clicked={() => pres}
             />
@@ -143,73 +153,83 @@ class Admin extends Component {
               style={{ display: "inline-block" }}
             >
               <div>
-              <Popup
-            modal
-            trigger={
-              <Button size="sm"
-              color="primary" 
-              title="Archiver">
-                <i
-                 className="icons d-block cui-layers"
-                 style={{ fontSize: "large" }}
-                 ></i>
-              </Button>
-            }
-             >
-                {close => (
-              <div>
-                <Button 
-                onExiting={this.onExiting} onExited={this.onExited}
-                 size="sm"
-                 className="close"
-                 onClick={close}
-                 style={{ color: "red" }} >
-                   <i class="fa fa-times-circle fa-lg  " /> 
-                   
-                    
-                 </Button>
-                 
-                
-            <Row>
-              <Col>
-                <Card>
-                  <CardHeader>
-                    <i className="fa fa-align-justify" ></i> 
-                  </CardHeader>
-                  <CardBody>
-                    <Table responsive hover>
-                      <th>Ajouter un lien</th>
-                     <th>  </th>
-                      <tbody>
-                        <tr>
-                          <td>
-                            <Input
-                              id="Lien"
-                              type="input"
-                              name="Lien"
-                              value={this.state.Lien}
-                              onChange={this.handelChange} >
-                            </Input>
-                          </td>
-                          <td>
-                            <Button size="sm" color="primary" onClick={this.toggle} style={{ marginTop:"4px"}}>
-                                <i class="fa fa-plus-circle fa-lg " />
-                            </Button>
-                          </td> 
-                          </tr>
-                          <Collapse isOpen={this.state.collapse} onEntering={this.onEntering} onEntered={this.onEntered} onExiting={this.onExiting} onExited={this.onExited}>
-                                <CardBody>
-                                  <Input type="input"
+                <Popup
+                  modal
+                  trigger={
+                    <Button size="sm" color="primary" title="Archiver">
+                      <i
+                        className="icons d-block cui-layers"
+                        style={{ fontSize: "large" }}
+                      ></i>
+                    </Button>
+                  }
+                >
+                  {close => (
+                    <div>
+                      <Button
+                        onExiting={this.onExiting}
+                        onExited={this.onExited}
+                        size="sm"
+                        className="close"
+                        onClick={close}
+                        style={{ color: "red" }}
+                      >
+                        <i class="fa fa-times-circle fa-lg  " />
+                      </Button>
+
+                      <Row>
+                        <Col>
+                          <Card>
+                            <CardHeader>
+                              <i className="fa fa-align-justify"></i>
+                            </CardHeader>
+                            <CardBody>
+                              <Table responsive hover>
+                                <th>Ajouter un lien</th>
+                                <th> </th>
+                                <tbody>
+                                  <tr>
+                                    <td>
+                                      <Input
+                                        id="Lien"
+                                        type="input"
+                                        name="Lien"
+                                        value={this.state.Lien}
+                                        onChange={this.handelChange}
+                                      ></Input>
+                                    </td>
+                                    <td>
+                                      <Button
+                                        size="sm"
+                                        color="primary"
+                                        onClick={this.toggle}
+                                        style={{ marginTop: "4px" }}
+                                      >
+                                        <i class="fa fa-plus-circle fa-lg " />
+                                      </Button>
+                                    </td>
+                                  </tr>
+                                  <Collapse
+                                    isOpen={this.state.collapse}
+                                    onEntering={this.onEntering}
+                                    onEntered={this.onEntered}
+                                    onExiting={this.onExiting}
+                                    onExited={this.onExited}
+                                  >
+                                    <CardBody>
+                                      <Input
+                                        type="input"
                                         id="Lien2"
                                         name="Lien2"
                                         value={this.state.Lien2}
-                                        onChange={this.handelChange} />
-                                </CardBody>
-                          </Collapse>
-                        <tr>
-                      
-                        <Button
-                                      onExiting={this.onExiting} onExited={this.onExited}
+                                        onChange={this.handelChange}
+                                      />
+                                    </CardBody>
+                                  </Collapse>
+                                  <tr>
+                                    <Button
+                                      onExiting={this.onExiting}
+                                      onExited={this.onExited}
                                       size="sm"
                                       color="primary"
                                       title="Enregistrer"
@@ -225,23 +245,26 @@ class Admin extends Component {
                                           pres.Date,
                                           this.state.Lien,
                                           this.state.Lien2
-                                        ); 
-                                      } }
+                                        );
+                                        close();
+                                      }}
                                     >
                                       Enregistrer
-                                      <Collapse  onExited={this.onExited} onExiting={this.onExiting} />
+                                      <Collapse
+                                        onExited={this.onExited}
+                                        onExiting={this.onExiting}
+                                      />
                                     </Button>
-                                    
-                        </tr>
-                      </tbody>
-                    </Table>
-                  </CardBody>
-                </Card>
-              </Col>
-            </Row>
-            </div> )
-            }
-          </Popup>
+                                  </tr>
+                                </tbody>
+                              </Table>
+                            </CardBody>
+                          </Card>
+                        </Col>
+                      </Row>
+                    </div>
+                  )}
+                </Popup>
               </div>
             </div>
           </td>
@@ -273,12 +296,12 @@ class Admin extends Component {
             </AppSidebar>
           </div>
           <div>
-            <Col className="admin-column"
-            style={
-              {
-                 paddingBottom: "78%"
-              }
-            }>
+            <Col
+              className="admin-column"
+              style={{
+                paddingBottom: "78%"
+              }}
+            >
               <Card>
                 <CardHeader></CardHeader>
                 <CardBody>
@@ -309,11 +332,12 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
+    dispatch: dispatch,
     getSujetsPl: () => dispatch(getSujetsPl()),
     getSujetsArch: () => dispatch(getSujetsArch()),
-    deleteSP: (dbName, id) => dispatch(deleteSP(dbName, id)),
-    update: (dbName, s, id) => {
-      dispatch(update(dbName, s, id));
+    deleteSP: (dbName, id, ds) => dispatch(deleteSP(dbName, id, ds)),
+    update: (dbName, s, id, ds) => {
+      dispatch(update(dbName, s, id, ds));
     },
     archive: (
       e,

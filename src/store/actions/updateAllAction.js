@@ -1,4 +1,4 @@
-import update from "../../api/update";
+import update from "../../api/updateAll";
 import getPresentateur from "./getPresentateur";
 import getSujetProps from "./getSujetPropos";
 import getSujetArch from "./getSujetArch";
@@ -11,11 +11,11 @@ const updateAction = (dbName, s, Id, dispatch) => {
       dispatch(getSujetProps());
     } else if (dbName === "Presentateurs") {
       dispatch(getPresentateur());
-    } else {
+    } else if (dbName === "Sujets_pr"){
       dispatch(getSujetPlanif());
-      // dispatch(getPresentateur());
     }
   };
 };
 
 export default updateAction;
+

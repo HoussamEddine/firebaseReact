@@ -1,7 +1,7 @@
 import archive from "./../../api/archive";
 
-import { added } from "./added";
-import deleteSP from "./deleteAction";
+import { added } from "./addedMsg";
+import deleteSP from "./deleteAllAction";
 import getSujetPlanif from "./getSujetPlanif";
 const archiveAction = (
   e,
