@@ -11,3 +11,4 @@ const config = {
 export default firebase.length
   ? firebase.app()
   : firebase.initializeApp(config);
+ 

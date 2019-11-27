@@ -1,35 +1,26 @@
-import React, { Component, Suspense } from "react";
+import React, { Component } from "react";
 import Popup from "reactjs-popup";
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  Col,
-  Table,
-  Button,
-  Row,
-  Input
-} from "reactstrap";
-import * as firebase from "firebase";
-import "../admin.css";
+import { connect } from "react-redux";
+import { Card,CardBody,CardHeader,Col,Table,Button,Row,Input} from "reactstrap";
+import getSujet from "../../../store/actions/getSujetPropos";
+import getPresentateur from "../../../store/actions/getPresentateur";
+//import "../admin.css";
+import "../Resp.scss";
 
 class ModifierAffec extends Component {
   constructor(props) {
     super(props);
     this.clickHandler = this.clickHandler.bind(this);
     this.handelChange = this.handelChange.bind(this);
-
     this.state = {
       NewSujet: "",
       NewPresentateur: "",
       NewDate: ""
     };
   }
-
   handelChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
-
   clickHandler() {
     let pers = this.props.clicked();
     this.setState({
@@ -38,81 +29,42 @@ class ModifierAffec extends Component {
       NewDate: pers.Date
     });
   }
-
-  componentWillMount() {
-    /*presentateurs*/
-
-    const refP = firebase.database().ref("Presentateurs");
-    refP.on("value", snapshot => {
-      let value = snapshot.val(),
-        presentateurId;
-      if (value.length) {
-        presentateurId = value.length - 1;
-      } else {
-        for (let id in value) {
-          presentateurId = id;
-        }
-      }
-      this.setState({
-        presentateurs: snapshot.val(),
-        presentateurId: presentateurId
-      });
-    });
-
-    // Sujets pr
-    const refS = firebase.database().ref("Sujets");
-    refS.on("value", snapshot => {
-      let value = snapshot.val(),
-        AffecId;
-      if (value.length) {
-        AffecId = value.length - 1;
-      } else {
-        for (let id in value) {
-          AffecId = id;
-        }
-      }
-      this.setState({
-        affectation: snapshot.val(),
-        AffecId: AffecId
-      });
-    });
-  }
-
+ componentWillMount() {
+  this.props.getPresentateur();
+  this.props.getSujet();
+  } 
   render() {
-    let sujetsObj = this.state.affectation,
-      sujetsArr = [];
-    for (let suj in sujetsObj) {
-      const name = sujetsObj[suj];
-      sujetsArr.push(name);
-    }
-    let presentateursObj = this.state.presentateurs,
-      presentateursArr = [];
-    for (let re in presentateursObj) {
-      const name = presentateursObj[re];
-      presentateursArr.push(name);
-    }
     const state = this.state;
-
+    let sujetsObj = this.props.data.Sujets,
+    sujetArr = [];
+    let preObj = this.props.data.Presentateurs,
+    presArr =[];
+    for (let p in preObj){
+      const name = preObj[p];
+      name && presArr.push(name);
+    }
+    for (let s in sujetsObj){
+      const name = sujetsObj[s];
+      name.Name && sujetArr.push(name);
+    }
     return (
       <div
-        className="animated fadeIn  "
+        className="animated fadeIn  btn-res"
         onClick={this.clickHandler}
-        style={{ display: "inline-block", margin: "7px 10px 0 10px" }}
-      >
+         >
         <div>
           <Popup
             className="popup-content"
             modal
             trigger={
-              <Button size="sm" color="primary">
+              <Button size="sm" color="primary" className="btn">
                 <i
                   className="icons d-block cui-note"
                   style={{ fontSize: "large" }}
                   title="Modifier"
-                ></i>
+                />
               </Button>
-            }
-          >
+              } >
             {close => (
               <div>
                 <Button
@@ -121,7 +73,7 @@ class ModifierAffec extends Component {
                   onClick={close}
                   style={{ color: "red" }}
                 >
-                  <i class="fa fa-times-circle fa-lg  " />
+                  <i class="fa fa-times-circle fa-lg " />
                 </Button>
                 <Row>
                   <Col>
@@ -138,40 +90,41 @@ class ModifierAffec extends Component {
                           <tbody>
                             <tr>
                               <td>
+                               {
                                 <Input
                                   type="select"
-                                  id="select"
+                                  id="NewSujet"
                                   name="NewSujet"
-                                  value={this.state.NewSujet}
                                   onChange={this.handelChange}
-                                  style={{ width: "max-content" }}
+                                  value={this.state.NewSujet}
                                 >
-                                  {sujetsArr.map((es, i) => (
-                                    <option key={i} value={es.Name}>
-                                      {es.Name}
-                                    </option>
+                                 {sujetArr.map(s => (
+                                  <option value={s.Name }>
+                                      {s.Name}
+                                  </option>
                                   ))}
                                   ;
                                 </Input>
+                              }
                               </td>
                               <td>
+                               {
                                 <Input
                                   type="select"
-                                  id="select"
+                                  id="NewPresentateur"
                                   name="NewPresentateur"
-                                  value={this.state.NewPresentateur}
                                   onChange={this.handelChange}
+                                  value={this.state.NewPresentateur}
+                                  //style={{ width: "max-content" }}
                                 >
-                                  {presentateursArr.map(pres => (
-                                    <option
-                                      key={pres.id}
-                                      value={pres.Prenom + " " + pres.Nom}
-                                    >
-                                      {pres.Prenom} {pres.Nom}
-                                    </option>
+                                  {presArr.map(p => (
+                                  <option value={p.Prenom + " " + p.Nom }>
+                                     {p.Prenom} {p.Nom}
+                                  </option>
                                   ))}
                                   ;
                                 </Input>
+                              }
                               </td>
                               <td>
                                 <Input
@@ -210,5 +163,19 @@ class ModifierAffec extends Component {
     );
   }
 }
-
-export default ModifierAffec;
+const mapStateToProps = state => {
+  return {
+    data: state
+  };
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatch: dispatch,
+    getSujet: () => dispatch(getSujet()),
+    getPresentateur: () => dispatch(getPresentateur()),
+ };
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ModifierAffec);

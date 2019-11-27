@@ -1,29 +1,19 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import getSujets from "../../store/actions/getSujetPropos";
 
 import { Card, CardBody, CardHeader, Col, Row, Table } from "reactstrap";
 
 class Sujetspropo extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      sujet_propose: []
-    };
-  }
   componentDidMount() {
     this.props.getSujets();
   }
-
   render() {
     let sujetsObj = this.props.data.Sujets;
-
     let sujetsArr = [];
     for (let suj in sujetsObj) {
       const name = sujetsObj[suj];
       name.Name && sujetsArr.push(name);
     }
-
     const sujets = sujetsArr.map((sujets, i) => {
       return (
         <tr key={i}>
@@ -31,7 +21,6 @@ class Sujetspropo extends Component {
         </tr>
       );
     });
-
     return (
       <div className="animated fadeIn">
         <Row>
@@ -55,16 +44,11 @@ class Sujetspropo extends Component {
 const mapStateToProps = state => {
   return {
     data: state
-    //  ids: state.sujetId : 3lach zadti hadi rah kolchi 3andak f data
   };
 };
 const mapDispatchToProps = dispatch => {
   return {
-    getSujets: cb => dispatch(getSujets())
+    getSujets: cb => dispatch({ type: "SUJETPROPOS_REQUESTED" })
   };
 };
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Sujetspropo);
+export default connect(mapStateToProps, mapDispatchToProps)(Sujetspropo);

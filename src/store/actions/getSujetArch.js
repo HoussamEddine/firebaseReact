@@ -1,5 +1,5 @@
-import fctGet from "../../api/fctGet";
 
+/** 
 const getSujetsArch = () => {
   return dispatch => {
     let data = fctGet("Sujets_arch");
@@ -13,19 +13,27 @@ const getSujetsArch = () => {
   };
 };
 
-export default getSujetsArch;
-/** 
-import { call,put } from 'redux-saga/effects';
+export default getSujetsArch;*/
 
-function* getSujetsArch(){
-  const sujetArch = yield call(fctGet,'Sujets_arch')
-  yield put ({ type:'SUJETSARCH_READY',sujetArch })
+import fctGet from "../../api/fctGet";
+import { call, put, takeEvery } from "redux-saga/effects";
+
+function fetchSujetArchApi() {
+  return fctGet("/Sujets_arch")
+    .then(response => {
+      return response;
+    })
+    .catch(error => ({ error }));
 }
-export default getSujetsArch;
-*/
-
-/***n'importe quoi*/
-/*function* changeColorSaga() {
-  const action = yield take(CHOOSE_COLOR);
-  yield put(changeUI(action.payload.color));
-}*/
+function* getSujetArch() {
+  try{
+    const data = yield call(fetchSujetArchApi);
+    yield put({ type: "SUJETSARCH_READY",data });
+  } catch(error){
+    yield put({ error });
+  }
+}
+function* getSujetArchSaga() {
+  yield takeEvery("SUJETARCH_REQUESTED", getSujetArch);
+}
+export default getSujetArchSaga;

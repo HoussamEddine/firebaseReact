@@ -1,7 +1,7 @@
-import { added } from "./addedMsg";
+import added from "./addedMsg";
 import deleteSPR from "./deleteAllAction";
 import addAffect from "./../../api/addAffect";
-
+/*
 const affectationAction = (
   e,
   dbName,
@@ -27,21 +27,32 @@ const affectationAction = (
   };
 };
 export default affectationAction;
-/** 
-import {put } from 'redux-saga/effects';
-function* affectation(e,dbName,dbNameS,sujetsPId,affectId,sujet,presentateur,date){
-  yield (e.preventDefault(),
-         addAffect(e,dbName,affectId,sujet,presentateur,date)
-         .then(u=>{
-           yield put(added("affectation",true,"Ajouté avec succès"));
-           yield put(deleteSPR(dbNameS,sujetsPId, dispatch));
-         })
-         .catch(e => {
-           console.log(e);
-           dispatch(added("affectation", false, "Erreur"));
-         })
-  )
+////////*/
 
-}*/
+import { call, put, takeEvery } from "redux-saga/effects";
 
-
+function* affectationS(obj) {
+  yield addAffect(
+    obj.dbName,
+    obj.affectId,
+    obj.sujet,
+    obj.presentateur,
+    obj.date
+  );
+  try {
+    // yield put({
+    //   type: "DELETE_ALL",
+    //   dbName: obj.dbName,
+    //   id: obj.affectId
+    // });
+    const msg = { name: "affectation", bool: true, msg: "Ajouté avec succès" };
+    yield put({ type: "READY_MESSAGE", msg });
+  } catch (e) {
+    const msg = { name: "Archive", bool: false, msg: "Erreur" };
+    yield put({ type: "READY_MESSAGE", msg });
+  }
+}
+function* affectationSaga() {
+  yield takeEvery("AFFECTATION_SA", affectationS);
+}
+export default affectationSaga;

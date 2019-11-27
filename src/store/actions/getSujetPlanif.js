@@ -1,6 +1,6 @@
 import fctGet from "../../api/fctGet";
 
-import { call, put, takeEvery, all } from "redux-saga/effects";
+import { call, put, takeEvery } from "redux-saga/effects";
 
 function fetchSujetsApi() {
   return fctGet("/Sujets_pr")
@@ -13,7 +13,7 @@ function fetchSujetsApi() {
 function* getSujetPlanif() {
   try {
     const data = yield call(fetchSujetsApi);
-    console.log(data);
+
     yield put({ type: "SUJETSPL_READY", data });
   } catch (error) {
     yield put({ error });

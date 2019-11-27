@@ -15,13 +15,11 @@ import { connect } from "react-redux";
 const propTypes = {
   children: PropTypes.node
 };
-
 const defaultProps = {};
 
 class DefaultHeader extends Component {
  
   render() {
-    // eslint-disable-next-line
     const { children, ...attributes } = this.props;
     const isAuth = this.props.data.auth.isAuth;
 
@@ -68,10 +66,8 @@ class DefaultHeader extends Component {
     );
   }
 }
-
 DefaultHeader.propTypes = propTypes;
 DefaultHeader.defaultProps = defaultProps;
-
 const mapStateToProps = state => {
   return {
     data: state

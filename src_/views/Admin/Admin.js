@@ -1,6 +1,5 @@
-import React, { Component, Suspense } from "react";
+import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
-import * as router from "react-router-dom";
 import {
   Card,
   CardBody,
@@ -14,67 +13,41 @@ import {
   Table
 } from "reactstrap";
 import Popup from "reactjs-popup";
-import {
-  AppSidebar,
-  AppSidebarFooter,
-  AppSidebarForm,
-  AppSidebarHeader,
-  AppSidebarMinimizer,
-  AppBreadcrumb2 as AppBreadcrumb,
-  AppSidebarNav2 as AppSidebarNav
-} from "@coreui/react";
-import Navi from "./Navi";
+import Menu from './Menu'
 import Modifier from "./Affectation/ModifierAffec";
 //Css
 import "../../App.scss";
-import "./admin.css";
+//import "./admin.css";
+import "./Resp.scss"
 /// redux
 import getSujetsPl from "../../store/actions/getSujetPlanif";
 import getSujetsArch from "../../store/actions/getSujetArch";
-import deleteSP from "../../store/actions/deleteAction";
-import update from "../../store/actions/updateAction";
+import deleteSP from "../../store/actions/deleteAllAction";
+import update from "../../store/actions/updateAllAction";
 import archive from "../../store/actions/archiveAction";
-import { added } from "../../store/actions/added";
+import { added } from "../../store/actions/addedMsg";
 import { connect } from "react-redux";
 
-const Sidebar = React.lazy(() => import("./Sidebar"));
-
+//const Sidebar = React.lazy(() => import("./Sidebar"));
 const DefaultAdmin = React.lazy(() => import("./DefaultAdmin"));
 
 class Admin extends Component {
   loading = () => (
     <div className="animated fadeIn pt-1 text-center">Loading...</div>
   );
-
   constructor(props) {
     super(props);
-
     this.handelChange = this.handelChange.bind(this);
     this.onEntering = this.onEntering.bind(this);
     this.onEntered = this.onEntered.bind(this);
     this.onExiting = this.onExiting.bind(this);
     this.onExited = this.onExited.bind(this);
     this.toggle = this.toggle.bind(this);
-    this.state = {
-      NewSujet: "",
-      NewPresentateur: "",
-      NewDate: "",
-      presentateursId: 0,
-      presentateurs: {},
-      ArchId: 0,
-      ArchAdded: false,
-      sujetAdded: false,
-      Sujet: "",
-      Presentateur: "",
-      Date: "",
-      Lien: "",
-      Lien2: ""
-    };
+    this.annuler=this.annuler.bind(this);
   }
   handelChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
-
   componentWillMount() {
     this.props.getSujetsPl();
     this.props.getSujetsArch();
@@ -96,16 +69,17 @@ class Admin extends Component {
   onExiting() {
     this.setState({ status: "Closing..." });
   }
-
   onExited() {
     this.setState({ status: "Closed" });
   }
   toggle() {
     this.setState({ collapse: !this.state.collapse });
   }
-  resetFields() {
-    document.getElementById("Lien").value = "";
-    document.getElementById("Lien2").value = "";
+  annuler() {
+    this.setState({
+      Lien: "",
+      Lien2: ""
+    });
   }
   render() {
     let dataObj = this.props.data.SujetsPl,
@@ -116,10 +90,8 @@ class Admin extends Component {
       isAuth = auth.isAuth;
     for (let pre in dataObj) {
       const name = dataObj[pre];
-
       name.Sujet && dataArr.push(name);
     }
-
     let presentateur = dataArr.map((pres, i) => {
       return (
         <tr key={i}>
@@ -128,6 +100,8 @@ class Admin extends Component {
           <td>{pres.Date}</td>
           <td>
             <Button
+              className="btn"
+              title="Supprimer"
               size="sm"
               color="primary"
               onClick={() => {
@@ -138,7 +112,7 @@ class Admin extends Component {
                 className="icons d-block cui-trash"
                 style={{ fontSize: "large" }}
                 title="Supprimer"
-              ></i>
+              />
             </Button>
             <Modifier
               update={(dbName, state, id, ds) => {
@@ -146,7 +120,6 @@ class Admin extends Component {
               }}
               clicked={() => pres}
             />
-
             <div
               className="animated fadeIn"
               onClick={this.clickHandler}
@@ -156,14 +129,15 @@ class Admin extends Component {
                 <Popup
                   modal
                   trigger={
-                    <Button size="sm" color="primary" title="Archiver">
+                    <Button size="sm" color="primary" title="Archiver" className="btn">
                       <i
                         className="icons d-block cui-layers"
                         style={{ fontSize: "large" }}
-                      ></i>
+                        onClick={() =>{this.annuler();
+                                       }}
+                      />
                     </Button>
-                  }
-                >
+                  } >
                   {close => (
                     <div>
                       <Button
@@ -171,15 +145,16 @@ class Admin extends Component {
                         onExited={this.onExited}
                         size="sm"
                         className="close"
-                        onClick={close}
+                        onClick={() => {
+                                close() ;this.toggle();
+                                      }}
                         style={{ color: "red" }}
                       >
-                        <i class="fa fa-times-circle fa-lg  " />
+                        <i class="fa fa-times-circle fa-lg " />
                       </Button>
-
                       <Row>
-                        <Col>
-                          <Card>
+                        <Col className="card1">
+                          <Card >
                             <CardHeader>
                               <i className="fa fa-align-justify"></i>
                             </CardHeader>
@@ -237,7 +212,7 @@ class Admin extends Component {
                                         this.props.archive(
                                           e,
                                           "Sujets_arch",
-                                          "Sujets_pr",
+                                          "Sujets_pr",                                    
                                           pres.id,
                                           archId,
                                           pres.Sujet,
@@ -247,13 +222,11 @@ class Admin extends Component {
                                           this.state.Lien2
                                         );
                                         close();
-                                      }}
-                                    >
+                                        this.annuler();
+                                        this.toggle();
+                                         }} 
+                                         >
                                       Enregistrer
-                                      <Collapse
-                                        onExited={this.onExited}
-                                        onExiting={this.onExiting}
-                                      />
                                     </Button>
                                   </tr>
                                 </tbody>
@@ -277,46 +250,26 @@ class Admin extends Component {
       return (
         <div className="app">
           <DefaultAdmin />
-
-          {/******************************************* Menu **************************/}
-
-          <div className="app-body">
-            <AppSidebar fixed display="lg">
-              <AppSidebarHeader />
-              <AppSidebarForm />
-              <Suspense>
-                <AppSidebarNav
-                  navConfig={Navi}
-                  {...this.props}
-                  router={router}
-                />
-              </Suspense>
-              <AppSidebarFooter />
-              <AppSidebarMinimizer />
-            </AppSidebar>
-          </div>
+          <Menu />
           <div>
-            <Col
-              className="admin-column"
-              style={{
-                paddingBottom: "78%"
-              }}
-            >
+            <Col className="admin-column" >
               <Card>
-                <CardHeader></CardHeader>
+                <CardHeader/>
                 <CardBody>
                   <Table responsive hover>
                     <thead>
-                      <th>Sujet</th>
-                      <th>Présentateur</th>
-                      <th>Date</th>
-                      <th> </th>
-                      <th></th>
+                      <tr>
+                        <th>Sujet</th>
+                        <th>Présentateur</th>
+                        <th>Date</th>
+                        <th> </th>
+                        <th></th>
+                      </tr>
                     </thead>
                     <tbody>{presentateur}</tbody>
                   </Table>
                 </CardBody>
-                <CardFooter></CardFooter>
+                <CardFooter/>
               </Card>
             </Col>
           </div>
@@ -324,7 +277,6 @@ class Admin extends Component {
       );
   }
 }
-
 const mapStateToProps = state => {
   return {
     data: state
@@ -337,7 +289,7 @@ const mapDispatchToProps = dispatch => {
     getSujetsArch: () => dispatch(getSujetsArch()),
     deleteSP: (dbName, id, ds) => dispatch(deleteSP(dbName, id, ds)),
     update: (dbName, s, id, ds) => {
-      dispatch(update(dbName, s, id, ds));
+    dispatch(update(dbName, s, id, ds));
     },
     archive: (
       e,
@@ -367,8 +319,4 @@ const mapDispatchToProps = dispatch => {
       )
   };
 };
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Admin);
+export default connect(mapStateToProps,mapDispatchToProps)(Admin);

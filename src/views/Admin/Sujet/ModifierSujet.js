@@ -40,7 +40,8 @@ class Modifier extends Component {
     const state = this.state;
     return (
       <div
-        className="animated fadeIn btn-mdf popup-content"
+      
+        className="animated fadeIn btn-mdf popup-content" 
         onClick={this.clickHandler}
       >
         <div>
@@ -63,7 +64,7 @@ class Modifier extends Component {
                   onClick={close}
                   style={{ color: "red" }}
                 >
-                  <i class="fa fa-times-circle fa-lg  " />
+                  <i className="fa fa-times-circle fa-lg  " />
                 </Button>
                 <Row>
                   <Col>
@@ -74,7 +75,7 @@ class Modifier extends Component {
                       <CardBody>
                         <Table responsive hover>
                           <th>Sujet</th>
-                          <th></th>
+                          <th />
                           <tbody>
                             <tr>
                               <td>
@@ -85,7 +86,7 @@ class Modifier extends Component {
                                   onChange={this.handelChange}
                                 />
                               </td>
-                              <td></td>
+                              <td/>
                             </tr>
                             <tr>
                               <Button

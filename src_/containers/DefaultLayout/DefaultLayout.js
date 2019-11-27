@@ -19,7 +19,6 @@ import {
 import navigation from "../../_nav";
 // routes config
 import routes from "../../routes";
-
 import firebase from "../../config/config"
 import logout from "./../../store/actions/logoutAction";
 const DefaultAside = React.lazy(() => import("./DefaultAside"));
@@ -30,7 +29,6 @@ class DefaultLayout extends Component {
   loading = () => (
     <div className="animated fadeIn pt-1 text-center">Loading...</div>
   );
-
   singin(e) {
     e.preventDefault();
     this.props.history.push("/Login");
@@ -41,9 +39,8 @@ class DefaultLayout extends Component {
     this.props.dispatch(logout(e));
     this.props.history.push("/SujetPl");
   }
-
   render() {
-    const isAuth = this.props.isAuth;
+  //  const isAuth = this.props.isAuth;
     return (
       <div className="app">
         <AppHeader fixed>
@@ -105,7 +102,6 @@ class DefaultLayout extends Component {
     );
   }
 }
-
 const mapDispatchToProps = dispatch => {
   return {
     dispatch: dispatch

@@ -1,4 +1,4 @@
-import { added } from "./added";
+import { added } from "./addedMsg";
 
 import addPresentateur from "./../../api/addPresentateur";
 import getPresentateur from "./getPresentateur";

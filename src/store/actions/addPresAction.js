@@ -12,7 +12,6 @@ const addPresAction = (e, dbName, presId, nom, prenom, email) => {
       });
   };
 };
-
 export default addPresAction;
 /** 
  import {put,call} from 'redux-saga/effects'

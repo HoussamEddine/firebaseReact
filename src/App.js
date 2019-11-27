@@ -44,7 +44,8 @@ class App extends Component {
                 name="Login Page"
                 render={props => (
                   <Login {...props} isAuth={this.state.isAuth} />
-                )} />
+                )}
+              />
               <Route
                 exact
                 path="/Admin"

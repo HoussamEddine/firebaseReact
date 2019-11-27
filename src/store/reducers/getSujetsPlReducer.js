@@ -6,5 +6,4 @@ const getSujetsPlReducer = (state, action) => {
   }
   return newState;
 };
-
 export default getSujetsPlReducer;

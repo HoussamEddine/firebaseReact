@@ -10,12 +10,7 @@ class Tirage extends React.Component {
   constructor() {
     super();
     this.state = {
-      presentateurs: {
-        Nom: "",
-        Prenom: "",
-        Email: ""
-      },
-      presentateur: ""
+     presentateur: ""
     };
   
     this.timer = null;
@@ -38,7 +33,6 @@ class Tirage extends React.Component {
         presentateur: presentateur
       });
     }
-
     this.timer = setTimeout(() => this.randomPerson(), 90);
     setTimeout(() => clearTimeout(this.timer), 6000);
   }
@@ -61,8 +55,7 @@ class Tirage extends React.Component {
                 <center>
                   <Button
                     onClick={this.randomPerson}
-                    className="btn btn-lg btn-pill btn-danger"
-                  >
+                    className="btn btn-lg btn-pill btn-danger" >
                     Commencer
                   </Button>
                 </center>

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import getSujetsPl from "../../store/actions/getSujetPlanif";
+//import getSujetsPl from "../../store/actions/getSujetPlanif";
 import { connect } from "react-redux";
 import "../Sujet_pl/Res_client.scss";
 
@@ -25,12 +25,10 @@ class SujetPl extends Component {
         start: pres.Date
       };
     });
-
     return (
       <div
         className="app"
-        style={{ background: "white", padding: "10px", borderRadius: "20px" }}
-      >
+        style={{ background: "white", padding: "10px", borderRadius: "20px" }} >
         <FullCalendar
           defaultView="dayGridMonth"
           plugins={[dayGridPlugin]}
@@ -39,7 +37,7 @@ class SujetPl extends Component {
           weekends={false}
           contentHeight={500}
           eventTextColor="white"
-        />
+         />
       </div>
     );
   }

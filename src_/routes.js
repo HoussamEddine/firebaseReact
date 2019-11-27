@@ -13,7 +13,5 @@ const routes = [
   { path: '/tirage', exact: true,  name: 'Tirage au sort', component: tirage },
   { path: '/sujet', exact: true,  name: 'Gestion Sujets', component: GestionSJ },
   { path: '/SujetArch', exact: true,  name: 'Sujets archivés', component: SujetArch },
-
 ];
-
 export default routes;

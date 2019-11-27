@@ -1,5 +1,27 @@
 import fctGet from "../../api/fctPresentateur";
+import {call ,put ,takeEvery} from "redux-saga/effects";
 
+function fetchPresentateurApi(){
+  return fctGet()
+  .then(response => {
+    return response;
+  })
+  .catch(error => ({ error }));
+}
+function* getPresentateurs(){
+  try{
+    const data = yield call(fetchPresentateurApi);
+    yield put({type:"PRESENTATEURS_READY",data})
+  }
+  catch(error){
+    yield put({ error });
+  }
+}
+function* getPresentateursSaga(){
+  yield takeEvery("PRESENTATEURS_REQUESTED",getPresentateurs);
+}
+export default getPresentateursSaga;
+/*
 const getPresentateurs = () => {
   return dispatch => {
     let data = fctGet();
@@ -12,14 +34,5 @@ const getPresentateurs = () => {
     );
   };
 };
-export default getPresentateurs;
-/** 
-import {call,put } from 'redux-saga/effects';
-import fctGet from "../../api/fctPresentateur";
-
-function* getPresentateurs(){
-  const presentateur = yield call(fctGet)
-  yield put({type:'PRESENTATEURS_READY', presentateur})
-}
 export default getPresentateurs;
 */

@@ -11,18 +11,14 @@ import Affectation from "./views/Admin/Affectation/index";
 const loading = () => (
   <div className="animated fadeIn pt-3 text-center">Loading...</div>
 );
-
 // Containers
 const DefaultLayout = React.lazy(() => import("./containers/DefaultLayout"));
-
 // Pages
 const Login = React.lazy(() => import("./views/Pages/Login"));
-//const Register = React.lazy(() => import("./views/Pages/Register"));
 
 class App extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       isAuth: null
     };
@@ -34,10 +30,8 @@ class App extends Component {
   }
   componentWillUnmount() {
     firebase.auth().signOut();
-
     this.listener();
   }
-
   render() {
     return (
       <div className="App">
@@ -50,8 +44,7 @@ class App extends Component {
                 name="Login Page"
                 render={props => (
                   <Login {...props} isAuth={this.state.isAuth} />
-                )}
-              />
+                )} />
               <Route
                 exact
                 path="/Admin"
@@ -60,7 +53,6 @@ class App extends Component {
                   <Admin {...props} isAuth={this.state.isAuth} />
                 )}
               />
-
               <Route
                 exact
                 path="/Sujet"
@@ -69,12 +61,6 @@ class App extends Component {
                   <AjoutSujet {...props} isAuth={this.state.isAuth} />
                 )}
               />
-              {/* <Route
-                exact
-                path="/Modifier"
-                name="Modifier Page"
-                render={props => <ModifierPresentateur {...props} />}
-              /> */}
               <Route
                 exact
                 path="/presentateurs"
@@ -83,7 +69,6 @@ class App extends Component {
                   <AjoutPresentateur {...props} isAuth={this.state.isAuth} />
                 )}
               />
-
               <Route
                 exact
                 path="/Affec"
@@ -106,7 +91,4 @@ class App extends Component {
     );
   }
 }
-
-/*export default withFirebaseAuth({
-  providers,firebaseAppAuth,})(App);*/
 export default App;

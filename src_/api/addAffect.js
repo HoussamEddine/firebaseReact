@@ -1,7 +1,8 @@
 import fetchDb from "./fetchDb";
 
 const addAffect = (e, dbName, affectId, sujet, presentateur, date) => {
-  e.preventDefault();
+ // e.preventDefault();
+  
   return fetchDb(dbName + "/" + ++affectId).set({
     Sujet: sujet,
     Presentateur: presentateur,

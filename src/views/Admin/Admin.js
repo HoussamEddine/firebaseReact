@@ -13,19 +13,19 @@ import {
   Table
 } from "reactstrap";
 import Popup from "reactjs-popup";
-import Menu from './Menu'
+import Menu from "./Menu";
 import Modifier from "./Affectation/ModifierAffec";
 //Css
 import "../../App.scss";
 //import "./admin.css";
-import "./Resp.scss"
+import "./Resp.scss";
 /// redux
 import getSujetsPl from "../../store/actions/getSujetPlanif";
 import getSujetsArch from "../../store/actions/getSujetArch";
 import deleteSP from "../../store/actions/deleteAllAction";
 import update from "../../store/actions/updateAllAction";
 import archive from "../../store/actions/archiveAction";
-import { added } from "../../store/actions/addedMsg";
+import added from "../../store/actions/addedMsg";
 import { connect } from "react-redux";
 
 //const Sidebar = React.lazy(() => import("./Sidebar"));
@@ -43,7 +43,7 @@ class Admin extends Component {
     this.onExiting = this.onExiting.bind(this);
     this.onExited = this.onExited.bind(this);
     this.toggle = this.toggle.bind(this);
-    this.annuler=this.annuler.bind(this);
+    this.annuler = this.annuler.bind(this);
   }
   handelChange(e) {
     this.setState({ [e.target.name]: e.target.value });
@@ -52,14 +52,14 @@ class Admin extends Component {
     this.props.getSujetsPl();
     this.props.getSujetsArch();
   }
-  componentWillReceiveProps(p) {
-    if (p.data.added.added) {
-      setTimeout(
-        () => this.props.dispatch(added("affectation", false, "")),
-        3000
-      );
-    }
-  }
+  // componentWillReceiveProps(p) {
+  //   if (p.data.added.added) {
+  //     setTimeout(
+  //       () => this.props.dispatch(added("affectation", false, "")),
+  //       3000
+  //     );
+  //   }
+  // }
   onEntering() {
     this.setState({ status: "Opening..." });
   }
@@ -105,7 +105,7 @@ class Admin extends Component {
               size="sm"
               color="primary"
               onClick={() => {
-                this.props.deleteSP("Sujets_pr", pres.id, dispatch);
+                this.props.deleteSP("Sujets_pr", pres.id);
               }}
             >
               <i
@@ -115,8 +115,8 @@ class Admin extends Component {
               />
             </Button>
             <Modifier
-              update={(dbName, state, id, ds) => {
-                this.props.update("Sujets_pr", state, pres.id, dispatch);
+              update={(dbName, state, id) => {
+                this.props.update("Sujets_pr", state, pres.id);
               }}
               clicked={() => pres}
             />
@@ -129,15 +129,22 @@ class Admin extends Component {
                 <Popup
                   modal
                   trigger={
-                    <Button size="sm" color="primary" title="Archiver" className="btn">
+                    <Button
+                      size="sm"
+                      color="primary"
+                      title="Archiver"
+                      className="btn"
+                    >
                       <i
                         className="icons d-block cui-layers"
                         style={{ fontSize: "large" }}
-                        onClick={() =>{this.annuler();
-                                       }}
+                        onClick={() => {
+                          this.annuler();
+                        }}
                       />
                     </Button>
-                  } >
+                  }
+                >
                   {close => (
                     <div>
                       <Button
@@ -146,15 +153,16 @@ class Admin extends Component {
                         size="sm"
                         className="close"
                         onClick={() => {
-                                close() ;this.toggle();
-                                      }}
+                          close();
+                          this.toggle();
+                        }}
                         style={{ color: "red" }}
                       >
                         <i class="fa fa-times-circle fa-lg " />
                       </Button>
                       <Row>
                         <Col className="card1">
-                          <Card >
+                          <Card>
                             <CardHeader>
                               <i className="fa fa-align-justify"></i>
                             </CardHeader>
@@ -208,11 +216,10 @@ class Admin extends Component {
                                       size="sm"
                                       color="primary"
                                       title="Enregistrer"
-                                      onClick={e => {
+                                      onClick={() => {
                                         this.props.archive(
-                                          e,
                                           "Sujets_arch",
-                                          "Sujets_pr",                                    
+                                          "Sujets_pr",
                                           pres.id,
                                           archId,
                                           pres.Sujet,
@@ -224,8 +231,8 @@ class Admin extends Component {
                                         close();
                                         this.annuler();
                                         this.toggle();
-                                         }} 
-                                         >
+                                      }}
+                                    >
                                       Enregistrer
                                     </Button>
                                   </tr>
@@ -252,9 +259,9 @@ class Admin extends Component {
           <DefaultAdmin />
           <Menu />
           <div>
-            <Col className="admin-column" >
+            <Col className="admin-column">
               <Card>
-                <CardHeader/>
+                <CardHeader />
                 <CardBody>
                   <Table responsive hover>
                     <thead>
@@ -269,7 +276,7 @@ class Admin extends Component {
                     <tbody>{presentateur}</tbody>
                   </Table>
                 </CardBody>
-                <CardFooter/>
+                <CardFooter />
               </Card>
             </Col>
           </div>
@@ -285,14 +292,13 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     dispatch: dispatch,
-    getSujetsPl: () => dispatch(getSujetsPl()),
-    getSujetsArch: () => dispatch(getSujetsArch()),
-    deleteSP: (dbName, id, ds) => dispatch(deleteSP(dbName, id, ds)),
-    update: (dbName, s, id, ds) => {
-    dispatch(update(dbName, s, id, ds));
+    getSujetsPl: () => dispatch({ type: "SUJET_REQUESTED" }),
+    getSujetsArch: () => dispatch({ type: "SUJETARCH_REQUESTED" }),
+    deleteSP: (dbName, id) => dispatch({ type: "DELETE_ALL", dbName, id }),
+    update: (dbName, s, id) => {
+      dispatch({ type: "UPDATE_S", dbName, s, id });
     },
     archive: (
-      e,
       dbName,
       dbNameS,
       presentateurId,
@@ -303,20 +309,18 @@ const mapDispatchToProps = dispatch => {
       Lien,
       Lien2
     ) =>
-      dispatch(
-        archive(
-          e,
-          dbName,
-          dbNameS,
-          presentateurId,
-          ArchId,
-          Sujet,
-          Presentateur,
-          date,
-          Lien,
-          Lien2
-        )
-      )
+      dispatch({
+        type: "ARCHIVE_S",
+        dbName,
+        dbNameS,
+        presentateurId,
+        ArchId,
+        Sujet,
+        Presentateur,
+        date,
+        Lien,
+        Lien2
+      })
   };
 };
-export default connect(mapStateToProps,mapDispatchToProps)(Admin);
+export default connect(mapStateToProps, mapDispatchToProps)(Admin);

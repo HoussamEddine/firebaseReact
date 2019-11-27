@@ -15,13 +15,13 @@ import {
 } from "reactstrap";
 import Modifier from "./ModifierSujet";
 import DefaultAdmin from "../DefaultAdmin";
-import Menu from "../Menu"
+import Menu from "../Menu";
 import { connect } from "react-redux";
 import getSujets from "../../../store/actions/getSujetPropos";
 import addSujet from "../../../store/actions/addSujetAction";
 import deleteSP from "../../../store/actions/deleteAllAction";
 import updateAction from "../../../store/actions/updateAllAction";
-import { added } from "../../../store/actions/addedMsg";
+import added from "../../../store/actions/addedMsg";
 //import "./Res-sujet.css";
 import "../Resp.scss";
 
@@ -32,13 +32,13 @@ class GererSujet extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.annuler = this.annuler.bind(this);
     this.state = {
-    //  sujet: "",
+      //  sujet: "",
       sujetAdded: false,
       message: null,
       dropdownOpen: [false, false],
       presentateurs: {}
     };
- }
+  }
   toggle(i) {
     const newArray = this.state.dropdownOpen.map((element, index) => {
       return index === i ? !element : false;
@@ -59,15 +59,16 @@ class GererSujet extends Component {
   componentWillMount() {
     this.props.getSujets();
   }
-  componentWillReceiveProps(p) {
-    if (p.data.added.added) {
-      setTimeout(
-        () => this.props.dispatch(added("affectation", false, "")),
-        3000
-      );
-    }
-  }
+  // componentWillReceiveProps(p) {
+  //   if (p.data.added.added) {
+  //     setTimeout(
+  //       () => this.props.dispatch(added("affectation", false, "")),
+  //       3000
+  //     );
+  //   }
+  // }
   render() {
+    console.log(data);
     let data = this.props.data,
       message = data.added.message,
       dispatch = this.props.dispatch,
@@ -83,7 +84,7 @@ class GererSujet extends Component {
     const sujets = sujetsArr.map((sujets, i) => {
       return (
         <tr key={i}>
-          <td style={{width :"486px"}}>{sujets.Name}</td>
+          <td style={{ width: "486px" }}>{sujets.Name}</td>
           <div style={{ float: "right" }}>
             <Button
               title="Supprimer"
@@ -91,8 +92,9 @@ class GererSujet extends Component {
               size="sm"
               color="danger"
               onClick={() => {
-                this.props.deleteSP("Sujets", sujets.id, dispatch);
-              }} >
+                this.props.deleteSP("Sujets", sujets.id);
+              }}
+            >
               <i
                 className="icons d-block cui-trash"
                 style={{ fontSize: "large" }}
@@ -115,7 +117,7 @@ class GererSujet extends Component {
         <div className="app">
           <DefaultAdmin />
           <Menu />
-         <div className="Sujet-column">
+          <div className="Sujet-column">
             <Col>
               <Card>
                 <div>
@@ -143,22 +145,25 @@ class GererSujet extends Component {
                       type="submit"
                       size="sm"
                       color="primary"
-                      onClick={(event, dbName, id, suj) => {
-                        this.props.addSujet(event, "Sujets", sujetId, sujet);this.annuler();
+                      onClick={() => {
+                        this.props.addSujet("Sujets", sujetId, sujet);
+                        this.annuler();
                       }}
                     >
                       <i className="fa fa-dot-circle-o"></i> Enregistrer
-                    </Button> 
+                    </Button>
                     <Button
                       type="reset"
                       size="sm"
                       color="danger"
-                      onClick={this.annuler} >
+                      onClick={this.annuler}
+                    >
                       <i className="fa fa-ban"></i> Annuler
                     </Button>
                     <p
                       className="text-muted"
-                      style={{ display: "inline-block", marginLeft: "25px" }} >
+                      style={{ display: "inline-block", marginLeft: "25px" }}
+                    >
                       {message}
                     </p>
                   </CardFooter>
@@ -182,7 +187,7 @@ class GererSujet extends Component {
                       <tbody>{sujets}</tbody>
                     </Table>
                   </CardBody>
-                  <CardFooter/>
+                  <CardFooter />
                 </Card>
               </Col>
             </div>
@@ -199,12 +204,17 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     dispatch: dispatch,
-    getSujets: () => dispatch(getSujets()),
-    addSujet: (e, dbName, id, suj) => dispatch(addSujet(e, dbName, id, suj)),
-    deleteSP: (dbName, id, ds) => dispatch(deleteSP(dbName, id, ds)),
-    update: (dbName, s, id, ds) => {
-      dispatch(updateAction(dbName, s, id, ds));
+    getSujets: () => dispatch({ type: "SUJETPROPOS_REQUESTED" }),
+    addSujet: (dbName, id, suj) =>
+      //  dispatch(addSujet(e, dbName, id, suj)),
+      dispatch({ type: "ADD_SUJET", dbName, id, suj }),
+    deleteSP: (dbName, id) => {
+      return dispatch({ type: "DELETE_ALL", dbName, id });
+      // cb(dbName,id);
+    },
+    update: (dbName, s, id) => {
+      dispatch({ type: "UPDATE_S", dbName, s, id });
     }
   };
 };
-export default connect(mapStateToProps,mapDispatchToProps)(GererSujet);
+export default connect(mapStateToProps, mapDispatchToProps)(GererSujet);

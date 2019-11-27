@@ -17,7 +17,7 @@
 
 import fctGet from "../../api/fctGet";
 
-import { call, put, takeEvery, all } from "redux-saga/effects";
+import { call, put, takeEvery } from "redux-saga/effects";
 
 function fetchSujetsProposApi() {
   return fctGet("/Sujets")

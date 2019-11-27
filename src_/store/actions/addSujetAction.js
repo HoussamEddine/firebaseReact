@@ -1,4 +1,4 @@
-import { added } from "./added";
+import { added } from "./addedMsg";
 import addSujet from "./../../api/addSujet";
 import getSujetPropos from "./getSujetPropos";
 

@@ -3,6 +3,7 @@
   margin-left: 19%;
   padding-bottom: 8%;
 }
+
 @media screen and (max-width: 900px) {
   .Sujet-column {
     width: 100%;
@@ -13,16 +14,14 @@
 @media screen and (max-width: 400px) {
   .Sujet-column {
     padding-bottom: 0;
-  }
- 
+  } 
 }
 
 @media screen and (min-width: 999px){
     .Sujet-column {
         margin-left: 400px;
         width : 50%;
-
-    }
+       }
 }
 @media screen and (max-width : 384px){
     .btn{
@@ -34,9 +33,5 @@
     .btn-mdf{
          display: inline-block;
          margin: 0px 0px 0 10px;
-    
-        
-    
-    
         }
   }

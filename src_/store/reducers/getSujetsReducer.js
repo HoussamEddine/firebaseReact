@@ -3,7 +3,7 @@ const getSujetsReducer = (state, action) => {
 
   switch (action.type) {
     case "DATA_READY":
-      return { ...action.payload, sujetId: action.sujetId };
+      return { ...action.data.payload, sujetId: action.data.Id };
   }
   return newState;
 };

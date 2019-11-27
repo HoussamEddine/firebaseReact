@@ -1,45 +1,56 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
-import {Card,CardBody,CardHeader,Col,Row,Table,Input,Button,CardFooter} from "reactstrap";
-import Menu from '../Menu'
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Col,
+  Row,
+  Table,
+  Input,
+  Button,
+  CardFooter
+} from "reactstrap";
+import Menu from "../Menu";
 import DefaultAdmin from "../DefaultAdmin";
-import "../Resp.scss"
+import "../Resp.scss";
 import { connect } from "react-redux";
 import getSujets from "../../../store/actions/getSujetPropos";
 import getSujetsPl from "../../../store/actions/getSujetPlanif";
 import getPresentateurs from "../../../store/actions/getPresentateur";
 import affectation from "../../../store/actions/affectationAction";
-import { added } from "../../../store/actions/addedMsg";
+import added from "../../../store/actions/addedMsg";
 
 class Affectation extends Component {
   constructor(props) {
     super(props);
     this.handelChange = this.handelChange.bind(this);
-    this.annuler =  this.handelChange.bind(this);
+    this.annuler = this.handelChange.bind(this);
     this.state = {
       Sujets: []
     };
   }
-  reset(){
-    document.getElementById('presentateur').value="-- Sélectionnez un présentateur --";
-    document.getElementById('date').value=" "
-    }
+  reset() {
+    document.getElementById("presentateur").value =
+      "-- Sélectionnez un présentateur --";
+    document.getElementById("date").value = " ";
+  }
   handelChange = e => {
-     this.setState({ [e.target.name]: e.target.value });
+    this.setState({ [e.target.name]: e.target.value });
   };
   componentWillMount() {
     this.props.getSujetsPl();
     this.props.getSujets();
     this.props.getPresentateurs();
   }
-  componentWillReceiveProps(p) {
-    if (p.data.added.added) {
-      setTimeout(
-        () => this.props.dispatch(added("affectation", false, "")),
-        3000
-      );
-    }
-  }
+  // componentWillReceiveProps(p) {
+  //   if (p.data.added.added) {
+  //     setTimeout(
+  //       () => this.props.dispatch(added("affectation", false, "")),
+  //       3000
+  //     );
+  //   }
+  // }
   render() {
     let sujetsObj = this.props.data.Sujets,
       sujetsArr = [],
@@ -70,21 +81,27 @@ class Affectation extends Component {
                 type="select"
                 id="presentateur"
                 onChange={this.handelChange}
-                name="Presentateur" >
+                name="Presentateur"
+              >
                 <option disabled selected value>
                   -- Sélectionnez un présentateur --
                 </option>
                 {dataArr.map(pres => (
-                <option value={pres.Prenom + " " + pres.Nom}>
+                  <option value={pres.Prenom + " " + pres.Nom}>
                     {pres.Prenom} {pres.Nom}
-                </option>
+                  </option>
                 ))}
                 ;
               </Input>
             }
           </td>
           <td>
-            <Input id="date" name="Date" onChange={this.handelChange} type="date" />
+            <Input
+              id="date"
+              name="Date"
+              onChange={this.handelChange}
+              type="date"
+            />
           </td>
           <td>
             <Button
@@ -93,21 +110,22 @@ class Affectation extends Component {
               color="primary"
               onClick={(e, dbName, dbNameS, ids, id, s, presentateur, d) => {
                 this.props.affectation(
-                  e,
                   "Sujets_pr",
                   "Sujets",
                   sujet.id,
                   affectId,
                   sujet.Name,
                   Presentateur,
-                  date                  
-                );this.reset()
+                  date
+                );
+                this.reset();
               }}
-              title="Affecter">
+              title="Affecter"
+            >
               <i
                 className="icons d-block cui-share"
-                style={{ fontSize: "large" }}>
-              </i>
+                style={{ fontSize: "large" }}
+              ></i>
             </Button>
           </td>
         </tr>
@@ -118,10 +136,9 @@ class Affectation extends Component {
     else
       return (
         <div className="app">
-
           <DefaultAdmin />
           <Menu />
-          
+
           <Row>
             <Col xl={7} className="affectation-column">
               <Card>
@@ -136,7 +153,7 @@ class Affectation extends Component {
                         <th scope="col">Sujets</th>
                         <th scope="col">Presentateurs</th>
                         <th scope="col">Date</th>
-                        <th> </th>
+                        <th />
                       </tr>
                     </thead>
                     <tbody>{sujets}</tbody>
@@ -165,11 +182,10 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     dispatch: dispatch,
-    getSujetsPl: () => dispatch(getSujetsPl()),
-    getSujets: () => dispatch(getSujets()),
-    getPresentateurs: () => dispatch(getPresentateurs()),
+    getSujetsPl: () => dispatch({ type: "SUJET_REQUESTED" }),
+    getSujets: () => dispatch({ type: "SUJETPROPOS_REQUESTED" }),
+    getPresentateurs: () => dispatch({ type: "PRESENTATEURS_REQUESTED" }),
     affectation: (
-      e,
       dbName,
       dbNameS,
       sujetId,
@@ -178,18 +194,16 @@ const mapDispatchToProps = dispatch => {
       presentateur,
       date
     ) =>
-      dispatch(
-        affectation(
-          e,
-          dbName,
-          dbNameS,
-          sujetId,
-          affectId,
-          sujet,
-          presentateur,
-          date
-        )
-      )
+      dispatch({
+        type: "AFFECTATION_SA",
+        dbName,
+        dbNameS,
+        sujetId,
+        affectId,
+        sujet,
+        presentateur,
+        date
+      })
   };
 };
-export default connect(mapStateToProps,mapDispatchToProps)(Affectation);
+export default connect(mapStateToProps, mapDispatchToProps)(Affectation);

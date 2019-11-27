@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Modifier from "./ModifierPresentateur";
-import Menu from "../Menu"
+import Menu from "../Menu";
 import { Redirect } from "react-router-dom";
 import {
   Card,
@@ -21,16 +21,14 @@ import getPresentateurs from "../../../store/actions/getPresentateur";
 import deleteSP from "../../../store/actions/deleteAllAction";
 import update from "../../../store/actions/updateAllAction";
 import addPresentateur from "../../../store/actions/addPresentateurAction";
-import { added } from "../../../store/actions/addedMsg";
+import added from "../../../store/actions/addedMsg";
 //import "../Sujet/Res-sujet.css";
 
 class AjoutPresentateur extends Component {
   constructor(props) {
     super(props);
     this.handelChange = this.handelChange.bind(this);
-
     this.annuler = this.annuler.bind(this);
-
     this.state = {
       userAdded: false,
       message: null,
@@ -51,14 +49,14 @@ class AjoutPresentateur extends Component {
   componentWillMount() {
     this.props.getPresentateurs();
   }
-  componentWillReceiveProps(p) {
-    if (p.data.added.added) {
-      setTimeout(
-        () => this.props.dispatch(added("affectation", false, "")),
-        3000
-      );
-    }
-  }
+  // componentWillReceiveProps(p) {
+  //   if (p.data.added.added) {
+  //     setTimeout(
+  //       () => this.props.dispatch(added("affectation", false, "")),
+  //       3000
+  //     );
+  //   }
+  // }
   render() {
     let presentateursObj = this.props.data.Presentateurs,
       presentateursArr = [],
@@ -79,25 +77,27 @@ class AjoutPresentateur extends Component {
           <td>{pres.Nom}</td>
           <td>{pres.Prenom}</td>
           <td>{pres.Email}</td>
-          <div style={{ float:"right"}}>
-              <Button
-                className=" btn "
-                size="sm"
-                color="danger"
-                title="Supprimer"
-                onClick={e => {
-                  this.props.deleteSP("Presentateurs", pres.id, dispatch);
-                }} >
-                <i
-                  className="icons d-block cui-trash"
-                  style={{ fontSize: "large" }}
-                />
-              </Button>
-              <Modifier
-                update={(dbName, state, id, ds) => {
-                  this.props.update("Presentateurs", state, pres.id, dispatch);
-                }}
-                clicked={() => pres} />
+          <div style={{ float: "right" }}>
+            <Button
+              className=" btn "
+              size="sm"
+              color="danger"
+              title="Supprimer"
+              onClick={e => {
+                this.props.deleteSP("Presentateurs", pres.id);
+              }}
+            >
+              <i
+                className="icons d-block cui-trash"
+                style={{ fontSize: "large" }}
+              />
+            </Button>
+            <Modifier
+              update={(dbName, state, id) => {
+                this.props.update("Presentateurs", state, pres.id);
+              }}
+              clicked={() => pres}
+            />
           </div>
         </tr>
       );
@@ -125,11 +125,12 @@ class AjoutPresentateur extends Component {
                         </Col>
                         <Col xs="12" md="9">
                           <Input
-                            type="input"
+                            // type="input"
                             name="Nom"
                             autoComplete="nom"
                             value={this.state.Nom}
-                            onChange={this.handelChange} />
+                            onChange={this.handelChange}
+                          />
                           <br />
                         </Col>
                       </FormGroup>
@@ -142,7 +143,8 @@ class AjoutPresentateur extends Component {
                             name="Prenom"
                             autoComplete="prenom"
                             value={this.state.Prenom}
-                            onChange={this.handelChange} />
+                            onChange={this.handelChange}
+                          />
                           <br />
                         </Col>
                       </FormGroup>
@@ -152,7 +154,7 @@ class AjoutPresentateur extends Component {
                         </Col>
                         <Col xs="12" md="9">
                           <Input
-                            type="input"
+                            // type="input"
                             id="hf-email"
                             name="Email"
                             autoComplete="Email"
@@ -168,18 +170,18 @@ class AjoutPresentateur extends Component {
                       type="submit"
                       size="sm"
                       color="primary"
-                      onClick={(e, dbName, id, nom, prenom, email) =>
+                      onClick={(dbName, id, nom, prenom, email) =>
                         this.props.addPresentateur(
-                          e,
                           "Presentateurs",
                           presentateurId,
                           Nom,
                           Prenom,
                           Email,
                           this.annuler()
-                        )} 
+                        )
+                      }
                     >
-                      <i className="fa fa-dot-circle-o"/> Enregistrer
+                      <i className="fa fa-dot-circle-o" /> Enregistrer
                     </Button>
                     <Button
                       type="reset"
@@ -187,7 +189,7 @@ class AjoutPresentateur extends Component {
                       color="danger"
                       onClick={this.annuler}
                     >
-                      <i className="fa fa-ban"/> Annuler
+                      <i className="fa fa-ban" /> Annuler
                     </Button>
                     <p
                       className="text-muted"
@@ -207,12 +209,10 @@ class AjoutPresentateur extends Component {
                   </CardHeader>
                   <CardBody>
                     <Table responsive hover>
-                      <tbody>
-                        {presentateur}
-                      </tbody>
+                      <tbody>{presentateur}</tbody>
                     </Table>
                   </CardBody>
-                  <CardFooter/>
+                  <CardFooter />
                 </Card>
               </Col>
             </div>
@@ -229,14 +229,12 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     dispatch: dispatch,
-    getPresentateurs: () => dispatch(getPresentateurs()),
-    deleteSP: (dbName, id, ds) => dispatch(deleteSP(dbName, id, ds)),
-    update: (dbName, s, id, ds) => dispatch(update(dbName, s, id, ds)),
-    addPresentateur: (e, dbName, id, nom, prenom, email) =>
-      dispatch(addPresentateur(e, dbName, id, nom, prenom, email))
+    getPresentateurs: () => dispatch({ type: "PRESENTATEURS_REQUESTED" }),
+    deleteSP: (dbName, id, ds) => dispatch({ type: "DELETE_ALL", dbName, id }),
+    update: (dbName, s, id, ds) =>
+      dispatch({ type: "UPDATE_S", dbName, s, id }),
+    addPresentateur: (dbName, id, nom, prenom, email) =>
+      dispatch({ type: "ADD_PRESENTATEUR", dbName, id, nom, prenom, email })
   };
 };
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AjoutPresentateur);
+export default connect(mapStateToProps, mapDispatchToProps)(AjoutPresentateur);

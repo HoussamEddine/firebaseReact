@@ -1,6 +1,6 @@
 import firebase from "./../../config/config";
-import { auth } from "./auth";
-
+import auth from "./auth";
+/*
 const logoutAction = e => {
   return dispatch => {
     e.preventDefault();
@@ -17,3 +17,19 @@ const logoutAction = e => {
   };
 };
 export default logoutAction;
+//////*/
+
+import { call, put, takeEvery } from "redux-saga/effects";
+
+function* LogoutS(e) {
+  try {
+    yield call(firebase.auth().signOut());
+    yield put(auth(false, null));
+  } catch (error) {
+    yield put(auth(error));
+  }
+}
+function* LogOutSaga() {
+  yield takeEvery("LOGOUT_S", LogoutS);
+}
+export default LogOutSaga;

@@ -10,18 +10,18 @@ class DefaultAdmin extends Component {
   constructor(props) {
     super(props);
   }
-  logout(e) {
-    e.preventDefault();
-    firebase.auth().signOut();
-    this.props.dispatch(logout(e));
-    // this.props.history.push("/SujetPl");
-  }
+  // logout(e) {
+  //   e.preventDefault();
+  //   firebase.auth().signOut();
+  //   // this.props.dispatch(logout(e));
+  //   // this.props.history.push("/SujetPl");
+  // }
   render() {
     return (
       <div>
         <AppHeader fixed>
           <Suspense>
-            <HeaderAdmin onLogout={e => this.logout(e)} />
+            <HeaderAdmin onLogout={e => this.props.logout(e)} />
           </Suspense>
         </AppHeader>
       </div>
@@ -31,10 +31,8 @@ class DefaultAdmin extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    dispatch: dispatch
+    dispatch: dispatch,
+    logout: () => dispatch({ type: "LOGOUT_S" })
   };
 };
-export default connect(
-  null,
-  mapDispatchToProps
-)(DefaultAdmin);
+export default connect(null, mapDispatchToProps)(DefaultAdmin);

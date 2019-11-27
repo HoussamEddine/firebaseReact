@@ -1,17 +1,9 @@
-import React, { Component, Suspense } from "react";
+import React, { Component } from "react";
 import Popup from "reactjs-popup";
-import Content from "../../Popup/Content";
-import index from "../../Popup/index.css";
-
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  Col,
-  Table,
-  Button,
-  Row
-} from "reactstrap";
+//import Content from "../../Popup/Content";
+//import index from "../../Popup/index.css";
+import {Card,CardBody,CardHeader,Col,Table,Button,Row,CardFooter,Form,FormGroup,Input,Label} from "reactstrap";
+import "../Resp.scss";
 
 class Modifier extends Component {
   constructor(props) {
@@ -35,24 +27,23 @@ class Modifier extends Component {
       NewEmail: pers.Email
     });
   }
-
   render() {
     const state = this.state;
     return (
-      <div
-        className="animated fadeIn btn-mdf popup-content"
-        onClick={this.clickHandler}
-      >
+      <div 
+        className="animated fadeIn btn-res block popup-content "
+        onClick={this.clickHandler} >
         <div>
           <Popup
+           className="res-popup"
             modal
-            style={index}
+           // style={index}
             trigger={
-              <Button className=" btn " size="sm" color="primary">
+              <Button size="sm" color="primary" title="Modifier">
                 <i
-                  class="icons d-block cui-note"
+                  className="icons d-block cui-note"
                   style={{ fontSize: "large" }}
-                ></i>
+                />
               </Button>
             }
           >
@@ -62,8 +53,7 @@ class Modifier extends Component {
                   size="sm"
                   className="close"
                   onClick={close}
-                  style={{ color: "red" }}
-                >
+                  style={{ color: "red" }}>
                   <i class="fa fa-times-circle fa-lg  " />
                 </Button>
                 <Row>
@@ -73,7 +63,59 @@ class Modifier extends Component {
                         <i className="fa fa-align-justify"></i> Modifier
                       </CardHeader>
                       <CardBody>
-                        <Table responsive hover>
+                      <Col>
+                   <Form>
+                      <FormGroup row>
+                        <Col md="3">
+                          <Label>Nom</Label>
+                        </Col>
+                        <Col xs="12" >
+                          <Input  className="form-control input"
+                                  value={this.state.NewNom}
+                                  name="NewNom"
+                                  onChange={this.handelChange} />
+                        </Col>
+                      </FormGroup>
+                      <FormGroup row>
+                        <Col md="1">
+                          <Label>Prenom</Label>
+                        </Col>
+                        <Col xs="12" >
+                          <Input  className="form-control input"
+                                  value={this.state.NewPrenom}
+                                  name="NewPrenom"
+                                  onChange={this.handelChange} />
+                        </Col>
+                      </FormGroup>
+                      <FormGroup row>
+                        <Col md="1">
+                          <Label>Email</Label>
+                        </Col>
+                        <Col xs="12" md="12">
+                          <Input  className="form-control"
+                                  value={this.state.NewEmail}
+                                  name="NewEmail"
+                                  onChange={this.handelChange} />
+                        </Col>
+                      </FormGroup>
+                    </Form>
+                    <br />
+                    <Button
+                                type="submit"
+                                size="sm"
+                                color="primary"
+                                onClick={e => {
+                                  this.props.update(e, state);
+                                  close();
+                                }} >
+                                <i className="fa fa-dot-circle-o"></i>{" "}
+                                Enregistrer
+                    </Button>
+                    
+                 
+                  </Col>
+                     {/**   <Table responsive hover>
+                          
                           <th>Nom</th>
                           <th>Prenom</th>
                           <th>Email</th>
@@ -102,8 +144,7 @@ class Modifier extends Component {
                                   className="form-control"
                                   value={this.state.NewEmail}
                                   name="NewEmail"
-                                  onChange={this.handelChange}
-                                />
+                                  onChange={this.handelChange} />
                               </td>
                             </tr>
                             <tr>
@@ -114,14 +155,13 @@ class Modifier extends Component {
                                 onClick={e => {
                                   this.props.update(e, state);
                                   close();
-                                }}
-                              >
+                                }} >
                                 <i className="fa fa-dot-circle-o"></i>{" "}
                                 Enregistrer
                               </Button>
                             </tr>
                           </tbody>
-                        </Table>
+                        </Table>*/} 
                       </CardBody>
                     </Card>
                   </Col>

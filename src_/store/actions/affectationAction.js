@@ -1,5 +1,5 @@
-import { added } from "./added";
-import deleteSPR from "./deleteAction";
+import { added } from "./addedMsg";
+import deleteSPR from "./deleteAllAction";
 import addAffect from "./../../api/addAffect";
 
 const affectationAction = (
@@ -24,8 +24,24 @@ const affectationAction = (
         console.log(e);
         dispatch(added("affectation", false, "Erreur"));
       });
-    //dispatch(deleteSPR(dbNameS, sujetsPId));
   };
 };
-
 export default affectationAction;
+/** 
+import {put } from 'redux-saga/effects';
+function* affectation(e,dbName,dbNameS,sujetsPId,affectId,sujet,presentateur,date){
+  yield (e.preventDefault(),
+         addAffect(e,dbName,affectId,sujet,presentateur,date)
+         .then(u=>{
+           yield put(added("affectation",true,"Ajouté avec succès"));
+           yield put(deleteSPR(dbNameS,sujetsPId, dispatch));
+         })
+         .catch(e => {
+           console.log(e);
+           dispatch(added("affectation", false, "Erreur"));
+         })
+  )
+
+}*/
+
+

@@ -1,8 +1,7 @@
 import fetchDb from "./fetchDb";
 
 const archive = (dbName, e, ArchId, Sujet, Presentateur, date, Lien, Lien2) => {
-  //**************** */add
-  e.preventDefault();
+   // e.preventDefault();
 
   return fetchDb(dbName + "/" + ++ArchId).set({
     id: ArchId,

@@ -14,7 +14,8 @@ import {
 class Menu extends Component{
     constructor(){
         super();
-      }
+       
+    }
    render()
    {
         return(
@@ -34,5 +35,6 @@ class Menu extends Component{
             </AppSidebar>
           </div>
         );}
+        
 }
 export default Menu;

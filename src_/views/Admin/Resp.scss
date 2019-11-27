@@ -7,8 +7,9 @@ $mw:630px;$ib:inline-block;$b:block;
     padding-bottom: $w;
   }
   .popup-content {
-   // width: auto;
+   // width: max-content;
     border-radius: 20px;
+   // padding-top: 9px;
    }
  /* .res-popup-content{
     width: $c;
@@ -21,7 +22,9 @@ $mw:630px;$ib:inline-block;$b:block;
       padding-right:0px;
     }
   }*/
-
+ .res-popup-content{
+   width: 100%;
+ }
  @media screen and (max-width:480px)
  {
    .admin-column{
@@ -33,7 +36,7 @@ $mw:630px;$ib:inline-block;$b:block;
     margin-bottom: 14rem;
   }
   .app-body{
-    flex-grow: 1;
+    flex-grow: 0;
   }
   @media screen and (max-width: 765px){
     .res-popup{

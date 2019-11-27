@@ -1,7 +1,7 @@
-import React, { Component , Suspense} from 'react'; 
+import React, { Component } from 'react'; 
 
 import { Link} from 'react-router-dom';
-import {  UncontrolledDropdown, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem } from 'reactstrap';
+import {  UncontrolledDropdown, DropdownItem, DropdownMenu, DropdownToggle, Nav } from 'reactstrap';
 
 import {  AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
 import logo from '../../assets/img/brand/logo.jpg'
@@ -14,14 +14,9 @@ class HeaderAdmin extends Component {
      // this.logout = this.logout.bind(this);
   }
 
- 
-
-
 
 render(){
   
-  //const isAuth = this.props.isAuth;
-
     return(
       
      <React.Fragment>
@@ -41,7 +36,6 @@ render(){
         <DropdownMenu right>
         <DropdownItem 
                 onClick={e => this.props.onLogout(e)} 
-               /**style={isAuth ? { display: "block" } : { display: "none" }} */ 
                to="SujetPl">               
                 <Link to="SujetPl"  ><i className="fa fa-lock"></i> Logout</Link>
               </DropdownItem>

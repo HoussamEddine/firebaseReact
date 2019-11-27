@@ -3,7 +3,7 @@ const getSujetsarchReducer = (state, action) => {
 
   switch (action.type) {
     case "SUJETSARCH_READY":
-      return { ...action.payload, archId: action.ArchId };
+      return { ...action.data.payload, archId: action.data.Id };
   }
   return newState;
 };

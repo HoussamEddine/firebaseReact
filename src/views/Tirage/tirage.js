@@ -1,9 +1,7 @@
 import React from "react";
-import { Button } from "reactstrap";
+import { Card, CardBody, CardHeader, Col, CardFooter, Button} from "reactstrap";
 
-import { Card, CardBody, CardHeader, Col, CardFooter } from "reactstrap";
-
-import getPresentateurs from "../../store/actions/getPresentateur";
+//import getPresentateurs from "../../store/actions/getPresentateur";
 import { connect } from "react-redux";
 
 class Tirage extends React.Component {
@@ -45,7 +43,7 @@ class Tirage extends React.Component {
         <div>
           <Col>
             <Card>
-              <CardHeader></CardHeader>
+              <CardHeader />
               <CardBody>
                 <center>
                   <h1 style={{ width: "80%" }}>
@@ -60,7 +58,7 @@ class Tirage extends React.Component {
                   </Button>
                 </center>
               </CardBody>
-              <CardFooter></CardFooter>
+              <CardFooter />
             </Card>
           </Col>
         </div>
@@ -68,7 +66,6 @@ class Tirage extends React.Component {
     );
   }
 }
-
 const mapStateToProps = state => {
   return {
     data: state
@@ -76,11 +73,7 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    getPresentateurs: () => dispatch(getPresentateurs())
+    getPresentateurs: () => dispatch({type:"PRESENTATEURS_REQUESTED"})
   };
 };
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Tirage);
+export default connect(mapStateToProps,mapDispatchToProps)(Tirage);

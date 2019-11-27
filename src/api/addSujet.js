@@ -1,6 +1,6 @@
 import fetchDb from "./fetchDb";
 
-const addSujet = (e, dbName, sujetId, sujet) => {
+const addSujet = (dbName, sujetId, sujet) => {
   //e.preventDefault();
 
   return fetchDb(dbName + "/" + ++sujetId).set({

@@ -1,9 +1,9 @@
 import archive from "./../../api/archive";
 
-import { added } from "./addedMsg";
-import deleteSP from "./deleteAllAction";
+import added from "./addedMsg";
+import deleteSP from "./../../api/deleteAll";
 import getSujetPlanif from "./getSujetPlanif";
-const archiveAction = (
+/*const archiveAction = (
   e,
   dbName,
   dbNameS,
@@ -31,3 +31,30 @@ const archiveAction = (
 };
 
 export default archiveAction;
+//*/
+import { put, takeEvery } from "redux-saga/effects";
+
+function* archiveS(obj) {
+  yield archive(
+    obj.dbName,
+    obj.ArchId,
+    obj.Sujet,
+    obj.Presentateur,
+    obj.date,
+    obj.Lien,
+    obj.Lien2
+  );
+  yield deleteSP(obj.dbNameS, obj.presentateurId);
+  try {
+    yield put({ type: "SUJETPROPOS_REQUESTED" });
+    const msg = { name: "Archive", bool: true, msg: "Archivé avec succès" };
+    yield put({ type: "READY_MESSAGE", msg });
+  } catch (e) {
+    const msg = { name: "Archive", bool: false, msg: "Erreur" };
+    yield put({ type: "READY_MESSAGE", msg });
+  }
+}
+function* archiveSaga() {
+  yield takeEvery("ARCHIVE_S", archiveS);
+}
+export default archiveSaga;

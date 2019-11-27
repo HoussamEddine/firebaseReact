@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { Card, CardBody, CardHeader, Col, Row, Table } from "reactstrap";
-
-import getSujetsArch from "../../store/actions/getSujetArch";
+import { Card, CardBody, CardHeader, Col, Row, Table, CardFooter } from "reactstrap";
+//import getSujetsArch from "../../store/actions/getSujetArch";
 import { connect } from "react-redux";
 
 class SujetArch extends Component {
@@ -10,6 +9,7 @@ class SujetArch extends Component {
   }
   render() {
     let sujetarchObj = this.props.data.Sujetsarch; 
+    console.log("sujetArchi",Sujetsarch)
     let sujetsArr = [];
     for (let suj in sujetarchObj) {
       const name = sujetarchObj[suj];
@@ -38,7 +38,7 @@ return (
         <Row>
          <Col xl={8}>
           <Card>
-            <CardHeader></CardHeader>
+            <CardHeader />
             <CardBody>
               <Table responsive hover>
                     <thead>
@@ -52,6 +52,7 @@ return (
                     <tbody>{Sujetsarch}</tbody>
                 </Table> 
              </CardBody>
+             <CardFooter/>
           </Card>
         </Col>
       </Row>
@@ -66,12 +67,10 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    getSujetsArch: () => dispatch(getSujetsArch())
+    getSujetsArch: () => dispatch({type: "SUJETARCH_REQUESTED"})
   };
 };
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SujetArch);
+export default connect(mapStateToProps,mapDispatchToProps)(SujetArch);
+
 
   

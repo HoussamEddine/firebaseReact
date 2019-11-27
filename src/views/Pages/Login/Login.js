@@ -41,6 +41,7 @@ class Login extends Component {
       email = this.state.email,
       password = this.state.password,
       dispatch = this.props.dispatch;
+
     if (isAuth === true) return <Redirect to="/admin" />;
     else
       return (
@@ -62,7 +63,8 @@ class Login extends Component {
                               <i className="icon-user"></i>
                             </InputGroupText>
                           </InputGroupAddon>
-                          <Input className="con"
+                          <Input
+                            className="con"
                             value={email}
                             onChange={this.handleChange}
                             type="text"
@@ -74,10 +76,11 @@ class Login extends Component {
                         <InputGroup className="mb-4">
                           <InputGroupAddon addonType="prepend">
                             <InputGroupText>
-                              <i className="icon-lock"></i>
+                              <i className="icon-lock" />
                             </InputGroupText>
                           </InputGroupAddon>
-                          <Input className="con content"
+                          <Input
+                            className="con content"
                             value={password}
                             onChange={this.handleChange}
                             type="password"
@@ -90,9 +93,7 @@ class Login extends Component {
                           <Col xs="6">
                             <Button
                               type="submit"
-                              onClick={e =>
-                                this.props.login(e, email, password, dispatch)
-                              }
+                              onClick={() => this.props.login(email, password)}
                               color="primary"
                               className="px-4 con"
                             >
@@ -123,10 +124,9 @@ const mapStatetoProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    login: (e, email, password) => dispatch(login(e, email, password))
+    //  login: (email, password) => dispatch({type:"LOGIN_REQUESTED", email, password})
+    login: (email, password) =>
+      dispatch({ type: "LOGIN_REQUESTED", email, password })
   };
 };
-export default connect(
-  mapStatetoProps,
-  mapDispatchToProps
-)(Login);
+export default connect(mapStatetoProps, mapDispatchToProps)(Login);

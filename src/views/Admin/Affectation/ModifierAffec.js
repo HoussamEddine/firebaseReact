@@ -86,7 +86,7 @@ class ModifierAffec extends Component {
                           <th>Sujet</th>
                           <th>Présentateur</th>
                           <th>Date</th>
-                          <th> </th>
+                          <th />
                           <tbody>
                             <tr>
                               <td>
@@ -143,9 +143,8 @@ class ModifierAffec extends Component {
                                 onClick={e => {
                                   this.props.update(e, state);
                                   close();
-                                }}
-                              >
-                                <i className="fa fa-dot-circle-o"></i>{" "}
+                                }} >
+                                <i className="fa fa-dot-circle-o"/>{" "}
                                 Eregistrer
                               </Button>
                             </tr>
@@ -171,11 +170,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     dispatch: dispatch,
-    getSujet: () => dispatch(getSujet()),
-    getPresentateur: () => dispatch(getPresentateur()),
+    getSujet: () => dispatch({type: "SUJETPROPOS_REQUESTED"}),
+    getPresentateur: () => dispatch({type: "PRESENTATEURS_REQUESTED"}),
  };
 };
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ModifierAffec);
+export default connect(mapStateToProps,mapDispatchToProps)(ModifierAffec);
