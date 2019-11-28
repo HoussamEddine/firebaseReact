@@ -8,11 +8,11 @@ function* loginSaga(obj) {
       .auth()
       .signInWithEmailAndPassword(obj.email, obj.password);
 
-    console.log(data);
-
-    yield put({ type: "AUTH_REAQUESTED", data });
+    if (data.user) {
+      yield auth(true, null);
+    }
   } catch (error) {
-    yield auth(error);
+    yield auth(false, error);
   }
 }
 function* getLogin() {

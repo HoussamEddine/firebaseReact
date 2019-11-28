@@ -60,7 +60,7 @@ class Affectation extends Component {
       date = this.state.Date,
       auth = this.props.data.auth,
       isAuth = auth.isAuth;
-
+    console.log(affectId);
     for (let suj in sujetsObj) {
       const name = sujetsObj[suj];
       name.Name && sujetsArr.push(name);
@@ -118,7 +118,7 @@ class Affectation extends Component {
                   Presentateur,
                   date
                 );
-                this.reset();
+                // this.reset();
               }}
               title="Affecter"
             >

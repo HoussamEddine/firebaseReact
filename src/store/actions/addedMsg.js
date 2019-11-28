@@ -8,13 +8,21 @@
 //     });
 //   };
 // };
-import { put, takeEvery } from "redux-saga/effects";
+import { delay, put, takeEvery } from "redux-saga/effects";
 function* added(msg) {
   yield put({
     type: "ADDED_STATE",
     added: msg.msg.bool,
     name: msg.msg.name,
     message: msg.msg.msg
+  });
+  yield delay(3000);
+
+  yield put({
+    type: "ADDED_STATE",
+    added: true,
+    name: "",
+    message: ""
   });
 }
 function* readyMessage() {

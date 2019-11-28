@@ -44,9 +44,11 @@ function* archiveS(obj) {
     obj.Lien,
     obj.Lien2
   );
-  yield deleteSP(obj.dbNameS, obj.presentateurId);
   try {
-    yield put({ type: "SUJETPROPOS_REQUESTED" });
+    yield deleteSP(obj.dbNameS, obj.presentateurId);
+
+    yield put({ type: "SUJET_REQUESTED" });
+
     const msg = { name: "Archive", bool: true, msg: "Archivé avec succès" };
     yield put({ type: "READY_MESSAGE", msg });
   } catch (e) {

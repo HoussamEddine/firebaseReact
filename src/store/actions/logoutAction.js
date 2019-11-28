@@ -23,7 +23,7 @@ import { call, put, takeEvery } from "redux-saga/effects";
 
 function* LogoutS(e) {
   try {
-    yield call(firebase.auth().signOut());
+    yield firebase.auth().signOut();
     yield put(auth(false, null));
   } catch (error) {
     yield put(auth(error));

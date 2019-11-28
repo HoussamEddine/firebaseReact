@@ -40,7 +40,7 @@ class AjoutPresentateur extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
   annuler() {
-    this.setState({
+    return this.setState({
       Nom: "",
       Prenom: "",
       Email: ""
@@ -176,8 +176,7 @@ class AjoutPresentateur extends Component {
                           presentateurId,
                           Nom,
                           Prenom,
-                          Email,
-                          this.annuler()
+                          Email
                         )
                       }
                     >
